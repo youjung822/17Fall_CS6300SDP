@@ -60,7 +60,7 @@ Team Design
 ===========
 ![team44](https://github.gatech.edu/gt-omscs-se-2017fall/6300Fall17Team44/blob/master/GroupProject/Design-Team/images/team44Design.png?raw=true "Team design")
 
-## Commonalities and Differences with individuals
+### Commonalities and Differences with individuals
 | Member | Commonality | differences |
 | ------ | ------ | ------ |
 | Brian Greenwald |  |  |
@@ -68,56 +68,60 @@ Team Design
 | Tamur Khan |  |  |
 | Youjung Kim |  |  |
 
-##Justification of the Fianl Design
-1. When starting the application, a user may choose to either create a new player or log in.  For simplicity, authentication is optional.  A (unique) username will be sufficient for logging in.
-</br><b>To realize this requirement, the Main Menu class offers both login and createPlayer methods.</b>
 
+### Justification of the Fianl Design
+1. When starting the application, a user may choose to either create a new player or log in.  For simplicity, authentication is optional.  A (unique) username will be sufficient for logging in.
+    </br><b>To realize this requirement, the Main Menu class offers both login and createPlayer methods.</b>
 
 2. After logging in, the application shall allow players to  (1) create a word scramble, (2) choose and solve word scrambles, (3) see statistics on their created and solved word scrambles, and (4) view the player statistics. 
-</br><b>The MainMenu class also offers the createWordScramble and viewScrambles to satisfy requirements (1) and (2), respectively. The main menu also implements a statistic interface (described further in requirements 11 and 12), that offers methods to calculate the statistics to be displayed to the user. </b>
+    </br><b>The MainMenu class also offers the createWordScramble and viewScrambles to satisfy requirements (1) and (2), respectively. The main menu also implements a statistic interface (described further in requirements 11 and 12), that offers methods to calculate the statistics to be displayed to the user. </b>
 
 
 3. The application shall maintain an underlying database to save persistent information across runs (e.g., word scrambles, player information, statistics). 
-</br><b>In our design, whenever a call to the EWS is made, a local database update is made with the information fetched from it. An update to the local database is also made when a new ProgressTracker is created (explained further in requirement 10).</b>
+    </br><b>In our design, whenever a call to the EWS is made, a local database update is made with the information fetched from it. An update to the local database is also made when a new ProgressTracker is created (explained further in requirement 10).</b>
 
 
 4. Word scrambles and statistics will be shared with other instances of the application.  An external web service utility will be used by the application to communicate with a central server to:
-  * Add a player and ensure that their username is unique.
-  * Send new word scrambles and receive a unique identifier for them.
-  * Retrieve the list of scrambles, together with information on which player created each of them. 
-  * Report a solved scramble.
-  * Retrieve the list of players and the scrambles each have solved.
-
+```sh
+Add a player and ensure that their username is unique.
+Send new word scrambles and receive a unique identifier for them.
+Retrieve the list of scrambles, together with information on which player created each of them. 
+Report a solved scramble.
+Retrieve the list of players and the scrambles each have solved.
+```
     You should represent this utility as a utility class that (1) is called "ExternalWebService", (2) is connected to the classes in the system that use it, and (3) explicitly list relevant methods used by those classes.  This class is provided by the system, so it should only contain what is specified here. You do not need to include any aspect of the server in your design besides this utility class.
-</br><b>To realize this, our design includes the ExternalWebService with a method for each required functionality lited above.</b>
+    </br><b>To realize this, our design includes the ExternalWebService with a method for each required functionality lited above.</b>
     
 5. When creating a new player, a user will:
-  * Enter the player’s first name.
-  * Enter the player’s last name.
-  * Enter the player’s desired username.
-  * Enter the player’s email.  
-  * Save the information.
-  * Receive the returned username, with possibly a number appended to it to ensure that it is unique.
-  
-    </br><b>The Player class realizes this requirement. It has fields for each of these pieces of information. The uniqueness requirement is satisfied in that a call to createPlayer() in MainMenu will issue a call to the EWS's addPlayer method, which returns either the same username entered or one with a number appended to ensure uniqueness.</b>
+```sh
+Enter the player’s first name.
+Enter the player’s last name.
+Enter the player’s desired username.
+Enter the player’s email.
+Save the information.
+Receive the returned username, with possibly a number appended to it to ensure that it is unique.
+```
+</br><b>The Player class realizes this requirement. It has fields for each of these pieces of information. The uniqueness requirement is satisfied in that a call to createPlayer() in MainMenu will issue a call to the EWS's addPlayer method, which returns either the same username entered or one with a number appended to ensure uniqueness.</b>
 
 
 6. To add a word scramble, the player will:
+```sh
   * Enter a phrase (not scrambled).
   * Enter a clue. 
   * View the phrase scrambled by the system. If the player does not like the result, they may choose for the system to re-scramble it until they are satisfied.
   * Accept the results or return to previous steps.
   * View the returned unique identifier for the word scramble. The scramble may not be further edited after this point.
-  
+```  
     </br><b>Scrambles are created through the createWordScramble method of MainMenu, mentioned earlier. First, a WordScramble class with fields for the entered phrase and clue is created. This class implements the Scramble interface, whose singular method allows for the entered phrase to be scrambled and saved in the scrambledPhrase field. The scramble operation can be executed multiple times until the user is satisfied. At this time, the MainMenu can then call the EWS method addScramble to receive the scramble's UID and save the scramble as a SavedWordScramble.</b>
 
 
 7. A scramble shall only mix up alphabetic characters, keeping each word together. Words are contiguous sequences of alphabetic characters separated by one or more non-alphabetic characters.
-</br><b>Business logic. Not represented in our design.</b>
+    </br><b>Business logic. Not represented in our design.</b>
 
 
 8. All other characters and spacing will remain as they originally are.
-</br><b>Business logic. Not represented in our design.</b>
+
+    </br><b>Business logic. Not represented in our design.</b>
 
 
 9. When solving word scrambles, a player will:
