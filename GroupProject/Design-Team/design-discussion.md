@@ -61,7 +61,7 @@ Team Design
 ![team44](https://github.gatech.edu/gt-omscs-se-2017fall/6300Fall17Team44/blob/master/GroupProject/Design-Team/images/team44Design.png?raw=true "Team design")
 
 ### Commonalities and Differences with individuals
-| Member | Commonality | Differences |
+| Member | Commonalities | Differences |
 | ------ | ------ | ------ |
 | Brian Greenwald |  |  |
 | John Youngblood |  |  |
@@ -169,5 +169,11 @@ GUI requirement. Not represented in our design.
 
 Summary
 =======
-summarizes the lessons learnt in the process of discussing the designs, in terms of design, team work, and any other aspect that the team members consider relevant
+In our individual designs, we did not have a dedicated MainMenu class. Instead, operations related to creating a player or word scramble were spread out. A MainMenu class helped clear the design so that the WordScramble classes and Player classes could be better seen as just objects of their respective entities. The MainMenu class also exclusively handles all interaction with EWS making it easier to track. In addition, the MainMenu class handles menu options, player logins and initializing Games.
+
+A Game class was created to act as a Game engine and perform any operations specific to the game. This helped combine all operations related to solving, saving and retrieving scrambles and made the purpose of the appication more defined in the class diagram.
+
+Since all statistics are availabe through EWS and only required to be processed, dedicated Statistic classes that stored statistic values as attributes were removed. Instead a Statistics interface was created that processed the results from EWS. 
+
+In our individual designs, we all had parts of the final team design. Working together we were able to identify which components of our individual designs worked well and also any pitfalls in them. We were able take the pros in each design and use them to rebuild a class diagram much better than any of our individual designs.
 
