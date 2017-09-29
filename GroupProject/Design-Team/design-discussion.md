@@ -92,7 +92,8 @@ Summary
 	* Enter the player’s email.  
 	* Save the information.
 	* Receive the returned username, with possibly a number appended to it to ensure that it is unique.
-</br><b>The Player class realizes this requirement. It has fields for each of these pieces of information. The uniqueness requirement is satisfied in that a call to createPlayer() in MainMenu will issue a call to the EWS's addPlayer method, which returns either the same username entered or one with a number appended to ensure uniqueness.</b>
+	
+    </br><b>The Player class realizes this requirement. It has fields for each of these pieces of information. The uniqueness requirement is satisfied in that a call to createPlayer() in MainMenu will issue a call to the EWS's addPlayer method, which returns either the same username entered or one with a number appended to ensure uniqueness.</b>
 
 
 6. To add a word scramble, the player will:
@@ -101,7 +102,8 @@ Summary
 	* View the phrase scrambled by the system. If the player does not like the result, they may choose for the system to re-scramble it until they are satisfied.
 	* Accept the results or return to previous steps.
 	* View the returned unique identifier for the word scramble. The scramble may not be further edited after this point.
-</br><b>Scrambles are created through the createWordScramble method of MainMenu, mentioned earlier. First, a WordScramble class with fields for the entered phrase and clue is created. This class implements the Scramble interface, whose singular method allows for the entered phrase to be scrambled and saved in the scrambledPhrase field. The scramble operation can be executed multiple times until the user is satisfied. At this time, the MainMenu can then call the EWS method addScramble to receive the scramble's UID and save the scramble as a SavedWordScramble.</b>
+	
+    </br><b>Scrambles are created through the createWordScramble method of MainMenu, mentioned earlier. First, a WordScramble class with fields for the entered phrase and clue is created. This class implements the Scramble interface, whose singular method allows for the entered phrase to be scrambled and saved in the scrambledPhrase field. The scramble operation can be executed multiple times until the user is satisfied. At this time, the MainMenu can then call the EWS method addScramble to receive the scramble's UID and save the scramble as a SavedWordScramble.</b>
 
 
 7. A scramble shall only mix up alphabetic characters, keeping each word together. Words are contiguous sequences of alphabetic characters separated by one or more non-alphabetic characters.
@@ -121,7 +123,7 @@ Summary
 	* View whether it was correct.
 	* Return either to the puzzle, if wrong, or to the list, if correct.
 	
-</br><b>The viewScrambles method of MainMenu satisfies the requirement to list the word scrambles. When the user selects a WordScramble from this list, it initiates a new Game instance. This allows users to enter their guesses and submit them. The checkSolution method returns whether or not their guess was correct. If incorrect, they simply stay within the Game and can attempt more guesses. Otherwise, they are returned back to the list in the main menu and a call to the EWS reportSolvedScramble can be made.</b>
+    </br><b>The viewScrambles method of MainMenu satisfies the requirement to list the word scrambles. When the user selects a WordScramble from this list, it initiates a new Game instance. This allows users to enter their guesses and submit them. The checkSolution method returns whether or not their guess was correct. If incorrect, they simply stay within the Game and can attempt more guesses. Otherwise, they are returned back to the list in the main menu and a call to the EWS reportSolvedScramble can be made.</b>
 
 
 10. A player may exit any scramble in progress at any time and return to it later.  The last state of the puzzle will be preserved.
