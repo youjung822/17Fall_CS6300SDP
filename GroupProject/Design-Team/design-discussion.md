@@ -61,11 +61,11 @@ Team Design
 ![team44](https://github.gatech.edu/gt-omscs-se-2017fall/6300Fall17Team44/blob/master/GroupProject/Design-Team/images/team44Design.png?raw=true "Team design")
 
 ### Commonalities and Differences with individuals
-| Member | Commonality | differences |
+| Member | Commonality | Differences |
 | ------ | ------ | ------ |
 | Brian Greenwald |  |  |
 | John Youngblood |  |  |
-| Tamur Khan |  |  |
+| Tamur Khan |The PlayerM2M class (renamed to ProgressTracker) is used to keep track of all scrambles that are in progress. The EWS utility is mostly the same and the Player and WordScramble classes are retained.  | A dedicated MainMenu class is now central to the application and exclusively handles all communication with the EWS. A Game class was created to handle everythign related to actual GamePlay. WordScramble and Player classes are now more dedicated objects that don't handle other functionality.  |
 | Youjung Kim |  |  |
 
 
