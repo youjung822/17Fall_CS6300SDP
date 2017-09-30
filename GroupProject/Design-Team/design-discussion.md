@@ -69,7 +69,7 @@ Team Design
 | Youjung Kim |  |  |
 
 
-### Justifications of the Main Design Decisions
+### Justifications of Main Design Decisions
 >**1)**	When starting the application, a user may choose to either create a new player or log in.  For simplicity, authentication is optional.  A (unique) username will be sufficient for logging in.
 
 A MainMenu class was created to handle creation and login of players by interacting directly with the EWS. 
