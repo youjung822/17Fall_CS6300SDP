@@ -72,18 +72,20 @@ Team Design
 ### Justifications of the Main Design Decisions
 >**1)**	When starting the application, a user may choose to either create a new player or log in.  For simplicity, authentication is optional.  A (unique) username will be sufficient for logging in.
 
-To realize this requirement, the Main Menu class offers both login and createPlayer methods.</b>
+A MainMenu class was created to handle creation and login of players by interacting directly with the EWS. 
 
 >**2)** After logging in, the application shall allow players to  (1) create a word scramble, (2) choose and solve word scrambles, (3) see word scramble statistics on their created and solved word scrambles, and (4) view the player statistics.
 
 
-The MainMenu class also offers the createWordScramble and viewScrambles to satisfy requirements (1) and (2), respectively. The main menu also implements a statistic interface (described further in requirements 11 and 12), that offers methods to calculate the statistics to be displayed to the user. 
+The MainMenu class also offers the createWordScramble() and viewScrambles() methods to satisfy requirements (1) and (2), respectively. The main menu also implements a statistic interface (described further in requirements 11 and 12) that offers methods to calculate all player and word scramble statistics. 
+
+These will be detailed in their individual requirements below.
 
 
 >**3)** The application shall maintain an underlying database to save persistent information across runs (e.g., word scrambles, player information, statistics).
 
 
-In our design, whenever a call to the EWS is made, a local database update is made with the information fetched from it. An update to the local database is also made when a new ProgressTracker is created (explained further in requirement 10).
+Whenever MainMenu calls EWS, it also updates the local database update with all new information retrieved. An update to the local database is also made when a new ProgressTracker is created (explained further in requirement 10).
 
 
 >**4)**	Word scrambles and statistics will be shared with other instances of the application.  An external web service utility will be used by the application to communicate with a central server to:
@@ -96,7 +98,7 @@ In our design, whenever a call to the EWS is made, a local database update is ma
 
 > You should represent this utility as a utility class that (1) is called "ExternalWebService", (2) is connected to the classes in the system that use it, and (3) explicitly list relevant methods used by those classes.  This class is provided by the system, so it should only contain what is specified here. You do not need to include any aspect of the server in your design besides this utility class. 
 
-To realize this, our design includes the ExternalWebService with a method for each required functionality listed above.
+AN ExternalWebService utility class was created with a method for each required functionality listed above. The MainMenu class was architected so that it exclusively handles all interactions with EWS.
     
 
 > **5)** When creating a new player, a user will:
@@ -108,7 +110,7 @@ To realize this, our design includes the ExternalWebService with a method for ea
 > 5.	Save the information.
 > 6.	Receive the returned username, with possibly a number appended to it to ensure that it is unique.
 
-The Player class realizes this requirement. It has fields for each of these pieces of information. The uniqueness requirement is satisfied in that a call to createPlayer() in MainMenu will issue a call to the EWS's addPlayer method, which returns either the same username entered or one with a number appended to ensure uniqueness.
+A Player class was created to realize this requirement. It has attributes for each of the pieces listed above. The requirement for the username to be unique is satisfied when the MainMenu.callPlayer() method calls EWS.addPlayer(), which returns either the same username or one with a unique number appended to it.
 
 
 >**6)**	To add a word scramble, the player will:
@@ -117,21 +119,20 @@ The Player class realizes this requirement. It has fields for each of these piec
 > 2.	Enter a clue. 
 > 3.	View the phrase scrambled by the system. If the player does not like the result, they may choose for the system to re-scramble it until they are satisfied.
 > 4.	Accept the results or return to previous steps.
-> 5.	View the returned unique identifier for the word scramble. The scramble may not be further edited after this point. r this point.
+> 5.	View the returned unique identifier for the word scramble. The scramble may not be further edited after this point. 
 
-Scrambles are created through the createWordScramble method of MainMenu, mentioned earlier. First, a WordScramble class with fields for the entered phrase and clue is created. This class implements the Scramble interface, whose singular method allows for the entered phrase to be scrambled and saved in the scrambledPhrase field. The scramble operation can be executed multiple times until the user is satisfied. At this time, the MainMenu can then call the EWS method addScramble to receive the scramble's UID and save the scramble as a SavedWordScramble.
-
+Scrambles are created by the MainMenu.createWordScramble() method. First, an object of the WordScramble class with the appropriate attributes is created. WordScramble then implements the Scramble interface, whose singular method allows for the entered phrase to be scrambled and saved in the scrambledPhrase field. The scramble() operation can be executed multiple times until the user is satisfied. Once the user is satisfied, MainMenu calls EWS.addScramble() to add a scramble in the central server and stores the returned scramble unique identifier in the local database.
 
 >**7)** A scramble shall only mix up alphabetic characters, keeping each word together. Words are contiguous sequences of alphabetic characters separated by one or more non-alphabetic characters.
 
-Business logic. Not represented in our design.
+This will be handled by the Scramble interface mentioned above. 
 
 >**8)**	All other characters and spacing will remain as they originally are.
 
 	Example:  
 	The cat is loud :-).  ->  Het atc si ulod :-)
 
-Business logic. Not represented in our design.
+This will be handled by the Scramble interface mentioned above. Details regarding the business logic are out of scope of a class diagram.
 
 
 >**9)** When solving word scrambles, a player will:
@@ -144,27 +145,29 @@ Business logic. Not represented in our design.
 >6.	View whether it was correct.
 >7.	Return either to the puzzle, if wrong, or to the list, if correct.
   
-The viewScrambles method of MainMenu satisfies the requirement to list the word scrambles. When the user selects a WordScramble from this list, it initiates a new Game instance. This allows users to enter their guesses and submit them. The checkSolution method returns whether or not their guess was correct. If incorrect, they simply stay within the Game and can attempt more guesses. Otherwise, they are returned back to the list in the main menu and a call to the EWS reportSolvedScramble can be made.
+MainMenu.viewScrambles() satisfies the requirement to list word scrambles. When the user selects a WordScramble from this list, it initiates a new Game instance. This allows users to enter their guesses and submit them. The checkSolution method returns whether or not their guess was correct. If incorrect, they simply stay within the Game and can attempt more guesses. When a scramble is solved, the Player is returned to the list and MainMenu calls EWS.reportSolvedScramble() to report a solve to the central server.
 
 
 >**10)** A player may exit any scramble in progress at any time and return to it later.  The last state of the puzzle will be preserved.
 
-When a Player chooses to stop solving an unsolved scramble, the exitGame method is called from the Game class. Since the scramble was not solved, a ProgressTracker instance is created, which maintains information regarding the user, the scramble they were on, and their last guess. Note that this data is local and will not be passed along to the EWS. If the same Player were to load up the game on a different machine, they would not have access to their saved progress.
+When a Player exits the game before solving a scramble, the Game.exitGame() method is called. Since the scramble was not solved, a ProgressTracker instance is created which maintains information regarding the user, the scramble's UID and their scramble progress. 
+
+When the player chooses an in progress scramble from a list, the scramble progress will be retrieved from ProgressTracker.
+
+Note that this data is local and will not be passed along to the EWS. If the same Player were to load up the game on a different machine, they would not have access to their saved progress.
 
 
 >**11)** The scramble statistics shall list all scrambles with (1) their unique identifier, (2) information on whether they were solved or created by the player, and (3) the number of times any player has solved them. This list shall be sorted by decreasing number of solutions.
 
-Our Statistics interface has a getScrambleStatistics method that handles this by making calls to the EWS methods getPlayersAndSolvedScrambles and getScramblesAndCreators and processing them accordingly.
-
+A Statistics interface was created with a getScrambleStatistics method. MainMenu calls EWS.getPlayersAndSolvedScrambles() and EWS.getScramblesAndCreators() and passes the results to thethe Statistics interface. The Statistics interface processes the result and displays all relevant statistics. 
 
 >**12)** The player statistics will list players’ first names and last names, with (1) the number of scrambles that the player has solved, (2) the number of new scrambles created, and (3) the average number of times that the scrambles they created have been solved by other players.  It will be sorted by decreasing number of scrambles that the player has solved.
 
-Similar to above, our Statistics interface has a getScrambleStatistics method that handles this by making calls to the EWS methods getPlayersAndSolvedScrambles and getScramblesAndCreators and processing them accordingly.
-
+Similar to above, the Statistics interface has a getPlayerStatistics() method that processes the result passed to it by MainMenu after making calls to EWS.getPlayersAndSolvedScrambles() and EWS.getScramblesAndCreators().
 
 >**13)** The User Interface (UI) shall be intuitive and responsive.
 
-GUI requirement. Not represented in our design.
+GUI is not a requirement in this design.
 
 
 Summary
