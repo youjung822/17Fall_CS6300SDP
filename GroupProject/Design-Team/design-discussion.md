@@ -63,7 +63,7 @@ Team Design
 ### Commonalities and Differences with individuals
 | Member | Commonalities | Differences |
 | ------ | ------ | ------ |
-| Brian Greenwald |  |  |
+| Brian Greenwald | The EWS we used was based off the one used in my individual design. The Manager classes I used to represent game functionality was essentially realized in our design as the MainMenu - a simpler central point of application control. | Whereas all of my Manager classes would make calls to the EWS, only the MainMenu class in our design does. My individual design had the Player class respnsible for keeping track of in-progress scrambles, but we felt it was cleaner to use the ProgressTracker class take care of that. |
 | John Youngblood |  |  |
 | Tamur Khan |The PlayerM2M class (renamed to ProgressTracker) is used to keep track of all scrambles that are in progress. The EWS utility is mostly the same and the Player and WordScramble classes are retained.  | A dedicated MainMenu class is now central to the application and exclusively handles all communication with the EWS. A Game class was created to handle everythign related to actual GamePlay. WordScramble and Player classes are now more dedicated objects that don't handle other functionality.  |
 | Youjung Kim | The design of the Game and ProgressTracker classes and their relationship in the final design were similarly represented in the design of SolveGame and Game classes in the individual diagram. |  Separate operation classes in the individual design were explicitly expressed as a relationship in the final design. The final design has been simplified and the statistics class changed into a interface class. Other various types of classes (e.g.interface, abstract, and utility classes) and relationships are present. |
