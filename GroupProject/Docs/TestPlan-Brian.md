@@ -1,8 +1,6 @@
 # Test Plan
 
-*This is the template for your test plan. The parts in italics are concise explanations of what should go in the corresponding sections and should not appear in the final document.*
-
-**Author**: \<person or team name\>
+**Author**: Brian Greenwald - Team 44
 
 ## 1 Testing Strategy
 
@@ -10,22 +8,47 @@
 
 *This section should provide details about your unit-, integration-, system-, and regression-testing strategies. In particular, it should discuss which activities you will perform as part of your testing process, and who will perform such activities.*
 
+The goal for our testing strategy is to have as close to 100% coverage as possible. Every method, when possible, should have a corresponding unit test or tests. Methods or classes that deal extensively with integration with the Android system should instead be covered by integration/instrumentation tests. For every requirement of the application, there should be a corresponding system test (manual testing script) to validate it from the user's perspective. All developers on the team are responsible for writing tests, where applicable. If unsure how to test a method, it should at least be documented - in terms of its intended functionality - so that anyone would be able to write a suitable test. The Test Lead shall be responsible for the testing frameworks used, bug tracking, and ensuring the application meets our adequacy standards (see section 1.3 below).
+
 ### 1.2 Test Selection
 
 *Here you should discuss how you are going to select your test cases, that is, which black-box and/or white-box techniques you will use. If you plan to use different techniques at different testing levels (e.g., unit and system), you should clarify that.*
+
+As stated above, we should strive to maintain 100% code coverage in our white-box testing. Manual test scripts will be used for every requirement described for the application.
 
 ### 1.3 Adequacy Criterion
 
 *Define how you are going to assess the quality of your test cases. Typically, this involves some form of functional or structural coverage. If you plan to use different techniques at different testing levels (e.g., unit and system), you should clarify that.*
 
+Unit tests should achieve as close to 100% coverage as possible. For every functional requirement, there must be a manual testing script to confirm the requirement is met.
+
 ### 1.4 Bug Tracking
 
 *Describe how bugs and enhancement requests will be tracked.*
+
+For the time being, Git's issue tracking should be used to track bugs/enhancements. Subject to change in the future.
 
 ### 1.5 Technology
 
 *Describe any testing technology you intend to use or build (e.g., JUnit, Selenium).*
 
+JUnit will be the default testing framework used for all testing (Android JUnit Runner for instrumentation tests). If mocking is required to effectively write unit tests for methods that integrate with other systems, Mockito will be used. Testing frameworks are subject to change, after development has begun.
+
 ## 2 Test Cases
 
 *This section should be the core of this document. You should provide a table of test cases, one per row. For each test case, the table should provide its purpose, the steps necessary to perform the test, the expected result, the actual result (to be filled later), pass/fail information (to be filled later), and any additional information you think is relevant.*
+
+
+| Requirement/Purpose | Testing Steps | Expected Result | Actual Result | Pass/Fail | Other |
+|---------------------|---------------|-----------------|---------------|-----------|-------|
+| When starting the application, a user may choose to either create a new player or log in. | <ol><li>Start the application and view the provided options.</li></ol> | The user is presented with the option to either create a new player or log in. |||
+| A (unique) username will be sufficient for logging in. | <ol><li>Start the application.</li><li>Attempt to log in with a unique username</li></ol> | The user is allowed to login. |||
+| After logging in, the application shall allow players to  (1) create a word scramble, (2) choose and solve word scrambles, (3) see statistics on their created and solved word scrambles, and (4) view the player statistics. | <ol><li>Log in to the application with a valid user</li></ol> | The user is presented with options to do each described action. |||
+| The application shall maintain an underlying database to save persistent information across runs (e.g., word scrambles, player information, statistics). | <ol><li>Create a new user and log in.</li><li>Create a few word scrambles</li><li>Choose and solve a word scramble.</li><li>View player and scramble statistics.</li><li>Log out and close the application</li><li>Log back in as the same player</li></ol> | The player, its created word scrambles, and the player's statistics should still remain the same as before they logged off. |||
+| When creating a new player, a user will: <ul><li>Enter the player’s first name.</li>Enter the player’s last name.<li>Enter the player’s desired username.</li><li>Enter the player’s email.</li>Save the information.<li>Receive the returned username, with possibly a number appended to it to ensure that it is unique.</li></ul> | <ol><li>Start the application and choose the option to create a new player</li><li>Enter the required information with a unique username and save to create a new user</li><li>Log out of the application</li><li>Create a new user with the same username as above</li><ol>| The user creation form asks for each piece of information mentioned in the requirement. After saving the user in step 2, the returned username should not have any numbers appended to it. After saving the user created in step 4, the username was returned with a number appended to it. |||
+| To add a word scramble, the player will: <ul><li>Enter a phrase (not scrambled).</li><li>Enter a clue.</li><li>View the phrase scrambled by the system. If the player does not like the result, they may choose for the system to re-scramble it until they are satisfied.</li><li>Accept the results or return to previous steps.</li><li>Save and view the returned unique identifier for the word scramble. The scramble may not be further edited after this point.</li></ul> | <ol><li>Login to the application.</li><li>Select the option to create a new word scramble.</li><li>Enter the requested information.</li><li>Scramble the phrase multiple times</li><li>Save the scramble.</li> | The User is presented with a form to enter an unscrambled phrase and a clue. The user is able to scramble the phrase as many times as they want until satisfied. Upon saving a scramble, the user is presented with its UID and may not return to the previous form. |||
+| A scramble shall only mix up alphabetic characters, keeping each word together. Words are contiguous sequences of alphabetic characters separated by one or more non-alphabetic characters. | <ol><li>Log in to the application and navigate to the scramble creation screen.</li><li>Enter a phrase and clue scramble it.</li></ol> | The phrase shown to the user matches the noted requirements.<br>EX:<br>The cat is loud :-). -> Het atc si ulod :-). |||
+| When solving word scrambles, a player will: <ul><li>View the list of unsolved word scrambles, by identifier, with any in progress scrambles marked and shown first.</li><li>Choose one word scramble to work on.</li><li>View the scramble.</li><li>Enter the letters in a different order to try to solve the scramble.</li><li>Submit a solution.</li><li>View whether it was correct.</li><li>Return either to the puzzle, if wrong, or to the list, if correct.</li></ul> | <ol><li>Log in to the application.</li><li>Select the option to choose a word scramble to solve</li><li>Choose a word scramble.</li></ol> | When choosing a scramble to work on, they should appear in the order described. The User should be able to choose one to work on and enter their guesses. Upon submitting a guess, the User should be notified whether or not they were correct. If they were incorrect, they should be returned to the puzzle. Otherwise, if they were correct, they should be returned to the list of scrambles. |||
+| A player may exit any scramble in progress at any time and return to it later. The last state of the puzzle will be preserved. | <ol><li>Log in to the application.</li><li>Select the option to choose a word scramble to solve.</li><li>Choose a word scramble.</li><li>Submit an incorrect guess</li><li>Close the application.</li><li>Launch the application and log in with the same user as in step 1.</li><li>Return to the list of scrambles and select the scramble chosen in step 3.</li></ol> | The User should see their last guess made upon returning to the same scramble. |||
+| The scramble statistics shall list all scrambles with (1) their unique identifier, (2) information on whether they were solved or created by the player, and (3) the number of times any player has solved them. This list shall be sorted by decreasing number of solutions. | <ol><li>Log in to the application and navigate to the scramble statistics screen.</li></ol> | The User should be presented with a list of all scrambles as described in the requirement. |||
+| The player statistics will list players’ first names and last names, with (1) the number of scrambles that the player has solved, (2) the number of new scrambles created, and (3) the average number of times that the scrambles they created have been solved by other players. It will be sorted by decreasing number of scrambles that the player has solved. | <ol><li>Log in to the application and navigate to the player statistics screen.</li></ol> | The User should be presented with a list of all players as described in the requirement. |||
