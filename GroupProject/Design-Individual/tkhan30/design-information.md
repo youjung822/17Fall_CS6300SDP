@@ -235,4 +235,4 @@ Now we have the **Player** table fully populated with all players and all their 
 
 >**13)** The User Interface (UI) shall be intuitive and responsive.
 
-Implementing a GUI is not required as part of this application. In my design, I have leveraged the command line for all user interaction and it is described under each requirement above. 
+Implementing a GUI is not required as part of this application. In my design, I have leveraged the command line for all user interaction and it is described under each requirement above. Vi
