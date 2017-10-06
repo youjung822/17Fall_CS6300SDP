@@ -41,7 +41,7 @@
 4 User Interface Design
 -----------------------
 ### 4.1 Login Screen
-![team44](https://github.gatech.edu/gt-omscs-se-2017fall/6300Fall17Team44/blob/master/GroupProject/Docs/Images/Game.png "Login Screen")
+![team44](https://github.gatech.edu/gt-omscs-se-2017fall/6300Fall17Team44/blob/master/GroupProject/Docs/Images/LoginScreen.png "Login Screen")
 
 ### 4.2 New Player Creation
 ![team44](https://github.gatech.edu/gt-omscs-se-2017fall/6300Fall17Team44/blob/master/GroupProject/Docs/Images/NewPlayerCreation.png "New Player Creation")
@@ -70,4 +70,4 @@
 ### 4.10 Word Scramble Statistics
 ![team44](https://github.gatech.edu/gt-omscs-se-2017fall/6300Fall17Team44/blob/master/GroupProject/Docs/Images//WordScrambleStatistics.png "Word Scramble Statistics")
 
-![This GUI mockup was generated using Balsamiq.](../GUI_Mockup.pdf) Embedded images to come.
+![This GUI mockup was generated using Balsamiq.](../GUI_Mockup.pdf)
