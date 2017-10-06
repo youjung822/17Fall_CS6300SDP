@@ -12,5 +12,7 @@
 * Budget
 	* A budget analysis must be done to predict utilization and allocate funds for the infrastructure of the central server. 
 * Android phone
-	* The phone must run Android KitKat (Android 4.4/API Level 19) or later  
+	* The phone must be able to run Android KitKat (Android 4.4/API Level 19) or later without performance issues.
+* User
+	* Users must have a decent vocabulary or be familiar with the English language.  
 	
