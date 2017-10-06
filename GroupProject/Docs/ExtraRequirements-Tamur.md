@@ -1,8 +1,10 @@
 # Extra Requirements
 
-*This is the template for listing any supplmentary requirements that do not fit the use-case model, such as non-functional requirements. These can be provided as a simple list. 
 
-**Author**: \<person or team name\>
+**Author**: Team 44
 
-* Item 1
-* Item 2 
+* Input validation
+	* Username will be validated when creating a new account before sending it to EWS
+	* When creating a word scramble, the input will be validated to verify that the word is longer than two characters and there are no numerical characters.
+* Capacity
+	* The Central Server that maintains 

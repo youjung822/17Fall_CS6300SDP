@@ -49,6 +49,7 @@
 		* The Local Player creates a new scramble.
 		* The Local Player is able to scramble the phrase till satisfied.
 		* The Central Server accepts and stores the newly created phrase. 
+		* The scramble must be contain more than two letters.
 	* Pre-conditions
 		* The Local Player is logged in.
 		* The Local Player chooses to create a cramble from the main menu. 
