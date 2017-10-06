@@ -9,11 +9,11 @@
 ## 2 Use Case Descriptions
 
 
-###Actors
+##Actors
 * **Local Player** - the player currently interacting with our application.
 * **Central Server** - the entity that maintains informations for all instances of word scramble applications, including ours.
 
-###Use Cases
+##Use Cases
 
 * **Maintain user login**
 	* Requirements
