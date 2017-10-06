@@ -4,7 +4,7 @@
 
 ## 1 Use Case Diagram
 
-![](https://github.gatech.edu/raw/gt-omscs-se-2017fall/6300Fall17Team44/master/GroupProject/Docs/Images/UseCaseDiagram.png?raw=true)
+![Use Case Model](https://github.gatech.edu/raw/gt-omscs-se-2017fall/6300Fall17Team44/master/GroupProject/Docs/Images/UseCaseDiagram.png?token=AAA1WrvsnHPKZ0g1hzLKz2BfyZEqD2baks5Z4AunwA%3D%3D)
 
 ## 2 Use Case Descriptions
 
