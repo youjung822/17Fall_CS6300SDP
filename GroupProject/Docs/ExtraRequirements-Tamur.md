@@ -3,8 +3,14 @@
 
 **Author**: Team 44
 
-* Input validation
-	* Username will be validated when creating a new account before sending it to EWS
-	* When creating a word scramble, the input will be validated to verify that the word is longer than two characters and there are no numerical characters.
 * Capacity
-	* The Central Server that maintains 
+	* The Central Server should have enough storage to hold all data.
+* Network 
+	* The Central Server should have enough bandwidth to receive and respond to requests in a timely manner. 
+* Performance
+	* The Central Server must have enough memory to process requests and respond with results in a timely manner.  
+* Budget
+	* A budget analysis must be done to predict utilization and allocate funds for the infrastructure of the central server. 
+* Android phone
+	* The phone must run Android KitKat (Android 4.4/API Level 19) or later  
+	
