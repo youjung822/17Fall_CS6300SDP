@@ -38,17 +38,36 @@
 
 *<u>Optionally</u>, you can decide to describe some dynamic aspects of your system using one or more behavioral diagrams, such as sequence and state diagrams.*
 
-## 4 User Interface Design
+4 User Interface Design
+-----------------------
+### 4.1 Login Screen
+![team44](https://github.gatech.edu/gt-omscs-se-2017fall/6300Fall17Team44/blob/master/GroupProject/Docs/Images/Game.png "Login Screen")
 
-![team44](../images/LoginScreen.png "Login Screen")
-![team44](../images/NewPlayerCreation.png "New Player Creation")
-![team44](../images/PlayerCreation.png "Player Creation Successful")
-![team44](../images/MainMenu.png "Main Menu")
-![team44](../images/NewWordScrambleCreator.png "New Word Scramble Creation")
-![team44](../images/WordScrambleCreation.png "Word Scramble Creation Successful")
-![team44](../images/UnsolvedWordScramble.png "Unsolved Word Scrambles View")
-![team44](../images/Game.png "The Game")
-![team44](../images/PlayerStatistics.png "Player Statistics")
-![team44](../images/WordScrambleStatistics.png "Word Scramble Statistics")
+### 4.2 New Player Creation
+![team44](https://github.gatech.edu/gt-omscs-se-2017fall/6300Fall17Team44/blob/master/GroupProject/Docs/Images/NewPlayerCreation.png "New Player Creation")
 
-![This was generated using Balsamiq.](../GUI_Mockup.pdf) Embedded images to come.
+### 4.3 Player Creation Successful
+![team44](https://github.gatech.edu/gt-omscs-se-2017fall/6300Fall17Team44/blob/master/GroupProject/Docs/Images/PlayerCreation.png "Player Creation Successful")
+
+### 4.4 Main Menu
+![team44](https://github.gatech.edu/gt-omscs-se-2017fall/6300Fall17Team44/blob/master/GroupProject/Docs/Images/MainMenu.png "Main Menu")
+
+### 4.5 New Word Scramble Creation
+![team44](https://github.gatech.edu/gt-omscs-se-2017fall/6300Fall17Team44/blob/master/GroupProject/Docs/Images/NewWordScrambleCreator.png "New Word Scramble Creation")
+
+### 4.6 Word Scramble Creation Successful
+![team44](https://github.gatech.edu/gt-omscs-se-2017fall/6300Fall17Team44/blob/master/GroupProject/Docs/Images/WordScrambleCreation.png "Word Scramble Creation Successful")
+
+### 4.7 Unsolved Word Scrambles View
+![team44](https://github.gatech.edu/gt-omscs-se-2017fall/6300Fall17Team44/blob/master/GroupProject/Docs/Images//UnsolvedWordScramble.png "Unsolved Word Scrambles View")
+
+### 4.8 The Game
+![team44](https://github.gatech.edu/gt-omscs-se-2017fall/6300Fall17Team44/blob/master/GroupProject/Docs/Images//Game.png "The Game")
+
+### 4.9 Player Statistics
+![team44](https://github.gatech.edu/gt-omscs-se-2017fall/6300Fall17Team44/blob/master/GroupProject/Docs/Images//PlayerStatistics.png "Player Statistics")
+
+### 4.10 Word Scramble Statistics
+![team44](https://github.gatech.edu/gt-omscs-se-2017fall/6300Fall17Team44/blob/master/GroupProject/Docs/Images//WordScrambleStatistics.png "Word Scramble Statistics")
+
+![This GUI mockup was generated using Balsamiq.](../GUI_Mockup.pdf) Embedded images to come.
