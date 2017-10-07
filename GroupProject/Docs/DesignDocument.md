@@ -6,13 +6,16 @@
 -----------------------
 ### 1.1 Assumptions
 
-* The External Web Service outlined in Requirement 4 will be provided to us.
+* The External Web Service (EWS) outlined in Requirement 4 will be provided to us.
 * The unique identifier returned by the EWS for Word Scrambles will be alphanumeric.
-* The scramble() operation will identify phrases that are 'un-scrambable' (any phrase that does not have at least 2 letters next to each other)
+* The Central Server the EWS interacts with will have a sufficently large database.
+* The EWS will be reliable and responsive.
 
 ### 1.2 Constraints
 
-* The application must run with a minimum Android API Level of 19
+* The application must be produced within the time frame established by the class.
+* The application must run with a minimum Android API Level of 19.
+* The EWS will not return data types that we create.
 
 ### 1.3 System Environment
 
