@@ -74,15 +74,15 @@
 * After the Player has created a Word Scramble, the system will show the unique identifier that it has assigned the new Word Scramble.
 
 ### 4.7 Unsolved Word Scrambles View
-![team44](https://github.gatech.edu/gt-omscs-se-2017fall/6300Fall17Team44/blob/master/GroupProject/Docs/Images//UnsolvedWordScramble.png "Unsolved Word Scrambles View")
+![team44](https://github.gatech.edu/gt-omscs-se-2017fall/6300Fall17Team44/blob/master/GroupProject/Docs/Images/ViewUnsolvedWordScramble.png "Unsolved Word Scrambles View")
 * When a Player chooses 'Solve Word Scramble' from the main menu, they are shown the list of all Word Scrambles that have not solved. The Player is able to select one of the Word Scrambles to start solving it by just clicking on its nameplate. If a Player has previously worked on a Word Scramble, but have yet to solve it, their progress is saved. These 'In-Progress' Word Scrambles are shown first in this list.
 
 ### 4.8 The Game
-![team44](https://github.gatech.edu/gt-omscs-se-2017fall/6300Fall17Team44/blob/master/GroupProject/Docs/Images//Game.png "The Game")
+![team44](https://github.gatech.edu/gt-omscs-se-2017fall/6300Fall17Team44/blob/master/GroupProject/Docs/Images/Game.png "The Game")
 * This is the screen the Player sees when solving a Word Scramble. The ID of the Word Scramble is shown at the top, and the Scrambled Phrase and Clue are shown in the middle. The Player will type their guesses in the text box at the bottom of the screen. At any time the player may exit out of solving the Word Scramble by selecting 'Back'
 
 ### 4.9 Player Statistics
-![team44](https://github.gatech.edu/gt-omscs-se-2017fall/6300Fall17Team44/blob/master/GroupProject/Docs/Images//PlayerStatistics.png "Player Statistics")
+![team44](https://github.gatech.edu/gt-omscs-se-2017fall/6300Fall17Team44/blob/master/GroupProject/Docs/Images/PlayerStatistics.png "Player Statistics")
 * The user gets this view when they select 'View Player Statistics' from the Main Menu. This view helps satisfy requirement 12 by:
 	* Listing player's first name & last name.
 	* Listing the number of scrambles that the player has solved.
