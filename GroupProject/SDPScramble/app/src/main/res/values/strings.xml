@@ -5,4 +5,5 @@
     <string name="last_name">Last Name</string>
     <string name="email">Email</string>
     <string name="desired_username">Desired Username*</string>
+    <string name="player_creation_successful_dialog">Your Account Has Been Successfully Created. Your Unique Username Is:</string>
 </resources>
