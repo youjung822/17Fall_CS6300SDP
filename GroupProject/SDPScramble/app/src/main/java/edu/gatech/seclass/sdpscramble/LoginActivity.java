@@ -25,6 +25,7 @@ public class LoginActivity extends AppCompatActivity {
         } catch (SocketTimeoutException e) {
             e.printStackTrace();
         }
+        //tamur's git config test
 
     }
 
