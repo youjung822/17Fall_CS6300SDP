@@ -17,7 +17,7 @@ public class LoginActivity extends AppCompatActivity {
         ExternalWebService ews = null;
         ews.getInstance();
 
-
+        //Testing
         try {
             String  strPlayerNewID = ews.newPlayerService("ykim691","Youjung","Kim","yjkim691@gatech.edu");
             System.out.println(strPlayerNewID);
@@ -25,6 +25,7 @@ public class LoginActivity extends AppCompatActivity {
         } catch (SocketTimeoutException e) {
             e.printStackTrace();
         }
+
     }
 
 
