@@ -14,6 +14,7 @@ public class LoginActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
+        /**
         ExternalWebService ews = null;
         ews.getInstance();
 
@@ -25,9 +26,11 @@ public class LoginActivity extends AppCompatActivity {
         } catch (SocketTimeoutException e) {
             e.printStackTrace();
         }
-        //tamur's git config test
+        */
 
     }
+
+
 
 
 }
