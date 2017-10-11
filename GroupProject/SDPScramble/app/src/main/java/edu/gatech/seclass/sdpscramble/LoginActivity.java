@@ -1,6 +1,9 @@
 package edu.gatech.seclass.sdpscramble;
+import android.app.Activity;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.view.MotionEvent;
+import android.view.inputmethod.InputMethodManager;
 
 import java.net.SocketTimeoutException;
 import java.util.List;
@@ -10,6 +13,13 @@ import edu.gatech.seclass.utilities.ExternalWebService;
 
 
 public class LoginActivity extends AppCompatActivity {
+
+    @Override
+    public boolean onTouchEvent(MotionEvent event) {
+        InputMethodManager inmm = (InputMethodManager)getSystemService(Activity.INPUT_METHOD_SERVICE);
+        inmm.hideSoftInputFromWindow(getCurrentFocus().getWindowToken(), 0);
+        return true;
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,7 +56,7 @@ public class LoginActivity extends AppCompatActivity {
 
     /**
      * login()
-     * calls EWS and creates a new player
+     * calls EWS and logs a player in
      * @return unique username
      */
 
