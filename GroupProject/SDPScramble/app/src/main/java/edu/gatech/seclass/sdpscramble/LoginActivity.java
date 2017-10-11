@@ -3,13 +3,10 @@ import android.app.Activity;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.MotionEvent;
+import android.view.View;
 import android.view.inputmethod.InputMethodManager;
-
-import java.net.SocketTimeoutException;
-import java.util.List;
-import java.util.Iterator;
-
-import edu.gatech.seclass.utilities.ExternalWebService;
+import android.widget.Button;
+import android.widget.TextView;
 
 
 public class LoginActivity extends AppCompatActivity {
@@ -26,57 +23,40 @@ public class LoginActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.login);
 
-        //need to create instance onCreate and pass same instance whenever EWS is called
-        ExternalWebService ews = ExternalWebService.getInstance();
+        final MainMenuActivity menu = new MainMenuActivity();
 
-        String returnedUsername = createPlayer(ews, "testUsername", "Test", "User", "test@abc.com");
-        System.out.println(login(ews, returnedUsername));
-    }
+        //run code when Login button is clicked
+        final Button button = (Button) findViewById(R.id.login);
+        button.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                // Code here executes on main thread after user presses button
 
+                //get user's input for username
+                TextView inputUsernameText = (TextView) findViewById(R.id.usernameInput);
 
+                //if the username field is empty, display an error
+                if(inputUsernameText.getText().toString().length()== 0) {
+                    inputUsernameText.setError("Username Required");
+                    inputUsernameText.requestFocus();
+                } else {
+                    //call MainMenu.login - returns true, the username is valid
+                    if(menu.login(inputUsernameText.toString())){
+                        //username was valid
+                    } else {
+                        //username was invalid
+                        inputUsernameText.setError("Username not found.");
+                        inputUsernameText.requestFocus();
+                    }
 
-    /**
-     * createPlayer()
-     * calls EWS and creates a new player
-     * @return unique username
-     */
-
-    private static String createPlayer(ExternalWebService ews, String username, String firstname, String lastname, String email) {
-
-        String strPlayerNewID = "";
-
-        try {
-            strPlayerNewID = ews.newPlayerService(username,firstname,lastname,email);
-        } catch (SocketTimeoutException e) {
-            e.printStackTrace();
-        }
-
-        return strPlayerNewID;
-    }
-
-    /**
-     * login()
-     * calls EWS and logs a player in
-     * @return unique username
-     */
-
-    private static boolean login(ExternalWebService ews, String username){
-        boolean validUsername = false;
-        if(username != null && !username.isEmpty()){
-            List<List<String>> playerList = ews.retrievePlayerListService();
-
-            Iterator<List<String>> iter = playerList.iterator();
-            while(iter.hasNext()){
-                String usr = iter.next().get(0);
-                if(usr.equals(username)){
-                    validUsername = true;
                 }
+
             }
+        });
 
-        }
-
-        return validUsername;
     }
+
+
+
 
 
 

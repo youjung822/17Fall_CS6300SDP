@@ -84,7 +84,7 @@
         tools:layout_constraintTop_creator="1" />
 
     <EditText
-        android:id="@+id/wordScrambleUID"
+        android:id="@+id/usernameInput"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginBottom="0dp"
