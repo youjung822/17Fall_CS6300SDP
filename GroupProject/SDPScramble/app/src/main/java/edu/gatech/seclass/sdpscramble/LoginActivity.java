@@ -14,7 +14,11 @@ public class LoginActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
+        //need to create instance onCreate and pass same instance whenever EWS is called
+        ExternalWebService ews = ExternalWebService.getInstance();
 
+        String returnedUsername = createPlayer(ews, "testUsername", "Test", "User", "test@abc.com");
+        System.out.println(login(ews, returnedUsername));
     }
 
 
@@ -25,8 +29,8 @@ public class LoginActivity extends AppCompatActivity {
      * @return unique username
      */
 
-    private static String createPlayer(String username, String firstname, String lastname, String email) {
-        ExternalWebService ews = ExternalWebService.getInstance();
+    private static String createPlayer(ExternalWebService ews, String username, String firstname, String lastname, String email) {
+
         String strPlayerNewID = "";
 
         try {
@@ -38,6 +42,20 @@ public class LoginActivity extends AppCompatActivity {
         return strPlayerNewID;
     }
 
+    /**
+     * login()
+     * calls EWS and creates a new player
+     * @return unique username
+     */
+
+    private static boolean login(ExternalWebService ews, String username){
+        boolean validUsername = false;
+        if(username != null && !username.isEmpty()){
+
+        }
+
+        return validUsername;
+    }
 
 
 
