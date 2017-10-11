@@ -14,20 +14,28 @@ public class LoginActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
-        /**
-        ExternalWebService ews = null;
-        ews.getInstance();
 
-        //Testing
+    }
+
+
+
+    /**
+     * createPlayer()
+     * calls EWS and creates a new player
+     * @return unique username
+     */
+
+    private static String createPlayer(String username, String firstname, String lastname, String email) {
+        ExternalWebService ews = ExternalWebService.getInstance();
+        String strPlayerNewID = "";
+
         try {
-            String  strPlayerNewID = ews.newPlayerService("ykim691","Youjung","Kim","yjkim691@gatech.edu");
-            System.out.println(strPlayerNewID);
-
+            strPlayerNewID = ews.newPlayerService(username,firstname,lastname,email);
         } catch (SocketTimeoutException e) {
             e.printStackTrace();
         }
-        */
 
+        return strPlayerNewID;
     }
 
 
