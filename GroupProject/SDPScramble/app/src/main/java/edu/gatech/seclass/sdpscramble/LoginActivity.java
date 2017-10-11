@@ -3,6 +3,8 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 
 import java.net.SocketTimeoutException;
+import java.util.List;
+import java.util.Iterator;
 
 import edu.gatech.seclass.utilities.ExternalWebService;
 
@@ -51,6 +53,15 @@ public class LoginActivity extends AppCompatActivity {
     private static boolean login(ExternalWebService ews, String username){
         boolean validUsername = false;
         if(username != null && !username.isEmpty()){
+            List<List<String>> playerList = ews.retrievePlayerListService();
+
+            Iterator<List<String>> iter = playerList.iterator();
+            while(iter.hasNext()){
+                String usr = iter.next().get(0);
+                if(usr.equals(username)){
+                    validUsername = true;
+                }
+            }
 
         }
 
