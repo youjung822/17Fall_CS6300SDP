@@ -14,7 +14,7 @@ public class LoginActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_login);
+        setContentView(R.layout.login);
 
         //need to create instance onCreate and pass same instance whenever EWS is called
         ExternalWebService ews = ExternalWebService.getInstance();

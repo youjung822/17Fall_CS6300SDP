@@ -1,0 +1,159 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:layout_editor_absoluteY="81dp"
+    tools:layout_editor_absoluteX="0dp">
+
+    <TextView
+        android:id="@+id/main_title"
+        android:layout_width="400dp"
+        android:layout_height="40dp"
+        android:text="Word Scramble Creator"
+        android:textAlignment="center"
+        android:textAllCaps="true"
+        android:textColor="?android:attr/textColorLink"
+        android:textSize="28sp"
+        android:textStyle="bold"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toTopOf="@+id/phrase_title" />
+
+    <EditText
+        android:id="@+id/clue"
+        android:layout_width="352dp"
+        android:layout_height="110dp"
+        android:ems="10"
+        android:hint="Enter a clue that gives a hint to what your phrase is."
+        android:inputType="textCapSentences|textAutoCorrect|textMultiLine"
+        android:textAlignment="viewStart"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintBottom_toTopOf="@+id/space2"
+        app:layout_constraintTop_toBottomOf="@+id/clue_title" />
+
+    <EditText
+        android:id="@+id/phrase"
+        android:layout_width="352dp"
+        android:layout_height="110dp"
+        android:ems="10"
+        android:hint="Enter a well-known multiple word phrase to scramble up"
+        android:inputType="textCapSentences|textAutoCorrect|textMultiLine"
+        android:selectAllOnFocus="true"
+        android:textAlignment="viewStart"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintBottom_toTopOf="@+id/clue_title"
+        app:layout_constraintTop_toBottomOf="@+id/phrase_title" />
+
+    <android.support.constraint.Guideline
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/guideline9"
+        app:layout_constraintGuide_begin="20dp"
+        android:orientation="horizontal"
+        tools:layout_editor_absoluteY="20dp"
+        tools:layout_editor_absoluteX="0dp" />
+
+    <TextView
+        android:id="@+id/clue_title"
+        android:layout_width="352dp"
+        android:layout_height="wrap_content"
+        android:text="@string/clue"
+        android:textAlignment="center"
+        android:textColor="?android:attr/textColorSecondary"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintBottom_toTopOf="@+id/clue"
+        app:layout_constraintTop_toBottomOf="@+id/phrase" />
+
+    <TextView
+        android:id="@+id/phrase_title"
+        android:layout_width="352dp"
+        android:layout_height="wrap_content"
+        android:text="@string/phrase"
+        android:textAlignment="center"
+        android:textColor="?android:attr/textColorSecondary"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toTopOf="@+id/phrase"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/main_title" />
+
+    <Button
+        android:id="@+id/cancel"
+        style="@style/Widget.AppCompat.Button"
+        android:layout_width="159dp"
+        android:layout_height="50dp"
+        android:background="@color/colorButton"
+        android:text="@android:string/cancel"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/scrambledPhrase"
+        app:layout_constraintRight_toLeftOf="@+id/submit"
+        app:layout_constraintLeft_toLeftOf="parent" />
+
+    <Button
+        android:id="@+id/submit"
+        style="@style/Widget.AppCompat.Button"
+        android:layout_width="159dp"
+        android:layout_height="50dp"
+        android:background="@color/colorButton"
+        android:elevation="0dp"
+        android:text="@string/submit"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/scrambledPhrase"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintLeft_toRightOf="@+id/cancel" />
+
+    <Button
+        android:id="@+id/scramble"
+        style="@style/Widget.AppCompat.Button"
+        android:layout_width="155dp"
+        android:layout_height="50dp"
+        android:background="@color/colorButton"
+        android:text="@string/scramble"
+        app:layout_constraintRight_toLeftOf="@+id/space2"
+        app:layout_constraintLeft_toRightOf="@+id/space"
+        app:layout_constraintBottom_toTopOf="@+id/scrambledPhrase"
+        app:layout_constraintTop_toBottomOf="@+id/clue" />
+
+    <EditText
+        android:id="@+id/scrambledPhrase"
+        android:layout_width="355dp"
+        android:layout_height="99dp"
+        android:ems="10"
+        android:hint="The scrambled Phrase will appear here.  If you do not like it, press SCRAMBLE agian to generate a new one!"
+        android:inputType="none"
+        android:textAlignment="viewStart"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintHorizontal_bias="0.517"
+        app:layout_constraintBottom_toTopOf="@+id/cancel"
+        app:layout_constraintTop_toBottomOf="@+id/scramble" />
+
+    <Space
+        android:layout_width="88dp"
+        android:layout_height="53dp"
+        android:id="@+id/space2"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintLeft_toRightOf="@+id/scramble"
+        app:layout_constraintBottom_toTopOf="@+id/scrambledPhrase"
+        app:layout_constraintTop_toBottomOf="@+id/clue" />
+
+    <Space
+        android:layout_width="81dp"
+        android:layout_height="53dp"
+        android:id="@+id/space"
+        app:layout_constraintRight_toLeftOf="@+id/scramble"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintBottom_toTopOf="@+id/scrambledPhrase"
+        app:layout_constraintTop_toBottomOf="@+id/clue" />
+
+</android.support.constraint.ConstraintLayout>

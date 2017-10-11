@@ -2,5 +2,10 @@
 <resources>
     <color name="colorPrimary">#0095ff</color>
     <color name="colorPrimaryDark">#0077cc</color>
+    <color name="colorButton">#ccbb00</color>
     <color name="colorAccent">#ff6a00</color>
+    <color name="colorTriadic1">#ff0095</color>
+    <color name="colorTriadic2">#95ff00</color>
+    <color name="colorAnalogous1">#0015ff</color>
+    <color name="colorAnalogous2">#00ffea</color>
 </resources>
