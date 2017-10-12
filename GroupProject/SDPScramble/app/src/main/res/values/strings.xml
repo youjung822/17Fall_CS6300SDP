@@ -10,7 +10,7 @@
     <string name="view_player_statistics">View Player Statistics</string>
     <string name="solve_word_scrambles">Solve a Word Scramble</string>
     <string name="view_word_scramble_statistics">View Word Scramble Statistics</string>
-    <string name="desired_username_footnote">*If your desired username is already taken, we will assign a random number to the end of your username to make it unique.</string>
+    <string name="desired_username_footnote">*We will assign a random number to the end of your username to make it unique.</string>
     <string name="phrase">Phrase</string>
     <string name="clue">Clue</string>
     <string name="scramble">Scramble</string>

@@ -31,6 +31,7 @@ public class MainMenuActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setContentView(R.layout.main_menu);
         this.createPlayer(ews, "testuser", "Test", "User", "test@user.com");
 
 
@@ -74,7 +75,6 @@ public class MainMenuActivity extends AppCompatActivity {
             Iterator<List<String>> iter = playerList.iterator();
             while(iter.hasNext()){
                 String usr = iter.next().get(0);
-                System.out.println("FOUND A USER: " + usr);
                 if(usr.equals(username)){
                     validUsername = true;
                 }
