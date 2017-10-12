@@ -2,6 +2,7 @@ package edu.gatech.seclass.sdpscramble;
 
 import android.content.SharedPreferences;
 import android.content.Intent;
+import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
@@ -21,6 +22,7 @@ import edu.gatech.seclass.utilities.ExternalWebService;
 
 public class MainMenuActivity extends AppCompatActivity {
     public static final String PREFS_NAME = "MyPrefsFile";
+    static SQLiteDatabase db;
 
     //need to create instance once and pass same instance whenever EWS is called
     final ExternalWebService ews = ExternalWebService.getInstance();
@@ -63,8 +65,16 @@ public class MainMenuActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+        /**
+         * INITIALIZE DATABASE
+         */
+
+        SDPDatabaseHelper dbHelper = new SDPDatabaseHelper(this);
+        db = dbHelper.getWritableDatabase();
+
+
+        //when a user is logged in
         if(isLoggedIn()){
-            //when user is already logged in
             setContentView(R.layout.main_menu);
             TextView userInfo = (TextView) findViewById(R.id.usernameInput);
             userInfo.setText(getActiveUser());
