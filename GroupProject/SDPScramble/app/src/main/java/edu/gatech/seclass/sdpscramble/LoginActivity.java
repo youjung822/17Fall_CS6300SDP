@@ -1,8 +1,10 @@
 package edu.gatech.seclass.sdpscramble;
 
 import android.app.Activity;
+import android.content.SharedPreferences;
 import android.content.Intent;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.v7.app.AppCompatActivity;
 import android.view.MotionEvent;
 import android.view.View;
@@ -45,13 +47,18 @@ public class LoginActivity extends AppCompatActivity {
                     //call MainMenu.login - returns true, the username is valid
                     if (menu.login(inputUsernameText.getText().toString())) {
 
-                        //set userID to username
-                        menu.setLoggedInUser(inputUsernameText.getText().toString());
+                        //set current user to shared preference user
+                        SharedPreferences settings = getSharedPreferences("MyPrefsFile", 0);
+                        SharedPreferences.Editor editor = settings.edit();
+                        editor.putString("user", inputUsernameText.getText().toString());
+                        editor.commit();
 
                         //username was valid - redirect to main_menu.xml and MainMenuActivity
-                        //Intent mainMenu = new Intent(getApplicationContext(), MainMenuActivity.class);
-                        //startActivity(mainMenu);
-                        finish();
+                        Intent mainMenu = new Intent(getApplicationContext(), MainMenuActivity.class);
+                        startActivity(mainMenu);
+
+
+
 
                     } else {
                         //username was invalid
@@ -63,6 +70,7 @@ public class LoginActivity extends AppCompatActivity {
 
             }
         });
+
 
         //run code when Sign Up button is clicked
         final Button signup = (Button) findViewById(R.id.createPlayer);

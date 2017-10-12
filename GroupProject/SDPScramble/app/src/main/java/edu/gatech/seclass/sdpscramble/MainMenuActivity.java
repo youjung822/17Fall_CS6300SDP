@@ -1,12 +1,19 @@
 package edu.gatech.seclass.sdpscramble;
 
 import android.app.Activity;
+import android.content.Context;
+import android.content.SharedPreferences;
+import android.content.SharedPreferences.Editor;
 import android.content.Intent;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.view.MotionEvent;
+import android.view.View;
 import android.view.inputmethod.InputMethodManager;
+import android.widget.Button;
+import android.widget.TextView;
 
 import java.net.SocketTimeoutException;
 import java.util.Iterator;
@@ -19,28 +26,36 @@ import edu.gatech.seclass.utilities.ExternalWebService;
  */
 
 public class MainMenuActivity extends AppCompatActivity {
+    public static final String PREFS_NAME = "MyPrefsFile";
+
+
     //need to create instance onCreate and pass same instance whenever EWS is called
     final ExternalWebService ews = ExternalWebService.getInstance();
 
-    private String userID = "";
+    //get active user
+    public String getActiveUser(){
+        SharedPreferences settings = getSharedPreferences(PREFS_NAME, 0);
 
-    //set loggedInUser - usually called when a new player is created
-    public void setLoggedInUser(String username){
-        this.userID = username;
+        //returns active user or null if there is no logged in user
+        return settings.getString("user", null);
     }
 
-    //get logged in username
-    public String getLoggedInUser(String username){
-        return this.userID;
-    }
-
-    //check if user is logged in
-    public boolean isUserLoggedIn(){
-        if(userID.isEmpty()){
+    //check if user logged in
+    public boolean isLoggedIn(){
+        SharedPreferences settings = getSharedPreferences(PREFS_NAME, 0);
+        if(settings.getString("user", null) == null || settings.getString("user", null).isEmpty()){
             return false;
         } else {
             return true;
         }
+    }
+
+    //log out user
+    public void logout(){
+        SharedPreferences settings = getSharedPreferences(PREFS_NAME, 0);
+        SharedPreferences.Editor editor = settings.edit();
+        editor.clear();
+        editor.commit();
     }
 
 
@@ -48,9 +63,26 @@ public class MainMenuActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        if(isUserLoggedIn()){
+        //mainmenu code goes here
+        if(isLoggedIn()){
             //user is already logged in
             setContentView(R.layout.main_menu);
+            TextView userInfo = (TextView) findViewById(R.id.usernameInput);
+            userInfo.setText(getActiveUser());
+
+
+            //user logs out
+            final Button logout = (Button) findViewById(R.id.logout);
+            logout.setOnClickListener(new View.OnClickListener() {
+                public void onClick(View v) {
+                    logout();
+                    Intent login = new Intent(getApplicationContext(), LoginActivity.class);
+                    startActivity(login);
+                }
+            });
+
+
+
         } else {
             //user is not logged in - direct to LoginActivity
             Intent loginActivity = new Intent(getApplicationContext(), LoginActivity.class);
@@ -115,14 +147,6 @@ public class MainMenuActivity extends AppCompatActivity {
         return validUsername;
     }
 
-
-    //kill keyboard when non-text field is touched
-    @Override
-    public boolean onTouchEvent(MotionEvent event) {
-        InputMethodManager inmm = (InputMethodManager)getSystemService(Activity.INPUT_METHOD_SERVICE);
-        inmm.hideSoftInputFromWindow(getCurrentFocus().getWindowToken(), 0);
-        return true;
-    }
 
 }
 
