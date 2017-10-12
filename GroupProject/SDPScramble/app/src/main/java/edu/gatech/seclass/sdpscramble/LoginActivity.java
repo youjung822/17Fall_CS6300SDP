@@ -1,4 +1,5 @@
 package edu.gatech.seclass.sdpscramble;
+
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
@@ -11,8 +12,8 @@ import android.widget.TextView;
 
 
 public class LoginActivity extends AppCompatActivity {
-    private static String userID = null;
 
+    //kill keyboard when non-text field touched
     @Override
     public boolean onTouchEvent(MotionEvent event) {
         InputMethodManager inmm = (InputMethodManager)getSystemService(Activity.INPUT_METHOD_SERVICE);
@@ -40,13 +41,17 @@ public class LoginActivity extends AppCompatActivity {
                     inputUsernameText.setError("Username Required");
                     inputUsernameText.requestFocus();
                 } else {
-                    final MainMenuActivity menu = new MainMenuActivity();
+                    MainMenuActivity menu = new MainMenuActivity();
                     //call MainMenu.login - returns true, the username is valid
                     if (menu.login(inputUsernameText.getText().toString())) {
-                        userID = inputUsernameText.getText().toString();
+
+                        //set userID to username
+                        menu.setLoggedInUser(inputUsernameText.getText().toString());
+
                         //username was valid - redirect to main_menu.xml and MainMenuActivity
-                        Intent mainMenu = new Intent(getApplicationContext(), MainMenuActivity.class);
-                        startActivity(mainMenu);
+                        //Intent mainMenu = new Intent(getApplicationContext(), MainMenuActivity.class);
+                        //startActivity(mainMenu);
+                        finish();
 
                     } else {
                         //username was invalid
