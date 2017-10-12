@@ -13,6 +13,7 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.TextView;
 
 import java.net.SocketTimeoutException;
@@ -28,68 +29,30 @@ import edu.gatech.seclass.utilities.ExternalWebService;
 public class MainMenuActivity extends AppCompatActivity {
     public static final String PREFS_NAME = "MyPrefsFile";
 
-
-    //need to create instance onCreate and pass same instance whenever EWS is called
+    //need to create instance once and pass same instance whenever EWS is called
     final ExternalWebService ews = ExternalWebService.getInstance();
 
-    //get active user
+    //returns active user or null if there is no logged in user
     public String getActiveUser(){
         SharedPreferences settings = getSharedPreferences(PREFS_NAME, 0);
-
-        //returns active user or null if there is no logged in user
         return settings.getString("user", null);
     }
 
-    //check if user logged in
+    //check if a user is logged in
     public boolean isLoggedIn(){
         SharedPreferences settings = getSharedPreferences(PREFS_NAME, 0);
-        if(settings.getString("user", null) == null || settings.getString("user", null).isEmpty()){
+        if(settings.getString("user", null) == null || settings.getString("user", null).isEmpty())
             return false;
-        } else {
+        else
             return true;
-        }
     }
 
-    //log out user
+    //log user out
     public void logout(){
         SharedPreferences settings = getSharedPreferences(PREFS_NAME, 0);
         SharedPreferences.Editor editor = settings.edit();
         editor.clear();
         editor.commit();
-    }
-
-
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-
-        //mainmenu code goes here
-        if(isLoggedIn()){
-            //user is already logged in
-            setContentView(R.layout.main_menu);
-            TextView userInfo = (TextView) findViewById(R.id.usernameInput);
-            userInfo.setText(getActiveUser());
-
-
-            //user logs out
-            final Button logout = (Button) findViewById(R.id.logout);
-            logout.setOnClickListener(new View.OnClickListener() {
-                public void onClick(View v) {
-                    logout();
-                    Intent login = new Intent(getApplicationContext(), LoginActivity.class);
-                    startActivity(login);
-                }
-            });
-
-
-
-        } else {
-            //user is not logged in - direct to LoginActivity
-            Intent loginActivity = new Intent(getApplicationContext(), LoginActivity.class);
-            startActivity(loginActivity);
-
-        }
-
     }
 
     //return true if username is valid
@@ -103,7 +66,70 @@ public class MainMenuActivity extends AppCompatActivity {
     }
 
 
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
 
+        if(isLoggedIn()){
+            //when user is already logged in
+            setContentView(R.layout.main_menu);
+            TextView userInfo = (TextView) findViewById(R.id.usernameInput);
+            userInfo.setText(getActiveUser());
+
+
+            //if a user logs out
+            final Button logout = (Button) findViewById(R.id.logout);
+            logout.setOnClickListener(new View.OnClickListener() {
+                public void onClick(View v) {
+                    logout();
+                    Intent login = new Intent(getApplicationContext(), LoginActivity.class);
+                    startActivity(login);
+                }
+            });
+
+            //user clicks on Solve a Word Scramble
+            final ImageButton solveScramble = (ImageButton) findViewById(R.id.solveWordScrambles);
+            solveScramble.setOnClickListener(new View.OnClickListener() {
+                public void onClick(View v) {
+                    Intent gameActivity = new Intent(getApplicationContext(), GameActivity.class);
+                    startActivity(gameActivity);
+                }
+            });
+
+            //user clicks on Create a Word Scramble
+            final ImageButton createScramble = (ImageButton) findViewById(R.id.createWordScramble);
+            createScramble.setOnClickListener(new View.OnClickListener() {
+                public void onClick(View v) {
+                    Intent createActivity = new Intent(getApplicationContext(), WordScrambleCreationActivity.class);
+                    startActivity(createActivity);
+                }
+            });
+
+            //user clicks on View Player Statistics
+            final ImageButton viewPlayerStats = (ImageButton) findViewById(R.id.viewPlayerStatistics);
+            viewPlayerStats.setOnClickListener(new View.OnClickListener() {
+                public void onClick(View v) {
+                    Intent playerStatsActivity = new Intent(getApplicationContext(), PlayerStatisticsActivity.class);
+                    startActivity(playerStatsActivity);
+                }
+            });
+
+            //user clicks on Word Scramble Statistics
+            final ImageButton wordStats = (ImageButton) findViewById(R.id.viewWordScrambleStatistics);
+            wordStats.setOnClickListener(new View.OnClickListener() {
+                public void onClick(View v) {
+                    Intent wordStatsActivity = new Intent(getApplicationContext(), WordScrambeStatisticsActivity.class);
+                    startActivity(wordStatsActivity);
+                }
+            });
+
+        //user is not logged in - direct to LoginActivity
+        } else {
+            Intent loginActivity = new Intent(getApplicationContext(), LoginActivity.class);
+            startActivity(loginActivity);
+        }
+
+    }
 
     /**
      * createPlayer()
@@ -142,11 +168,9 @@ public class MainMenuActivity extends AppCompatActivity {
                     validUsername = true;
                 }
             }
-
         }
         return validUsername;
     }
-
 
 }
 
