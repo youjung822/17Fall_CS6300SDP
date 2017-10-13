@@ -118,7 +118,7 @@ public class MainMenuActivity extends AppCompatActivity {
             final ImageButton solveScramble = (ImageButton) findViewById(R.id.solveWordScrambles);
             solveScramble.setOnClickListener(new View.OnClickListener() {
                 public void onClick(View v) {
-                    Intent selectScrambleActivity = new Intent(getApplicationContext(), WordScrambleSelect.class);
+                    Intent selectScrambleActivity = new Intent(getApplicationContext(), UnsolvedScrambleSelectActivity.class);
                     selectScrambleActivity.putStringArrayListExtra("unsolvedScrambles",listUnsolvedScrambles(ews, getActiveUser()));
                     startActivity(selectScrambleActivity);
 
