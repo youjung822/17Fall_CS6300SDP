@@ -68,6 +68,7 @@ public class WordScrambleCreationActivity extends AppCompatActivity {
 
         TextView scrambledPhraseText = (TextView) findViewById(R.id.scrambledPhraseCreation);
         scrambledPhraseText.setText(scrambledPhrase);
+        scrambledPhraseText.setKeyListener(null);
     }
 
     private boolean isPhraseValid(String currentPhrase) {
