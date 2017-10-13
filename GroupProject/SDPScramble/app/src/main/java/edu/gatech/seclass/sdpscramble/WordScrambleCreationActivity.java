@@ -96,7 +96,7 @@ public class WordScrambleCreationActivity extends AppCompatActivity {
 
         setContentView(R.layout.word_scramble_creation_successful);
         
-        TextView wordScrambleUidText = (TextView) findViewById(R.id.wordScrambleUID);
+        TextView wordScrambleUidText = (TextView) findViewById(R.id.newUid);
         wordScrambleUidText.setText(wordScrambleUid);
     }
 
