@@ -2,7 +2,6 @@ package edu.gatech.seclass.sdpscramble;
 
 import android.content.SharedPreferences;
 import android.content.Intent;
-import android.database.DatabaseUtils;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.Cursor;
 import android.os.Bundle;
@@ -69,6 +68,10 @@ public class MainMenuActivity extends AppCompatActivity {
     //return unique username
     public String createPlayer(String username, String firstname, String lastname, String email){
         return this.createPlayer(ews, username, firstname, lastname, email);
+    }
+
+    public String createWordScramble(String phrase, String scrambledPhrase, String clue, String creator) {
+        return this.createWordScramble(ews, phrase, scrambledPhrase, clue, creator);
     }
 
 
@@ -200,6 +203,22 @@ public class MainMenuActivity extends AppCompatActivity {
         return validUsername;
     }
 
+    private static String createWordScramble(ExternalWebService ews, String phrase, String scrambledPhrase, String clue, String creator) {
+        String wordScrambleUid = "";
+
+        try {
+            wordScrambleUid = ews.newScrambleService(phrase, scrambledPhrase, clue, creator);
+        } catch (SocketTimeoutException e) {
+            e.printStackTrace();
+        }
+
+        if (!wordScrambleUid.isEmpty()) {
+            insertWordScrambleData(wordScrambleUid, phrase, clue, scrambledPhrase, creator);
+        }
+
+        return wordScrambleUid;
+    }
+
     /**
      *  ALL CALLS TO ExternalWebService - END
      */
@@ -241,6 +260,11 @@ public class MainMenuActivity extends AppCompatActivity {
         }
          */
 
+    }
+
+    public static void insertWordScrambleData(String wordScrambleUid, String phrase, String clue, String scrambledPhrase, String creator) {
+        WordScrambleTable newWordScramble = new WordScrambleTable(wordScrambleUid, phrase, clue, scrambledPhrase, creator, 0);
+        cupboard().withDatabase(db).put(newWordScramble);
     }
 
 

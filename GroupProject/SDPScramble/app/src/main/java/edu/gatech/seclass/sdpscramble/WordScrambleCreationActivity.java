@@ -1,17 +1,17 @@
 package edu.gatech.seclass.sdpscramble;
 
 import android.app.Activity;
+import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
+import android.widget.Button;
 import android.widget.EditText;
-
-import java.net.SocketTimeoutException;
-
-import edu.gatech.seclass.utilities.ExternalWebService;
+import android.widget.TextView;
 
 /**
  * @author Brian Greenwald
@@ -22,6 +22,14 @@ public class WordScrambleCreationActivity extends AppCompatActivity {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.new_word_scramble_creation);
+
+        final Button cancelButton = (Button) findViewById(R.id.cancel);
+        cancelButton.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                Intent mainMenuActivity = new Intent(getApplicationContext(), MainMenuActivity.class);
+                startActivity(mainMenuActivity);
+            }
+        });
     }
 
     public void scramble(View view) {
@@ -37,6 +45,7 @@ public class WordScrambleCreationActivity extends AppCompatActivity {
             phraseText.setError(
                 "Phrases must between " + WordScramble.MIN_PHRASE_LENGTH + " and " +
                     WordScramble.MAX_PHRASE_LENGTH + " characters.");
+            return;
         }
 
         EditText clueText = (EditText) findViewById(R.id.clue);
@@ -57,7 +66,7 @@ public class WordScrambleCreationActivity extends AppCompatActivity {
             return;
         }
 
-        EditText scrambledPhraseText = (EditText) findViewById(R.id.scrambledPhrase);
+        TextView scrambledPhraseText = (TextView) findViewById(R.id.scrambledPhrase);
         scrambledPhraseText.setText(scrambledPhrase);
     }
 
@@ -68,27 +77,22 @@ public class WordScrambleCreationActivity extends AppCompatActivity {
     }
 
     public void submit(View view) {
-        EditText scrambledPhraseText = (EditText) findViewById(R.id.scrambledPhrase);
+        TextView scrambledPhraseText = (TextView) findViewById(R.id.scrambledPhrase);
         String scrambledPhrase = scrambledPhraseText.getText().toString();
 
-        ExternalWebService ews = ExternalWebService.getInstance();
 
         String wordScrambleUid;
 
-        try {
-            // TODO: Replace creator with current user's ID
-            wordScrambleUid = ews.newScrambleService(
-                currentWordScramble.getPhrase(), scrambledPhrase, currentWordScramble.getClue(), "");
-        } catch (SocketTimeoutException ste) {
-            scrambledPhraseText.setError("Error accessing server. Please try again later.");
-            return;
-        }
+        SharedPreferences settings = getSharedPreferences(MainMenuActivity.PREFS_NAME, 0);
+        String creator = settings.getString("user", null);
 
-        SavedWordScramble savedWordScramble = new SavedWordScramble(
-            wordScrambleUid, currentWordScramble.getPhrase(), scrambledPhrase,
-            currentWordScramble.getClue());
+        MainMenuActivity mainMenuActivity = new MainMenuActivity();
+        wordScrambleUid = mainMenuActivity.createWordScramble(currentWordScramble.getPhrase(), scrambledPhrase, currentWordScramble.getClue(), creator);
 
-        // TODO: Persist savedWordScramble to local DB
+        setContentView(R.layout.word_scramble_creation_successful);
+        
+        TextView wordScrambleUidText = (TextView) findViewById(R.id.wordScrambleUID);
+        wordScrambleUidText.setText(wordScrambleUid);
     }
 
     private WordScramble currentWordScramble;
@@ -98,6 +102,11 @@ public class WordScrambleCreationActivity extends AppCompatActivity {
         InputMethodManager inmm = (InputMethodManager)getSystemService(Activity.INPUT_METHOD_SERVICE);
         inmm.hideSoftInputFromWindow(getCurrentFocus().getWindowToken(), 0);
         return true;
+    }
+
+    public void returnToMainMenu(View view) {
+        Intent mainMenuActivity = new Intent(getApplicationContext(), MainMenuActivity.class);
+        startActivity(mainMenuActivity);
     }
 }
 

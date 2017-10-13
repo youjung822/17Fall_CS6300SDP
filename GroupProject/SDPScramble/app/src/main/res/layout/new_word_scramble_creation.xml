@@ -126,7 +126,7 @@
         app:layout_constraintBottom_toTopOf="@+id/scrambledPhrase"
         app:layout_constraintTop_toBottomOf="@+id/clue" />
 
-    <EditText
+    <TextView
         android:id="@+id/scrambledPhrase"
         android:layout_width="355dp"
         android:layout_height="99dp"

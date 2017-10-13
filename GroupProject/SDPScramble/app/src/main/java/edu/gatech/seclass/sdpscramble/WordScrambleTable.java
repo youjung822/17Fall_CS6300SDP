@@ -14,13 +14,12 @@ public class WordScrambleTable {
     public String createdBy;
     public Integer numOfTimesSolved;
 
-    public WordScrambleTable(String uid, String phrs, String clu, String scrmbldPhrs, String crtdBy, Integer tmsSvd){
-        this.uniqueIdentifier = uid;
-        this.phrase = phrs;
-        this.clue = clu;
-        this.scrambledPhrase = scrmbldPhrs;
-        this.createdBy = crtdBy;
-        this.numOfTimesSolved = tmsSvd;
+    public WordScrambleTable(String uniqueIdentifier, String phrase, String clue, String scrambledPhrase, String createdBy, int numOfTimesSolved) {
+        this.uniqueIdentifier = uniqueIdentifier;
+        this.phrase = phrase;
+        this.clue = clue;
+        this.scrambledPhrase = scrambledPhrase;
+        this.createdBy = createdBy;
+        this.numOfTimesSolved = numOfTimesSolved;
     }
-
 }
