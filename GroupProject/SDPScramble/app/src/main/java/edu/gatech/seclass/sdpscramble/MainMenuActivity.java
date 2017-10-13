@@ -61,6 +61,10 @@ public class MainMenuActivity extends AppCompatActivity {
      * ACTIVE USER PREFERENCES - END
      */
 
+    /**
+     * PUBLIC METHODS - START
+     */
+
     //return true if username is valid
     public boolean login(String username){
         return this.login(ews, username);
@@ -75,6 +79,8 @@ public class MainMenuActivity extends AppCompatActivity {
     public List<String> getScramble(String wordScrambleUid) {
         return this.getScramble(ews,wordScrambleUid);
     }
+
+    //create a word scramble
     public String createWordScramble(String phrase, String scrambledPhrase, String clue, String creator) {
         return this.createWordScramble(ews, phrase, scrambledPhrase, clue, creator);
     }
@@ -85,6 +91,14 @@ public class MainMenuActivity extends AppCompatActivity {
         return this.reportSolve(ews, wordScrambleUid, username);
     }
 
+
+    /**
+     * PUBLIC METHODS - END
+     */
+
+    /**
+     * ONCREATE()
+     */
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -97,6 +111,9 @@ public class MainMenuActivity extends AppCompatActivity {
         SDPDatabaseHelper dbHelper = new SDPDatabaseHelper(this);
         db = dbHelper.getWritableDatabase();
 
+        /**
+         * IF USER LOGGED IN
+         */
 
         //when a user is logged in
         if(isLoggedIn()){
@@ -153,8 +170,12 @@ public class MainMenuActivity extends AppCompatActivity {
                 }
             });
 
-        //user is not logged in - direct to LoginActivity
+        /**
+         * USER NOT LOGGED IN
+         */
+
         } else {
+            //direct to LoginActivity
             Intent loginActivity = new Intent(getApplicationContext(), LoginActivity.class);
             startActivity(loginActivity);
         }
