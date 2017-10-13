@@ -46,9 +46,9 @@ public class WordScrambleCreationActivity extends AppCompatActivity {
             return;
         }
 
-        String scrambledPhrase = "";
+        String scrambledPhrase;
         try {
-            currentWordScramble.scramble();
+            scrambledPhrase = currentWordScramble.scramble();
         } catch (IllegalArgumentException  iae) {
             phraseText.setError(iae.getMessage());
             return;
