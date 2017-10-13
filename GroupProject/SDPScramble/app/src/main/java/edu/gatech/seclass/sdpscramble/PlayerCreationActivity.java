@@ -72,7 +72,8 @@ public class PlayerCreationActivity extends AppCompatActivity {
                 }
 
                 if(validInput){
-                    String returnedUsername = menu.createPlayer(inputUsername.getText().toString(), inputFirstName.getText().toString(), inputLastName.getText().toString(), inputEmail.getText().toString());
+                    String returnedUsername = menu.createPlayer(inputUsername.getText().toString(), inputFirstName.getText().toString(),
+                            inputLastName.getText().toString(), inputEmail.getText().toString());
                     setContentView(R.layout.player_creation_successful);
 
                     TextView finalUsername = (TextView) findViewById(R.id.userName);

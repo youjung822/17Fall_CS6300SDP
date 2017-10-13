@@ -11,4 +11,10 @@ public class ProgressTrackerTable {
     public String wordState;
     public String inProgressPhrase;
 
+    public ProgressTrackerTable (PlayerTable plyr, WordScrambleTable wrd, String wrdState, String prgsPhrs) {
+        this.player = plyr;
+        this.word = wrd;
+        this.wordState = wrdState;
+        this.inProgressPhrase = prgsPhrs;
+    }
 }

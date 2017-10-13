@@ -246,7 +246,7 @@ public class MainMenuActivity extends AppCompatActivity {
 
 
     /**
-     * Database CrUD - END
+     * Database CRUD - END
      */
 }
 
