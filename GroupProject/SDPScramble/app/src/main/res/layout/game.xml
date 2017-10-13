@@ -26,13 +26,13 @@
         android:layout_height="50dp"
         android:layout_marginBottom="77dp"
         android:background="@color/colorButton"
-        android:elevation="0dp"
         android:text="@string/submit"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         tools:layout_constraintRight_creator="1"
-        tools:layout_constraintLeft_creator="1" />
+        tools:layout_constraintLeft_creator="1"
+        app:layout_constraintHorizontal_bias="0.502" />
 
     <TextView
         android:id="@+id/wordScrambleUID"
@@ -92,7 +92,6 @@
         android:layout_marginEnd="15dp"
         android:layout_marginStart="15dp"
         android:layout_marginTop="38dp"
-        android:backgroundTint="@android:color/transparent"
         android:fontFamily="monospace"
         android:textAlignment="center"
         android:textColor="@android:color/black"
@@ -141,7 +140,6 @@
         android:layout_width="0dp"
         android:layout_height="68dp"
         android:ems="10"
-        android:hint="Enter Guess Here"
         android:inputType="textPersonName"
         tools:layout_constraintRight_creator="1"
         tools:layout_constraintBottom_creator="1"
