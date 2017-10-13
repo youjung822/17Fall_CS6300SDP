@@ -12,7 +12,7 @@ import static nl.qbusict.cupboard.CupboardFactory.cupboard;
 public class SDPDatabaseHelper extends SQLiteOpenHelper {
 
         private static final String DATABASE_NAME = "SDP.db";
-        private static final int DATABASE_VERSION = 1;
+        private static final int DATABASE_VERSION = 2;
 
         public SDPDatabaseHelper(Context context) {
             super(context, DATABASE_NAME, null, DATABASE_VERSION);

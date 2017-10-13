@@ -37,14 +37,16 @@ public class WordScrambleCreationActivity extends AppCompatActivity {
         String currentPhrase = phraseText.getText().toString();
 
         if (currentPhrase.isEmpty()) {
-            phraseText.setError("Missing Phrase.");
+            phraseText.setError("Missing Phrase");
+            phraseText.requestFocus();
             return;
         }
 
         if (!isPhraseValid(currentPhrase)) {
             phraseText.setError(
                 "Phrases must between " + WordScramble.MIN_PHRASE_LENGTH + " and " +
-                    WordScramble.MAX_PHRASE_LENGTH + " characters.");
+                    WordScramble.MAX_PHRASE_LENGTH + " characters");
+            phraseText.requestFocus();
             return;
         }
 
@@ -55,6 +57,7 @@ public class WordScrambleCreationActivity extends AppCompatActivity {
             currentWordScramble = new WordScramble(currentPhrase, currentClue);
         } catch (IllegalArgumentException iae) {
             phraseText.setError(iae.getMessage());
+            phraseText.requestFocus();
             return;
         }
 
@@ -63,6 +66,7 @@ public class WordScrambleCreationActivity extends AppCompatActivity {
             scrambledPhrase = currentWordScramble.scramble();
         } catch (IllegalArgumentException  iae) {
             phraseText.setError(iae.getMessage());
+            phraseText.requestFocus();
             return;
         }
 
@@ -78,12 +82,30 @@ public class WordScrambleCreationActivity extends AppCompatActivity {
     }
 
     public void submit(View view) {
+        //validate phrase and scramble
         TextView scrambledPhraseText = (TextView) findViewById(R.id.scrambledPhraseCreation);
         String scrambledPhrase = scrambledPhraseText.getText().toString();
 
         if (scrambledPhrase.isEmpty()) {
             EditText phraseText = (EditText) findViewById(R.id.phraseCreation);
-            phraseText.setError("Please scramble your phrase by clicking 'Scramble'.");
+            String currentPhrase = phraseText.getText().toString();
+            if(currentPhrase.isEmpty()){
+                phraseText.setError("Enter a valid scramble");
+                phraseText.requestFocus();
+            } else {
+                phraseText.setError("You must scramble your phrase by clicking 'Scramble'");
+                phraseText.requestFocus();
+            }
+
+            return;
+        }
+
+        //validate clue - there must be a clue
+        TextView clueText = (TextView) findViewById(R.id.clueCreation);
+        String clue = clueText.getText().toString();
+        if(clue.isEmpty()){
+            clueText.setError("You must enter a clue");
+            clueText.requestFocus();
             return;
         }
 
@@ -94,6 +116,7 @@ public class WordScrambleCreationActivity extends AppCompatActivity {
 
         MainMenuActivity mainMenuActivity = new MainMenuActivity();
         wordScrambleUid = mainMenuActivity.createWordScramble(currentWordScramble.getPhrase(), scrambledPhrase, currentWordScramble.getClue(), creator);
+
 
         setContentView(R.layout.word_scramble_creation_successful);
         

@@ -85,11 +85,6 @@ public class MainMenuActivity extends AppCompatActivity {
         return this.reportSolve(ews, wordScrambleUid, username);
     }
 
-    @Override
-    protected void onStart(){
-        super.onStart();
-        logout();
-    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -343,7 +338,7 @@ public class MainMenuActivity extends AppCompatActivity {
 
     public static void insertWordScrambleData(String wordScrambleUid, String phrase, String clue, String scrambledPhrase, String creator) {
         WordScrambleTable newWordScramble = new WordScrambleTable(wordScrambleUid, phrase, clue, scrambledPhrase, creator, 0);
-        cupboard().withDatabase(db).put(newWordScramble);
+        long id = cupboard().withDatabase(db).put(newWordScramble);
     }
 
 
