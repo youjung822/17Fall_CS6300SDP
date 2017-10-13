@@ -57,29 +57,31 @@ public class GameActivity extends AppCompatActivity {
         clueView.setText(currentScramble.get(3));
 
         guess = (EditText)findViewById(R.id.scrambleGuess);
-        guess.setText(currentScramble.get(1).replaceAll("[A-Z]+?|[a-z]+?","_"));
+        guess.setHint(currentScramble.get(1).replaceAll("[A-Z]+?|[a-z]+?","_"));
 
-        Button createScramble = (Button) findViewById(R.id.exitGame);
-        createScramble.setOnClickListener(new View.OnClickListener() {
+        Button submitGuess = (Button) findViewById(R.id.submitGuess);
+        submitGuess.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                Intent createActivity = new Intent(getApplicationContext(), WordScrambleCreationActivity.class);
-                startActivity(createActivity);
+                if(guess.getText().toString().equals(currentScramble.get(1))){
+                    Intent reportSolveActivity = new Intent(v.getContext(), MainMenuActivity.class);
+                    startActivity(reportSolveActivity);
+                }
+                else{
+                    guess.setError("Wrong Answer. Try Again!");
+                }
+
             }
         });
 
-    }
+        Button exitGame = (Button) findViewById(R.id.exitGame);
+        submitGuess.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                //TODO save scrambleGuess to db
+                Intent exitGameActivity = new Intent(v.getContext(), MainMenuActivity.class);
+                startActivity(exitGameActivity);
+            }
+        });
 
-    //used by submit button
-    public void checkSolution(View view){
-        if(guess.getText().toString().equals(currentScramble.get(1))){
-
-        }
-    }
-
-    //used by cancel button
-    public void exit(View view){
-        //pass the string id and current guess to progressTracker\
-        //no need to pass username since progressTracker is wiped out after logging out/login
     }
 
 }

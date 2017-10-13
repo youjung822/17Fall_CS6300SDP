@@ -81,7 +81,7 @@ public class WordScrambleCreationActivity extends AppCompatActivity {
         String scrambledPhrase = scrambledPhraseText.getText().toString();
 
         if (scrambledPhrase.isEmpty()) {
-            EditText phraseText = (EditText) findViewById(R.id.phrase);
+            EditText phraseText = (EditText) findViewById(R.id.phraseCreation);
             phraseText.setError("Please scramble your phrase by clicking 'Scramble'.");
             return;
         }
