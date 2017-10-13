@@ -163,20 +163,17 @@ public class MainMenuActivity extends AppCompatActivity {
 
         String strPlayerNewID = "";
 
+        //insert new player in EWS
         try {
             strPlayerNewID = ews.newPlayerService(username,firstname,lastname,email);
         } catch (SocketTimeoutException e) {
             e.printStackTrace();
         }
 
-        //delete all data from PlayerTable - REMOVE THIS LATER
-        clearAllData(PlayerTable.class);
-
-        //insert new player
+        //insert new player in local db
         insertPlayerData(strPlayerNewID, firstname, lastname, email);
 
-
-        //return unique id
+        //return unique username
         return strPlayerNewID;
 
     }
@@ -208,13 +205,18 @@ public class MainMenuActivity extends AppCompatActivity {
      */
 
     /**
-     * Database calls - START
+     * Database CRUD - START
      */
 
 
     // delete all data from the table passed as a class
     public static void clearAllData(Class Tbl) {
         cupboard().withDatabase(db).delete(Tbl, null);
+    }
+
+    //get Table cursor with all data
+    public static Cursor getTableCursor(Class Tbl){
+        return cupboard().withDatabase(db).query(Tbl).getCursor();
     }
 
     // create player in local db
@@ -224,12 +226,14 @@ public class MainMenuActivity extends AppCompatActivity {
         long id = cupboard().withDatabase(db).put(newPlayer);
 
         /**
-        Cursor cursor = cupboard().withDatabase(db).query(PlayerTable.class).getCursor();
+
+        samle code for iterating through a cursor - can remove at end
         try {
-            //iterate player
+            //iterate cursor
+            String column_name = "username";
             while(cursor.moveToNext()){
                 //DatabaseUtils.dumpCurrentRow(player);
-                System.out.println(cursor.getString(cursor.getColumnIndex("username")));
+                System.out.println(cursor.getString(cursor.getColumnIndex(column_name)));
             }
 
         } finally {
@@ -242,7 +246,7 @@ public class MainMenuActivity extends AppCompatActivity {
 
 
     /**
-     * Database calls - END
+     * Database CrUD - END
      */
 }
 
