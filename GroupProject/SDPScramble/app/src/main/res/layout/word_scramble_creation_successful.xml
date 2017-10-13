@@ -28,16 +28,17 @@
         android:id="@+id/okWordScrambleCreation"
         android:layout_width="180dp"
         android:layout_height="65dp"
+        android:layout_marginBottom="84dp"
         android:background="@color/colorButton"
+        android:onClick="returnToMainMenu"
         android:text="@android:string/ok"
         android:textSize="18sp"
         android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        android:layout_marginBottom="84dp"
-        tools:layout_constraintRight_creator="1"
-        tools:layout_constraintLeft_creator="1" />
+        tools:layout_constraintLeft_creator="1"
+        tools:layout_constraintRight_creator="1" />
 
     <TextView
         android:id="@+id/newUid"
@@ -54,5 +55,6 @@
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/word_scramble_creation_dialog"
         tools:layout_constraintLeft_creator="1"
-        tools:layout_constraintRight_creator="1" />
+        tools:layout_constraintRight_creator="1"
+        android:layout_marginTop="55dp" />
 </android.support.constraint.ConstraintLayout>

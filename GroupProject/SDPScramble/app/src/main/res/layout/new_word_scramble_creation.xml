@@ -91,13 +91,14 @@
         style="@style/Widget.AppCompat.Button"
         android:layout_width="159dp"
         android:layout_height="50dp"
-        android:background="@color/colorButton"
-        android:text="@android:string/cancel"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintLeft_toLeftOf="parent"
+        android:layout_marginBottom="-7dp"
         android:layout_marginLeft="16dp"
         android:layout_marginStart="16dp"
-        android:layout_marginBottom="-7dp" />
+        android:background="@color/colorButton"
+        android:onClick="returnToMainMenu"
+        android:text="@android:string/cancel"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent" />
 
     <Button
         android:id="@+id/submitWordScramble"

@@ -258,8 +258,6 @@ public class MainMenuActivity extends AppCompatActivity {
     /**
      * getScramble()
      * grabs the scramble with the matching wordScrambleUid
-     * @param ews
-     * @param wordScrambleUid
      * @return scramble
      */
     private static List<String> getScramble(ExternalWebService ews,  String wordScrambleUid){
