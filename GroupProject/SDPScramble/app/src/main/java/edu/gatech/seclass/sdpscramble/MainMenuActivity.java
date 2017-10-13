@@ -1,193 +1,41 @@
 package edu.gatech.seclass.sdpscramble;
 
-import android.content.SharedPreferences;
+import android.content.Context;
 import android.content.Intent;
-import android.database.sqlite.SQLiteDatabase;
+import android.content.SharedPreferences;
 import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.TextView;
-import static nl.qbusict.cupboard.CupboardFactory.cupboard;
 
 import java.net.SocketTimeoutException;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Set;
 
 import edu.gatech.seclass.utilities.ExternalWebService;
+
+import static nl.qbusict.cupboard.CupboardFactory.cupboard;
 
 /**
  * Created by John Youngblood on 10/10/17.
  */
 
 public class MainMenuActivity extends AppCompatActivity {
-    static SQLiteDatabase db;
-    final ExternalWebService ews = ExternalWebService.getInstance(); //need to create instance once and pass same instance whenever EWS is called
-
     /**
      * ACTIVE USER PREFERENCES - START
      * current logged in user stored as a user preference
      */
 
     public static final String PREFS_NAME = "MyPrefsFile";
-
-    //returns active user or null if there is no logged in user
-    public String getActiveUser(){
-        SharedPreferences settings = getSharedPreferences(PREFS_NAME, 0);
-        return settings.getString("user", null);
-    }
-
-    //check if a user is logged in
-    public boolean isLoggedIn(){
-        SharedPreferences settings = getSharedPreferences(PREFS_NAME, 0);
-        if(settings.getString("user", null) == null || settings.getString("user", null).isEmpty())
-            return false;
-        else
-            return true;
-    }
-
-    //log user out
-    public void logout(){
-        SharedPreferences settings = getSharedPreferences(PREFS_NAME, 0);
-        SharedPreferences.Editor editor = settings.edit();
-        editor.clear();
-        editor.commit();
-    }
-
-    /**
-     * ACTIVE USER PREFERENCES - END
-     */
-
-    /**
-     * PUBLIC METHODS - START
-     */
-
-    //return true if username is valid
-    public boolean login(String username){
-        return this.login(ews, username);
-    }
-
-    //return unique username
-    public String createPlayer(String username, String firstname, String lastname, String email){
-        return this.createPlayer(ews, username, firstname, lastname, email);
-    }
-
-    //return specified scramble
-    public List<String> getScramble(String wordScrambleUid) {
-        return this.getScramble(ews,wordScrambleUid);
-    }
-
-    //create a word scramble
-    public String createWordScramble(String phrase, String scrambledPhrase, String clue, String creator) {
-        return this.createWordScramble(ews, phrase, scrambledPhrase, clue, creator);
-    }
-
-
-    //report solved scramble by player
-    public boolean reportSolve(String wordScrambleUid, String username){
-        return this.reportSolve(ews, wordScrambleUid, username);
-    }
-
-
-    /**
-     * PUBLIC METHODS - END
-     */
-
-    /**
-     * ONCREATE()
-     */
-
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-
-        /**
-         * INITIALIZE DATABASE
-         */
-
-        SDPDatabaseHelper dbHelper = new SDPDatabaseHelper(this);
-        db = dbHelper.getWritableDatabase();
-
-        /**
-         * IF USER LOGGED IN
-         */
-
-        //when a user is logged in
-        if(isLoggedIn()){
-            setContentView(R.layout.main_menu);
-            TextView userInfo = (TextView) findViewById(R.id.usernameMainMenu);
-            userInfo.setText(getActiveUser());
-
-
-            //if a user logs out
-            final Button logout = (Button) findViewById(R.id.logout);
-            logout.setOnClickListener(new View.OnClickListener() {
-                public void onClick(View v) {
-                    logout();
-                    Intent login = new Intent(getApplicationContext(), LoginActivity.class);
-                    startActivity(login);
-                }
-            });
-
-            //user clicks on Solve a Word Scramble
-            final ImageButton solveScramble = (ImageButton) findViewById(R.id.solveWordScrambles);
-            solveScramble.setOnClickListener(new View.OnClickListener() {
-                public void onClick(View v) {
-                    Intent selectScrambleActivity = new Intent(getApplicationContext(), UnsolvedScrambleSelectActivity.class);
-                    selectScrambleActivity.putStringArrayListExtra("unsolvedScrambles",listUnsolvedScrambles(ews, getActiveUser()));
-                    startActivity(selectScrambleActivity);
-
-                }
-            });
-
-            //user clicks on Create a Word Scramble
-            final ImageButton createScramble = (ImageButton) findViewById(R.id.createWordScramble);
-            createScramble.setOnClickListener(new View.OnClickListener() {
-                public void onClick(View v) {
-                    Intent createActivity = new Intent(getApplicationContext(), WordScrambleCreationActivity.class);
-                    startActivity(createActivity);
-                }
-            });
-
-            //user clicks on View Player Statistics
-            final ImageButton viewPlayerStats = (ImageButton) findViewById(R.id.viewPlayerStatistics);
-            viewPlayerStats.setOnClickListener(new View.OnClickListener() {
-                public void onClick(View v) {
-                    Intent playerStatsActivity = new Intent(getApplicationContext(), PlayerStatisticsActivity.class);
-                    startActivity(playerStatsActivity);
-                }
-            });
-
-            //user clicks on Word Scramble Statistics
-            final ImageButton wordStats = (ImageButton) findViewById(R.id.viewWordScrambleStatistics);
-            wordStats.setOnClickListener(new View.OnClickListener() {
-                public void onClick(View v) {
-                    Intent wordStatsActivity = new Intent(getApplicationContext(), WordScrambeStatisticsActivity.class);
-                    startActivity(wordStatsActivity);
-                }
-            });
-
-        /**
-         * USER NOT LOGGED IN
-         */
-
-        } else {
-            //direct to LoginActivity
-            Intent loginActivity = new Intent(getApplicationContext(), LoginActivity.class);
-            startActivity(loginActivity);
-        }
-
-    }
-
-
-    /**
-     *  ALL CALLS TO ExternalWebService - START
-     */
-
-
+    static SQLiteDatabase db;
+    final ExternalWebService ews = ExternalWebService.getInstance(); //need to create instance once and pass same instance whenever EWS is called
 
     /**
      * createPlayer()
@@ -252,24 +100,34 @@ public class MainMenuActivity extends AppCompatActivity {
         for (List<String> player : players) {
             usernames.add(player.get(0));
         }
-
         //find index of current player's username in EWS
         List<String> player = players.get(usernames.indexOf(username));
-        //grab list of wordScrambleUIDs of scrambles solved by the player.
-        List<String> solvedScrambles = player.subList(4,player.size());
 
-        //create list of unsolved scrambles to show users in a ListView by
-        //filtering out all scrambles solved and created by the user
-        ArrayList<String> unsolvedScrambles = new ArrayList<>();
-        for (List<String> scramble : scrambles){
-            if(!(solvedScrambles.contains(scramble.get(0))) && !(scramble.get(4).equals(username))){
-                unsolvedScrambles.add(scramble.get(0) + ": " + scramble.get(2));
-            }
+        //grab list of wordScrambleUIDs of scrambles solved by the player.
+        List<String> solvedScrambles;
+        if (player.size() > 4) {
+            solvedScrambles = player.subList(4, player.size());
+        } else {
+            solvedScrambles = new ArrayList<String>();
         }
 
+        //create list of unsolved scrambles to show users in a ListView by
+        //filtering out all scrambles solved
+        //todo handle created scrambles in this filter
+        ArrayList<String> unsolvedScrambles = new ArrayList<>();
+        for (List<String> scramble : scrambles){
+            if (!(solvedScrambles.contains(scramble.get(0)))) {
+                unsolvedScrambles.add(scramble.get(0) + ": " + scramble.get(2));
+
+            }
+        }
         return unsolvedScrambles;
 
     }
+
+    /**
+     * ACTIVE USER PREFERENCES - END
+     */
 
     /**
      * getScramble()
@@ -297,7 +155,6 @@ public class MainMenuActivity extends AppCompatActivity {
         return ews.reportSolveService(wordScrambleUid,username);
     }
 
-
     private static String createWordScramble(ExternalWebService ews, String phrase, String scrambledPhrase, String clue, String creator) {
         String wordScrambleUid = "";
 
@@ -315,10 +172,6 @@ public class MainMenuActivity extends AppCompatActivity {
     }
 
     /**
-     *  ALL CALLS TO ExternalWebService - END
-     */
-
-    /**
      * Database CRUD - START
      */
 
@@ -332,6 +185,11 @@ public class MainMenuActivity extends AppCompatActivity {
     public static Cursor getTableCursor(Class Tbl){
         return cupboard().withDatabase(db).query(Tbl).getCursor();
     }
+
+
+    /**
+     * PUBLIC METHODS - END
+     */
 
     // create player in local db
     public static void insertPlayerData(String username, String firstname, String lastname, String email){
@@ -357,11 +215,190 @@ public class MainMenuActivity extends AppCompatActivity {
 
     }
 
+
+    /**
+     * ALL CALLS TO ExternalWebService - START
+     */
+
     public static void insertWordScrambleData(String wordScrambleUid, String phrase, String clue, String scrambledPhrase, String creator) {
         WordScrambleTable newWordScramble = new WordScrambleTable(wordScrambleUid, phrase, clue, scrambledPhrase, creator, 0);
         long id = cupboard().withDatabase(db).put(newWordScramble);
     }
 
+    //returns active user or null if there is no logged in user
+    public String getActiveUser() {
+        SharedPreferences settings = getSharedPreferences(PREFS_NAME, 0);
+        return settings.getString("user", null);
+    }
+
+    //check if a user is logged in
+    public boolean isLoggedIn() {
+        SharedPreferences settings = getSharedPreferences(PREFS_NAME, 0);
+        return !(settings.getString("user", null) == null || settings.getString("user", null).isEmpty());
+    }
+
+    //log user out
+    public void logout() {
+        SharedPreferences settings = getSharedPreferences(PREFS_NAME, 0);
+        SharedPreferences.Editor editor = settings.edit();
+        editor.clear();
+        editor.commit();
+    }
+
+    /**
+     * PUBLIC METHODS - START
+     */
+
+    //return true if username is valid
+    public boolean login(String username) {
+        return login(ews, username);
+    }
+
+    //return unique username
+    public String createPlayer(String username, String firstname, String lastname, String email) {
+        return createPlayer(ews, username, firstname, lastname, email);
+    }
+
+    /**
+     * ALL CALLS TO ExternalWebService - END
+     */
+
+    //return specified scramble
+    public List<String> getScramble(String wordScrambleUid) {
+        return getScramble(ews, wordScrambleUid);
+    }
+
+    //create a word scramble
+    public String createWordScramble(String phrase, String scrambledPhrase, String clue, String creator) {
+        return createWordScramble(ews, phrase, scrambledPhrase, clue, creator);
+    }
+
+    //report solved scramble by player
+    public boolean reportSolve(String wordScrambleUid, String username) {
+        return reportSolve(ews, wordScrambleUid, username);
+    }
+
+    /**
+     * ONCREATE()
+     */
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+
+        /**
+         * INITIALIZE DATABASE
+         */
+
+        SDPDatabaseHelper dbHelper = new SDPDatabaseHelper(this);
+        db = dbHelper.getWritableDatabase();
+
+        //initialize a player at start up
+        List<List<String>> players = new ArrayList<List<String>>(10);
+        List<String> player = new ArrayList<String>();
+
+        player.add("a");
+        player.add("a");
+        player.add("a");
+        player.add("a");
+
+        players.add(player);
+        ews.initializePlayers(players);
+
+
+        //initialize a word scramble at start up
+        List<List<String>> scrambles = new ArrayList<List<String>>(10);
+        List<String> scramble = new ArrayList<String>();
+
+        scramble.add("a");
+        scramble.add("abcdef");
+        scramble.add("fedcba");
+        scramble.add("ABC's");
+        scramble.add("a");
+
+        scrambles.add(scramble);
+        ews.initializeScramble(scrambles);
+
+        /**
+         * IF USER LOGGED IN
+         */
+
+        //when a user is logged in
+        if (isLoggedIn()) {
+            setContentView(R.layout.main_menu);
+            TextView userInfo = (TextView) findViewById(R.id.usernameMainMenu);
+            userInfo.setText(getActiveUser());
+
+
+            //if a user logs out
+            final Button logout = (Button) findViewById(R.id.logout);
+            logout.setOnClickListener(new View.OnClickListener() {
+                public void onClick(View v) {
+                    logout();
+                    Intent login = new Intent(getApplicationContext(), LoginActivity.class);
+                    startActivity(login);
+                }
+            });
+
+            //user clicks on Solve a Word Scramble
+            final ImageButton solveScramble = (ImageButton) findViewById(R.id.solveWordScrambles);
+            solveScramble.setOnClickListener(new View.OnClickListener() {
+                public void onClick(View v) {
+                    Context context = getApplicationContext();
+                    SharedPreferences settings = context.getSharedPreferences(getString(R.string.select_word_scramble), Context.MODE_PRIVATE);
+                    SharedPreferences.Editor editor = settings.edit();
+                    List<String> list = listUnsolvedScrambles(ews, getActiveUser());
+                    Set<String> set = new HashSet<String>(list);
+                    editor.clear();
+                    editor.putStringSet(getString(R.string.select_word_scramble), set);
+                    editor.commit();
+                    Intent selectScrambleActivity = new Intent(getApplicationContext(), UnsolvedScrambleSelectActivity.class);
+                    startActivity(selectScrambleActivity);
+                }
+            });
+
+            //user clicks on Create a Word Scramble
+            final ImageButton createScramble = (ImageButton) findViewById(R.id.createWordScramble);
+            createScramble.setOnClickListener(new View.OnClickListener() {
+                public void onClick(View v) {
+                    Intent createActivity = new Intent(getApplicationContext(), WordScrambleCreationActivity.class);
+                    startActivity(createActivity);
+                }
+            });
+
+            //user clicks on View Player Statistics
+            final ImageButton viewPlayerStats = (ImageButton) findViewById(R.id.viewPlayerStatistics);
+            viewPlayerStats.setOnClickListener(new View.OnClickListener() {
+                public void onClick(View v) {
+                    Intent playerStatsActivity = new Intent(getApplicationContext(), PlayerStatisticsActivity.class);
+                    startActivity(playerStatsActivity);
+                }
+            });
+
+            //user clicks on Word Scramble Statistics
+            final ImageButton wordStats = (ImageButton) findViewById(R.id.viewWordScrambleStatistics);
+            wordStats.setOnClickListener(new View.OnClickListener() {
+                public void onClick(View v) {
+                    Intent wordStatsActivity = new Intent(getApplicationContext(), WordScrambleStatisticsActivity.class);
+                    startActivity(wordStatsActivity);
+                }
+            });
+
+            /**
+             * USER NOT LOGGED IN
+             */
+
+        } else {
+            //direct to LoginActivity
+            Intent loginActivity = new Intent(getApplicationContext(), LoginActivity.class);
+            startActivity(loginActivity);
+        }
+
+    }
+
+    /**
+     * Checks to make sure
+     */
 
 
     /**

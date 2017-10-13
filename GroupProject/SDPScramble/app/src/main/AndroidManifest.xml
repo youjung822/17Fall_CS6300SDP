@@ -21,6 +21,7 @@
         <activity android:name=".PlayerStatisticsActivity"></activity>
         <activity android:name=".WordScrambleCreationActivity"></activity>
         <activity android:name=".WordScrambleStatisticsActivity"></activity>
+        <activity android:name=".UnsolvedScrambleSelectActivity"></activity>
 
 
     </application>

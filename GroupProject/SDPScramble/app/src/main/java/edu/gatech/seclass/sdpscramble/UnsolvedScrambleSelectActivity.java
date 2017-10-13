@@ -1,19 +1,23 @@
 package edu.gatech.seclass.sdpscramble;
 
-import android.app.ListActivity;
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ListView;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 
-public class UnsolvedScrambleSelectActivity extends ListActivity {
+public class UnsolvedScrambleSelectActivity extends AppCompatActivity {
 
     //pull scramble List data from EWS and and send to the ListView using an ArrayAdapter
 
@@ -22,7 +26,10 @@ public class UnsolvedScrambleSelectActivity extends ListActivity {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.word_scramble_select);
-        List<String> unsolvedScrambles = savedInstanceState.getStringArrayList("unsolvedScrambles");
+        Context context = this.getApplicationContext();
+        SharedPreferences settings = context.getSharedPreferences(getString(R.string.select_word_scramble), Context.MODE_PRIVATE);
+        Set<String> set = settings.getStringSet(getString(R.string.select_word_scramble), null);
+        List<String> unsolvedScrambles = new ArrayList<String>(set);
 
         Button back = (Button)findViewById(R.id.backToMainMenu);
         back.setOnClickListener(new View.OnClickListener() {
@@ -42,16 +49,10 @@ public class UnsolvedScrambleSelectActivity extends ListActivity {
             }
         };
 
-        ListView listView = findViewById(R.id.unsolvedWordScramblesList);
+        ListView listView = (ListView) findViewById(R.id.unsolvedWordScramblesList);
         //populate ListView
-        if(unsolvedScrambles.size() == 0){
-            listView.setActivated(false);
-            unsolvedScrambles.add("No New Scrambles");
-        }
-        else{
-            listView.setActivated(true);
-        }
-        ArrayAdapter<String> adapter = new ArrayAdapter<>(this,android.R.layout.simple_list_item_1,unsolvedScrambles);
+
+        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, unsolvedScrambles);
         listView.setAdapter(adapter);
         listView.setOnItemClickListener(scrambleClickedHandler);
     }
