@@ -2,13 +2,16 @@ package edu.gatech.seclass.sdpscramble;
 
 import android.content.SharedPreferences;
 import android.content.Intent;
+import android.database.DatabaseUtils;
 import android.database.sqlite.SQLiteDatabase;
+import android.database.Cursor;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.TextView;
+import static nl.qbusict.cupboard.CupboardFactory.cupboard;
 
 import java.net.SocketTimeoutException;
 import java.util.Iterator;
@@ -21,11 +24,15 @@ import edu.gatech.seclass.utilities.ExternalWebService;
  */
 
 public class MainMenuActivity extends AppCompatActivity {
-    public static final String PREFS_NAME = "MyPrefsFile";
     static SQLiteDatabase db;
+    final ExternalWebService ews = ExternalWebService.getInstance(); //need to create instance once and pass same instance whenever EWS is called
 
-    //need to create instance once and pass same instance whenever EWS is called
-    final ExternalWebService ews = ExternalWebService.getInstance();
+    /**
+     * ACTIVE USER PREFERENCES - START
+     * current logged in user stored as a user preference
+     */
+
+    public static final String PREFS_NAME = "MyPrefsFile";
 
     //returns active user or null if there is no logged in user
     public String getActiveUser(){
@@ -50,6 +57,10 @@ public class MainMenuActivity extends AppCompatActivity {
         editor.commit();
     }
 
+    /**
+     * ACTIVE USER PREFERENCES - END
+     */
+
     //return true if username is valid
     public boolean login(String username){
         return this.login(ews, username);
@@ -59,6 +70,7 @@ public class MainMenuActivity extends AppCompatActivity {
     public String createPlayer(String username, String firstname, String lastname, String email){
         return this.createPlayer(ews, username, firstname, lastname, email);
     }
+
 
 
     @Override
@@ -136,14 +148,14 @@ public class MainMenuActivity extends AppCompatActivity {
 
 
     /**
-     *  ALL CALLS TO ExternalWebService
+     *  ALL CALLS TO ExternalWebService - START
      */
 
 
 
     /**
      * createPlayer()
-     * calls EWS and creates a new player
+     * calls EWS and creates a new player - then adds the person to the local database
      * @return unique username
      */
 
@@ -157,7 +169,16 @@ public class MainMenuActivity extends AppCompatActivity {
             e.printStackTrace();
         }
 
+        //delete all data from PlayerTable - REMOVE THIS LATER
+        clearAllData(PlayerTable.class);
+
+        //insert new player
+        insertPlayerData(strPlayerNewID, firstname, lastname, email);
+
+
+        //return unique id
         return strPlayerNewID;
+
     }
 
     /**
@@ -182,6 +203,47 @@ public class MainMenuActivity extends AppCompatActivity {
         return validUsername;
     }
 
+    /**
+     *  ALL CALLS TO ExternalWebService - END
+     */
+
+    /**
+     * Database calls - START
+     */
+
+
+    // delete all data from the table passed as a class
+    public static void clearAllData(Class Tbl) {
+        cupboard().withDatabase(db).delete(Tbl, null);
+    }
+
+    // create player in local db
+    public static void insertPlayerData(String username, String firstname, String lastname, String email){
+        //create player in local database
+        PlayerTable newPlayer = new PlayerTable(username, firstname, lastname, email, 0, 0, 0.0);
+        long id = cupboard().withDatabase(db).put(newPlayer);
+
+        /**
+        Cursor cursor = cupboard().withDatabase(db).query(PlayerTable.class).getCursor();
+        try {
+            //iterate player
+            while(cursor.moveToNext()){
+                //DatabaseUtils.dumpCurrentRow(player);
+                System.out.println(cursor.getString(cursor.getColumnIndex("username")));
+            }
+
+        } finally {
+            cursor.close();
+        }
+         */
+
+    }
+
+
+
+    /**
+     * Database calls - END
+     */
 }
 
 

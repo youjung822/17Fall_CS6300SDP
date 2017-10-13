@@ -91,8 +91,7 @@ public class PlayerCreationActivity extends AppCompatActivity {
             }
         });
 
-
-
     }
+
 
 }
