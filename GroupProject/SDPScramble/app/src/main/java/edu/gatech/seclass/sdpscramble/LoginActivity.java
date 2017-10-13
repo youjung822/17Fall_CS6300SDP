@@ -4,7 +4,6 @@ import android.app.Activity;
 import android.content.SharedPreferences;
 import android.content.Intent;
 import android.os.Bundle;
-import android.preference.PreferenceManager;
 import android.support.v7.app.AppCompatActivity;
 import android.view.MotionEvent;
 import android.view.View;
@@ -36,7 +35,7 @@ public class LoginActivity extends AppCompatActivity {
                 // Code here executes on main thread after user presses button
 
                 //get user's input for username
-                TextView inputUsernameText = (TextView) findViewById(R.id.usernameInput);
+                TextView inputUsernameText = (TextView) findViewById(R.id.usernameLogin);
 
                 //if the username field is empty, display an error
                 if (inputUsernameText.getText().toString().length() == 0) {
@@ -73,7 +72,7 @@ public class LoginActivity extends AppCompatActivity {
 
 
         //run code when Sign Up button is clicked
-        final Button signup = (Button) findViewById(R.id.createPlayer);
+        final Button signup = (Button) findViewById(R.id.signup);
         signup.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 Intent playerCreation = new Intent(getApplicationContext(), PlayerCreationActivity.class);

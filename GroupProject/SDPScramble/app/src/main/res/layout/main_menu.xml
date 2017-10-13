@@ -70,7 +70,7 @@
 
     <TextView
         android:id="@+id/create_word_scramble"
-        android:layout_width="128dp"
+        android:layout_width="0dp"
         android:layout_height="41dp"
         android:text="@string/create_word_scramble"
         android:textAlignment="center"
@@ -84,7 +84,9 @@
         app:layout_constraintTop_toBottomOf="@+id/createWordScramble"
         tools:layout_constraintLeft_creator="1"
         tools:layout_constraintRight_creator="1"
-        tools:layout_constraintTop_creator="1" />
+        tools:layout_constraintTop_creator="1"
+        android:layout_marginStart="9dp"
+        android:layout_marginEnd="9dp" />
 
     <TextView
         android:id="@+id/view_player_statistics"
@@ -108,10 +110,8 @@
 
     <TextView
         android:id="@+id/view_word_scramble_statistics"
-        android:layout_width="128dp"
+        android:layout_width="0dp"
         android:layout_height="51dp"
-        android:layout_marginEnd="21dp"
-        android:layout_marginStart="21dp"
         android:text="@string/view_word_scramble_statistics"
         android:textAlignment="center"
         android:textAppearance="@style/TextAppearance.AppCompat.Button"
@@ -126,10 +126,10 @@
 
     <TextView
         android:id="@+id/solve_word_scramble"
-        android:layout_width="128dp"
+        android:layout_width="0dp"
         android:layout_height="41dp"
-        android:layout_marginEnd="17dp"
-        android:layout_marginStart="17dp"
+        android:layout_marginEnd="9dp"
+        android:layout_marginStart="9dp"
         android:text="@string/solve_word_scrambles"
         android:textAlignment="center"
         android:textAllCaps="true"
@@ -145,12 +145,14 @@
         tools:layout_constraintTop_creator="1" />
 
     <TextView
-        android:id="@+id/usernameInput"
+        android:id="@+id/usernameMainMenu"
         android:layout_width="wrap_content"
-        android:layout_height="65dp"
-        android:layout_marginBottom="32dp"
-        android:layout_marginEnd="12dp"
-        android:layout_marginStart="12dp"
+        android:layout_height="0dp"
+        android:layout_marginBottom="16dp"
+        android:layout_marginEnd="41dp"
+        android:layout_marginLeft="41dp"
+        android:layout_marginRight="41dp"
+        android:layout_marginStart="41dp"
         android:layout_marginTop="16dp"
         android:text="@android:string/unknownName"
         android:textAlignment="center"
@@ -159,15 +161,14 @@
         android:textSize="30sp"
         app:layout_constraintBottom_toTopOf="@+id/solveWordScrambles"
         app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toLeftOf="@+id/logout"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.0"
         tools:layout_constraintBottom_creator="1"
         tools:layout_constraintLeft_creator="1"
         tools:layout_constraintRight_creator="1"
         tools:layout_constraintTop_creator="1"
-        android:layout_marginLeft="12dp"
-        app:layout_constraintRight_toLeftOf="@+id/logout"
-        android:layout_marginRight="8dp" />
+        app:layout_constraintHorizontal_bias="1.0" />
 
     <Button
         android:id="@+id/logout"
@@ -177,6 +178,7 @@
         android:layout_marginTop="16dp"
         android:text="Logout"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        android:layout_marginEnd="28dp" />
 
 </android.support.constraint.ConstraintLayout>

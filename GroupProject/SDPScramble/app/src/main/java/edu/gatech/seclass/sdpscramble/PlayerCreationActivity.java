@@ -72,15 +72,14 @@ public class PlayerCreationActivity extends AppCompatActivity {
                 }
 
                 if(validInput){
-                    String returnedUsername = menu.createPlayer(inputUsername.getText().toString(), inputFirstName.getText().toString(),
-                            inputLastName.getText().toString(), inputEmail.getText().toString());
+                    String returnedUsername = menu.createPlayer(inputUsername.getText().toString(), inputFirstName.getText().toString(), inputLastName.getText().toString(), inputEmail.getText().toString());
                     setContentView(R.layout.player_creation_successful);
 
                     TextView finalUsername = (TextView) findViewById(R.id.userName);
                     finalUsername.setText(returnedUsername);
 
                     //run code when OK button is clicked
-                    final Button okButton = (Button) findViewById(R.id.ok);
+                    final Button okButton = (Button) findViewById(R.id.okPlayerCreation);
                     okButton.setOnClickListener(new View.OnClickListener(){
                         public void onClick(View v) {
                             Intent loginActivity = new Intent(getApplicationContext(), LoginActivity.class);
@@ -92,7 +91,8 @@ public class PlayerCreationActivity extends AppCompatActivity {
             }
         });
 
-    }
 
+
+    }
 
 }

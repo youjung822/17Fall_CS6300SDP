@@ -23,7 +23,7 @@ public class WordScrambleCreationActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.new_word_scramble_creation);
 
-        final Button cancelButton = (Button) findViewById(R.id.cancel);
+        final Button cancelButton = (Button) findViewById(R.id.cancelWordScrambleCreation);
         cancelButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 Intent mainMenuActivity = new Intent(getApplicationContext(), MainMenuActivity.class);
@@ -33,7 +33,7 @@ public class WordScrambleCreationActivity extends AppCompatActivity {
     }
 
     public void scramble(View view) {
-        EditText phraseText = (EditText) findViewById(R.id.phrase);
+        EditText phraseText = (EditText) findViewById(R.id.phraseCreation);
         String currentPhrase = phraseText.getText().toString();
 
         if (currentPhrase.isEmpty()) {
@@ -48,7 +48,7 @@ public class WordScrambleCreationActivity extends AppCompatActivity {
             return;
         }
 
-        EditText clueText = (EditText) findViewById(R.id.clue);
+        EditText clueText = (EditText) findViewById(R.id.clueCreation);
         String currentClue = clueText.getText().toString();
 
         try {
@@ -66,7 +66,7 @@ public class WordScrambleCreationActivity extends AppCompatActivity {
             return;
         }
 
-        TextView scrambledPhraseText = (TextView) findViewById(R.id.scrambledPhrase);
+        TextView scrambledPhraseText = (TextView) findViewById(R.id.scrambledPhraseCreation);
         scrambledPhraseText.setText(scrambledPhrase);
     }
 
@@ -77,7 +77,7 @@ public class WordScrambleCreationActivity extends AppCompatActivity {
     }
 
     public void submit(View view) {
-        TextView scrambledPhraseText = (TextView) findViewById(R.id.scrambledPhrase);
+        TextView scrambledPhraseText = (TextView) findViewById(R.id.scrambledPhraseCreation);
         String scrambledPhrase = scrambledPhraseText.getText().toString();
 
 

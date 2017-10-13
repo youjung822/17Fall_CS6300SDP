@@ -13,6 +13,7 @@ import android.widget.TextView;
 import static nl.qbusict.cupboard.CupboardFactory.cupboard;
 
 import java.net.SocketTimeoutException;
+import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
@@ -70,11 +71,19 @@ public class MainMenuActivity extends AppCompatActivity {
         return this.createPlayer(ews, username, firstname, lastname, email);
     }
 
+    //return specified scramble
+    public List<String> getScramble(String wordScrambleUid) {
+        return this.getScramble(ews,wordScrambleUid);
+    }
     public String createWordScramble(String phrase, String scrambledPhrase, String clue, String creator) {
         return this.createWordScramble(ews, phrase, scrambledPhrase, clue, creator);
     }
 
 
+    //report solved scramble by player
+    public boolean reportSolve(String wordScrambleUid, String username){
+        return this.reportSolve(ews, wordScrambleUid, username);
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -91,7 +100,7 @@ public class MainMenuActivity extends AppCompatActivity {
         //when a user is logged in
         if(isLoggedIn()){
             setContentView(R.layout.main_menu);
-            TextView userInfo = (TextView) findViewById(R.id.usernameInput);
+            TextView userInfo = (TextView) findViewById(R.id.usernameMainMenu);
             userInfo.setText(getActiveUser());
 
 
@@ -109,8 +118,10 @@ public class MainMenuActivity extends AppCompatActivity {
             final ImageButton solveScramble = (ImageButton) findViewById(R.id.solveWordScrambles);
             solveScramble.setOnClickListener(new View.OnClickListener() {
                 public void onClick(View v) {
-                    Intent gameActivity = new Intent(getApplicationContext(), GameActivity.class);
-                    startActivity(gameActivity);
+                    Intent selectScrambleActivity = new Intent(getApplicationContext(), WordScrambleSelect.class);
+                    selectScrambleActivity.putStringArrayListExtra("unsolvedScrambles",listUnsolvedScrambles(ews, getActiveUser()));
+                    startActivity(selectScrambleActivity);
+
                 }
             });
 
@@ -160,6 +171,7 @@ public class MainMenuActivity extends AppCompatActivity {
      * createPlayer()
      * calls EWS and creates a new player - then adds the person to the local database
      * @return unique username
+     *
      */
 
     private static String createPlayer(ExternalWebService ews, String username, String firstname, String lastname, String email) {
@@ -202,6 +214,69 @@ public class MainMenuActivity extends AppCompatActivity {
         }
         return validUsername;
     }
+
+    /**
+     * listUnsolvedScrambles()
+     * creates a ArrayList<String> of all unsolved scrambles not created by the user.
+     * each string in the ArrayList is of the format "wordScrambleUid: scrambledPhrase" to be used in a ListView
+     * @return ArrayList of unsolved scrambles
+     */
+    private static ArrayList<String> listUnsolvedScrambles(ExternalWebService ews, String username){
+        List<List<String>> scrambles = ews.retrieveScrambleService();
+        List<List<String>> players = ews.retrievePlayerListService();
+
+        //just usernames for quick indexing
+        List<String> usernames = new ArrayList<String>();
+        for (List<String> player : players) {
+            usernames.add(player.get(0));
+        }
+
+        //find index of current player's username in EWS
+        List<String> player = players.get(usernames.indexOf(username));
+        //grab list of wordScrambleUIDs of scrambles solved by the player.
+        List<String> solvedScrambles = player.subList(4,player.size());
+
+        //create list of unsolved scrambles to show users in a ListView by
+        //filtering out all scrambles solved and created by the user
+        ArrayList<String> unsolvedScrambles = new ArrayList<>();
+        for (List<String> scramble : scrambles){
+            if(!(solvedScrambles.contains(scramble.get(0))) && !(scramble.get(4).equals(username))){
+                unsolvedScrambles.add(scramble.get(0) + ": " + scramble.get(2));
+            }
+        }
+
+        return unsolvedScrambles;
+
+    }
+
+    /**
+     * getScramble()
+     * grabs the scramble with the matching wordScrambleUid
+     * @param ews
+     * @param wordScrambleUid
+     * @return scramble
+     */
+    private static List<String> getScramble(ExternalWebService ews,  String wordScrambleUid){
+        List<List<String>> scrambles = ews.retrieveScrambleService();
+        List<String> uids = new ArrayList<String>();
+
+        for (List<String> scramble: scrambles) {
+            uids.add(scramble.get(0));
+        }
+
+        return scrambles.get(uids.indexOf(wordScrambleUid));
+
+    }
+
+    /**
+     * reportSolve()
+     * report a solved scramble by a player.
+     * @return boolean representing success
+     */
+    private static boolean reportSolve(ExternalWebService ews, String wordScrambleUid, String username){
+        return ews.reportSolveService(wordScrambleUid,username);
+    }
+
 
     private static String createWordScramble(ExternalWebService ews, String phrase, String scrambledPhrase, String clue, String creator) {
         String wordScrambleUid = "";
@@ -246,18 +321,18 @@ public class MainMenuActivity extends AppCompatActivity {
 
         /**
 
-        samle code for iterating through a cursor - can remove at end
-        try {
-            //iterate cursor
-            String column_name = "username";
-            while(cursor.moveToNext()){
-                //DatabaseUtils.dumpCurrentRow(player);
-                System.out.println(cursor.getString(cursor.getColumnIndex(column_name)));
-            }
+         samle code for iterating through a cursor - can remove at end
+         try {
+         //iterate cursor
+         String column_name = "username";
+         while(cursor.moveToNext()){
+         //DatabaseUtils.dumpCurrentRow(player);
+         System.out.println(cursor.getString(cursor.getColumnIndex(column_name)));
+         }
 
-        } finally {
-            cursor.close();
-        }
+         } finally {
+         cursor.close();
+         }
          */
 
     }
@@ -273,5 +348,4 @@ public class MainMenuActivity extends AppCompatActivity {
      * Database CRUD - END
      */
 }
-
 

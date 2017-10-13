@@ -19,4 +19,5 @@
     <string name="word_scramble_successful_dialog">Your Word Scrambles Has Been Succesffully Created. Its ID number is:</string>
     <string name="word_scramble">Word Scramble:</string>
     <string name="select_word_scramble">Select a Word Scramble to Solve</string>
+    <string name="back">Back to Main Menu</string>
 </resources>
