@@ -2,6 +2,7 @@ package edu.gatech.seclass.sdpscramble;
 
 /**
  * Created by tamur on 10/12/17.
+ *
  */
 
 public class WordScrambleTable {
