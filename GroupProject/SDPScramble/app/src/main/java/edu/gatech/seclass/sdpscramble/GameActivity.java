@@ -59,12 +59,10 @@ public class GameActivity extends AppCompatActivity {
 
         guess = (EditText)findViewById(R.id.scrambleGuess);
         guess.setHint(currentScramble.get(2).replaceAll("[A-Z]+?|[a-z]+?", "_"));
-        System.out.println(guess.getText().toString());
+
         Button submitGuess = (Button) findViewById(R.id.submitGuess);
         submitGuess.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                System.out.println(guess.getText().toString());
-                System.out.println(currentScramble.get(1));
                 if(guess.getText().toString().equals(currentScramble.get(1))){
                     System.out.println(guess.getText().toString());
                     Intent reportSolveActivity = new Intent(v.getContext(), MainMenuActivity.class);
