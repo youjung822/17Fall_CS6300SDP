@@ -135,7 +135,6 @@ public class MainMenuActivity extends AppCompatActivity {
      * @return unique username
      */
 
-
     private static boolean login(ExternalWebService ews, String username) {
         boolean validUsername = false;
         if (username != null && !username.isEmpty()) {
@@ -284,9 +283,33 @@ public class MainMenuActivity extends AppCompatActivity {
     }
 
     /**
+     * Retrieve PlayerStat
+     * @return
+     */
+    public ArrayList<PlayerTable>  retrievePlayerStatistic() {
+        return retrievePlayerStatistic(ews);
+    }
+
+    //Pull the playser statistic data.
+    private ArrayList<PlayerTable>  retrievePlayerStatistic(ExternalWebService ews)
+    {
+        List<List<String>> playerList = ews.retrievePlayerListService();
+        ArrayList<PlayerTable> arrPlayer = new ArrayList<>();
+
+        Iterator<List<String>> iter = playerList.iterator();
+        while (iter.hasNext()) {
+            List<String> curIter = iter.next();
+            PlayerTable pt = new PlayerTable(curIter.get(0), curIter.get(1), curIter.get(2), curIter.get(3), 4,5,6.0);
+            arrPlayer.add(pt);
+        }
+        return arrPlayer;
+    }
+
+
+    /**
      * Database CRUD - END
      */
-    
+
 
     /**
      * ONCREATE()
@@ -313,7 +336,8 @@ public class MainMenuActivity extends AppCompatActivity {
                 logout();
             }
         }
-        
+
+
         /**
          * CODE FOR MOCK EWS - END
          */
@@ -395,6 +419,13 @@ public class MainMenuActivity extends AppCompatActivity {
 
     }
 
+    /**
+     * Checks to make sure
+     */
 
+
+    /**
+     * Database CRUD - END
+     */
 }
 
