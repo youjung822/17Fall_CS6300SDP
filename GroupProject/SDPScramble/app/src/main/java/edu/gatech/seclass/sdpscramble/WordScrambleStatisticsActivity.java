@@ -15,7 +15,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Created by Youngblood on 10/13/2017.
+ * Created by John Youngblood on 10/13/2017.
  */
 
 public class WordScrambleStatisticsActivity extends AppCompatActivity {
