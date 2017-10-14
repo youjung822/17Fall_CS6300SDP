@@ -306,31 +306,6 @@ public class MainMenuActivity extends AppCompatActivity {
         /**
          * CODE FOR MOCK EWS - START
          */
-        //initialize a player at start up
-        List<List<String>> players = new ArrayList<List<String>>(10);
-        List<String> player = new ArrayList<String>();
-
-        player.add("a");
-        player.add("a");
-        player.add("a");
-        player.add("a");
-
-        players.add(player);
-        ews.initializePlayers(players);
-
-
-        //initialize a word scramble at start up
-        List<List<String>> scrambles = new ArrayList<List<String>>(10);
-        List<String> scramble = new ArrayList<String>();
-
-        scramble.add("a");
-        scramble.add("abcdef");
-        scramble.add("fedcba");
-        scramble.add("ABC's");
-        scramble.add("a");
-
-        scrambles.add(scramble);
-        ews.initializeScramble(scrambles);
 
         //if a user has a local account but not one on EWS, make sure mock EWS doesn't crash it
         if(isLoggedIn()){
@@ -338,8 +313,7 @@ public class MainMenuActivity extends AppCompatActivity {
                 logout();
             }
         }
-
-
+        
         /**
          * CODE FOR MOCK EWS - END
          */
