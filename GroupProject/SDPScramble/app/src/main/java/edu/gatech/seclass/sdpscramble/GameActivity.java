@@ -58,12 +58,13 @@ public class GameActivity extends AppCompatActivity {
         clueView.setText(currentScramble.get(3));
 
         guess = (EditText)findViewById(R.id.scrambleGuess);
-        guess.setHint(currentScramble.get(1).replaceAll("[A-Z]+?|[a-z]+?","_"));
+        guess.setHint(currentScramble.get(2).replaceAll("[A-Z]+?|[a-z]+?", "_"));
 
         Button submitGuess = (Button) findViewById(R.id.submitGuess);
         submitGuess.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 if(guess.getText().toString().equals(currentScramble.get(1))){
+                    System.out.println(guess.getText().toString());
                     Intent reportSolveActivity = new Intent(v.getContext(), MainMenuActivity.class);
                     startActivity(reportSolveActivity);
                 }
@@ -75,7 +76,7 @@ public class GameActivity extends AppCompatActivity {
         });
 
         Button exitGame = (Button) findViewById(R.id.exitGame);
-        submitGuess.setOnClickListener(new View.OnClickListener() {
+        exitGame.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 //TODO save scrambleGuess to db
                 Intent exitGameActivity = new Intent(v.getContext(), MainMenuActivity.class);
