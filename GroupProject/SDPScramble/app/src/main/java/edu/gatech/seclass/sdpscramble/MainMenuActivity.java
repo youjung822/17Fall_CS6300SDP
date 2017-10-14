@@ -299,7 +299,8 @@ public class MainMenuActivity extends AppCompatActivity {
         Iterator<List<String>> iter = playerList.iterator();
         while (iter.hasNext()) {
             List<String> curIter = iter.next();
-            PlayerTable pt = new PlayerTable(curIter.get(0), curIter.get(1), curIter.get(2), curIter.get(3), 4,5,6.0);
+
+            PlayerTable pt = new PlayerTable(curIter.get(0), curIter.get(1), curIter.get(2), curIter.get(3), curIter.size()-4 ,5,6.0);
             arrPlayer.add(pt);
         }
         return arrPlayer;
