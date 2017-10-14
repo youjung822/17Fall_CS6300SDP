@@ -64,9 +64,23 @@ public class GameActivity extends AppCompatActivity {
         submitGuess.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 if(guess.getText().toString().equals(currentScramble.get(1))){
-                    Intent reportSolveActivity = new Intent(v.getContext(), MainMenuActivity.class);
-                    menu.reportSolve(uid, menu.getActiveUser());
-                    startActivity(reportSolveActivity);
+                    SharedPreferences settings = getSharedPreferences("MyPrefsFile", 0);
+                    String activeUser = settings.getString("user", null);
+
+                    //report solve
+                    menu.reportSolve(uid, activeUser);
+
+                    setContentView(R.layout.scramble_guess_successful);
+
+                    //run code when OK button is clicked
+                    final Button okButton = (Button) findViewById(R.id.okScrambleGuessCorrect);
+                    okButton.setOnClickListener(new View.OnClickListener(){
+                        public void onClick(View v) {
+                            Intent reportSolveActivity = new Intent(v.getContext(), MainMenuActivity.class);
+                            startActivity(reportSolveActivity);
+                        }
+                    });
+
                 }
                 else{
                     guess.setError("Wrong Answer. Try Again!");

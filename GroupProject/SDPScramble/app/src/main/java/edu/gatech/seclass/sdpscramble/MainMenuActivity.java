@@ -40,19 +40,19 @@ public class MainMenuActivity extends AppCompatActivity {
     static SQLiteDatabase db;
 
     //returns active user or null if there is no logged in user
-    public String getActiveUser() {
+    private String getActiveUser() {
         SharedPreferences settings = getSharedPreferences(PREFS_NAME, 0);
         return settings.getString("user", null);
     }
 
     //check if a user is logged in
-    public boolean isLoggedIn() {
+    private boolean isLoggedIn() {
         SharedPreferences settings = getSharedPreferences(PREFS_NAME, 0);
         return !(settings.getString("user", null) == null || settings.getString("user", null).isEmpty());
     }
 
     //log user out
-    public void logout() {
+    private void logout() {
         SharedPreferences settings = getSharedPreferences(PREFS_NAME, 0);
         SharedPreferences.Editor editor = settings.edit();
         editor.clear();
