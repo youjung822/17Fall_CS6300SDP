@@ -28,6 +28,9 @@ import static nl.qbusict.cupboard.CupboardFactory.cupboard;
  */
 
 public class MainMenuActivity extends AppCompatActivity {
+
+    final ExternalWebService ews = ExternalWebService.getInstance(); //need to create instance once and pass same instance whenever EWS is called
+
     /**
      * ACTIVE USER PREFERENCES - START
      * current logged in user stored as a user preference
@@ -35,7 +38,70 @@ public class MainMenuActivity extends AppCompatActivity {
 
     public static final String PREFS_NAME = "MyPrefsFile";
     static SQLiteDatabase db;
-    final ExternalWebService ews = ExternalWebService.getInstance(); //need to create instance once and pass same instance whenever EWS is called
+
+    //returns active user or null if there is no logged in user
+    public String getActiveUser() {
+        SharedPreferences settings = getSharedPreferences(PREFS_NAME, 0);
+        return settings.getString("user", null);
+    }
+
+    //check if a user is logged in
+    public boolean isLoggedIn() {
+        SharedPreferences settings = getSharedPreferences(PREFS_NAME, 0);
+        return !(settings.getString("user", null) == null || settings.getString("user", null).isEmpty());
+    }
+
+    //log user out
+    public void logout() {
+        SharedPreferences settings = getSharedPreferences(PREFS_NAME, 0);
+        SharedPreferences.Editor editor = settings.edit();
+        editor.clear();
+        editor.commit();
+    }
+
+    /**
+     * ACTIVE USER PREFERENCES - END
+     */
+
+
+    /**
+     * PUBLIC METHODS - START
+     */
+
+    //return true if username is valid
+    public boolean login(String username) {
+        return login(ews, username);
+    }
+
+    //return unique username
+    public String createPlayer(String username, String firstname, String lastname, String email) {
+        return createPlayer(ews, username, firstname, lastname, email);
+    }
+
+    //return specified scramble
+    public List<String> getScramble(String wordScrambleUid) {
+        return getScramble(ews, wordScrambleUid);
+    }
+
+    //create a word scramble
+    public String createWordScramble(String phrase, String scrambledPhrase, String clue, String creator) {
+        return createWordScramble(ews, phrase, scrambledPhrase, clue, creator);
+    }
+
+    //report solved scramble by player
+    public boolean reportSolve(String wordScrambleUid, String username) {
+        return reportSolve(ews, wordScrambleUid, username);
+    }
+
+    /**
+     * PUBLIC METHODS - END
+     */
+
+
+    /**
+     * PRIVATE METHODS AND EWS CALLS - START
+     */
+
 
     /**
      * createPlayer()
@@ -68,6 +134,7 @@ public class MainMenuActivity extends AppCompatActivity {
      * calls EWS and logs a player in
      * @return unique username
      */
+
 
     private static boolean login(ExternalWebService ews, String username) {
         boolean validUsername = false;
@@ -124,9 +191,7 @@ public class MainMenuActivity extends AppCompatActivity {
 
     }
 
-    /**
-     * ACTIVE USER PREFERENCES - END
-     */
+
 
     /**
      * getScramble()
@@ -171,6 +236,10 @@ public class MainMenuActivity extends AppCompatActivity {
     }
 
     /**
+     * PRIVATE METHODS AND EWS CALLS - END
+     */
+
+    /**
      * Database CRUD - START
      */
 
@@ -184,11 +253,6 @@ public class MainMenuActivity extends AppCompatActivity {
     public static Cursor getTableCursor(Class Tbl){
         return cupboard().withDatabase(db).query(Tbl).getCursor();
     }
-
-
-    /**
-     * PUBLIC METHODS - END
-     */
 
     // create player in local db
     public static void insertPlayerData(String username, String firstname, String lastname, String email){
@@ -214,68 +278,15 @@ public class MainMenuActivity extends AppCompatActivity {
 
     }
 
-
-    /**
-     * ALL CALLS TO ExternalWebService - START
-     */
-
     public static void insertWordScrambleData(String wordScrambleUid, String phrase, String clue, String scrambledPhrase, String creator) {
         WordScrambleTable newWordScramble = new WordScrambleTable(wordScrambleUid, phrase, clue, scrambledPhrase, creator, 0);
         long id = cupboard().withDatabase(db).put(newWordScramble);
     }
 
-    //returns active user or null if there is no logged in user
-    public String getActiveUser() {
-        SharedPreferences settings = getSharedPreferences(PREFS_NAME, 0);
-        return settings.getString("user", null);
-    }
-
-    //check if a user is logged in
-    public boolean isLoggedIn() {
-        SharedPreferences settings = getSharedPreferences(PREFS_NAME, 0);
-        return !(settings.getString("user", null) == null || settings.getString("user", null).isEmpty());
-    }
-
-    //log user out
-    public void logout() {
-        SharedPreferences settings = getSharedPreferences(PREFS_NAME, 0);
-        SharedPreferences.Editor editor = settings.edit();
-        editor.clear();
-        editor.commit();
-    }
-
     /**
-     * PUBLIC METHODS - START
+     * Database CRUD - END
      */
-
-    //return true if username is valid
-    public boolean login(String username) {
-        return login(ews, username);
-    }
-
-    //return unique username
-    public String createPlayer(String username, String firstname, String lastname, String email) {
-        return createPlayer(ews, username, firstname, lastname, email);
-    }
-
-    /**
-     * ALL CALLS TO ExternalWebService - END
-     */
-
-    //return specified scramble
-    public List<String> getScramble(String wordScrambleUid) {
-        return getScramble(ews, wordScrambleUid);
-    }
-
-    //create a word scramble
-    public String createWordScramble(String phrase, String scrambledPhrase, String clue, String creator) {
-        return createWordScramble(ews, phrase, scrambledPhrase, clue, creator);
-    }
-
-    //report solved scramble by player
-    public boolean reportSolve(String wordScrambleUid, String username) {
-        return reportSolve(ews, wordScrambleUid, username);
-    }
+    
 
     /**
      * ONCREATE()
@@ -395,13 +406,6 @@ public class MainMenuActivity extends AppCompatActivity {
 
     }
 
-    /**
-     * Checks to make sure
-     */
 
-
-    /**
-     * Database CRUD - END
-     */
 }
 
