@@ -262,7 +262,7 @@ public class MainMenuActivity extends AppCompatActivity {
 
         /**
 
-         samle code for iterating through a cursor - can remove at end
+         sample code for iterating through a cursor - can remove at end
          try {
          //iterate cursor
          String column_name = "username";
@@ -303,6 +303,9 @@ public class MainMenuActivity extends AppCompatActivity {
         SDPDatabaseHelper dbHelper = new SDPDatabaseHelper(this);
         db = dbHelper.getWritableDatabase();
 
+        /**
+         * CODE FOR MOCK EWS - START
+         */
         //initialize a player at start up
         List<List<String>> players = new ArrayList<List<String>>(10);
         List<String> player = new ArrayList<String>();
@@ -328,6 +331,18 @@ public class MainMenuActivity extends AppCompatActivity {
 
         scrambles.add(scramble);
         ews.initializeScramble(scrambles);
+
+        //if a user has a local account but not one on EWS, make sure mock EWS doesn't crash it
+        if(isLoggedIn()){
+            if(!login(getActiveUser())){
+                logout();
+            }
+        }
+
+
+        /**
+         * CODE FOR MOCK EWS - END
+         */
 
         /**
          * IF USER LOGGED IN
