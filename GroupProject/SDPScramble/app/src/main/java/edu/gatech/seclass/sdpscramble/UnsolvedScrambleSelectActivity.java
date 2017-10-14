@@ -44,7 +44,12 @@ public class UnsolvedScrambleSelectActivity extends AppCompatActivity {
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
                 Intent gameIntent = new Intent(view.getContext(), GameActivity.class);
                 String ws = adapterView.getItemAtPosition(i).toString();
-                gameIntent.putExtra("uid",ws.substring(0,ws.indexOf(':')));
+                SharedPreferences settings = getSharedPreferences(getString(R.string.word_scramble), Context.MODE_PRIVATE);
+                SharedPreferences.Editor editor = settings.edit();
+                editor.clear();
+                editor.putString(getString(R.string.word_scramble), ws.substring(0, ws.indexOf(':')));
+                editor.commit();
+                Intent selectScrambleActivity = new Intent(getApplicationContext(), GameActivity.class);
                 startActivity(gameIntent);
             }
         };

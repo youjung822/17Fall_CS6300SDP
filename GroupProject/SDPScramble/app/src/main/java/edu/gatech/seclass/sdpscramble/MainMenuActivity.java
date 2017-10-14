@@ -113,10 +113,9 @@ public class MainMenuActivity extends AppCompatActivity {
 
         //create list of unsolved scrambles to show users in a ListView by
         //filtering out all scrambles solved
-        //todo handle created scrambles in this filter
         ArrayList<String> unsolvedScrambles = new ArrayList<>();
         for (List<String> scramble : scrambles){
-            if (!(solvedScrambles.contains(scramble.get(0)))) {
+            if (!(solvedScrambles.contains(scramble.get(0))) && !(scramble.get(4).equals(username))) {
                 unsolvedScrambles.add(scramble.get(0) + ": " + scramble.get(2));
 
             }
