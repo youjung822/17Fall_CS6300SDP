@@ -43,9 +43,9 @@ public class GameActivity extends AppCompatActivity {
 
         Context context = this.getApplicationContext();
         SharedPreferences settings = context.getSharedPreferences(getString(R.string.word_scramble), Context.MODE_PRIVATE);
-        String uid = settings.getString(getString(R.string.word_scramble), "");
+        final String uid = settings.getString(getString(R.string.word_scramble), "");
 
-        MainMenuActivity menu = new MainMenuActivity();
+        final MainMenuActivity menu = new MainMenuActivity();
         currentScramble = menu.getScramble(uid);
 
         uidView = (TextView) findViewById(R.id.wordScrambleUID);
@@ -64,8 +64,8 @@ public class GameActivity extends AppCompatActivity {
         submitGuess.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 if(guess.getText().toString().equals(currentScramble.get(1))){
-                    System.out.println(guess.getText().toString());
                     Intent reportSolveActivity = new Intent(v.getContext(), MainMenuActivity.class);
+                    menu.reportSolve(uid, menu.getActiveUser());
                     startActivity(reportSolveActivity);
                 }
                 else{
