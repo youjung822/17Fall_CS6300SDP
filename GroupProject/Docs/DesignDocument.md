@@ -16,6 +16,7 @@
 * The application must be produced within the time frame established by the class.
 * The application must run with a minimum Android API Level of 19.
 * The EWS will not return data types that we create.
+* The EWS will not persist data across multiple runs.
 
 ### 1.3 System Environment
 
@@ -36,10 +37,6 @@
 ### 3.1 Class Diagram
 
 ![team44](https://github.gatech.edu/gt-omscs-se-2017fall/6300Fall17Team44/blob/master/GroupProject/Design-Team/images/team44Design.png?raw=true "Team design")
-
-### 3.2 Other Diagrams
-
-*<u>Optionally</u>, you can decide to describe some dynamic aspects of your system using one or more behavioral diagrams, such as sequence and state diagrams.*
 
 4 User Interface Design
 -----------------------
@@ -96,5 +93,8 @@
 ### 4.10 Word Scramble Statistics
 ![team44](https://github.gatech.edu/gt-omscs-se-2017fall/6300Fall17Team44/blob/master/GroupProject/Docs/Images//WordScrambleStatistics.png "Word Scramble Statistics")
 * When a Player on the main menu chooses to view statistics on Word Scrambles, they will be taken to this page. Here we list the unique identifier, whether it was solved or created by the Player, and the total number of Players that have solved the WordScramble. This page helps satisfy requirements 2 and 11 of this system. Solved % is not particular outlined in the requirements, but it is a clean way of representing total number of players that have solved the WordScramble by keeping the stats in a limited range instead of letting them continoulsy increase as the player base grows. Solved % can be calculated by Number of Players that have solved the WordScramble divided by the total number of unique players in the whole system - 1 (the creator).
+
+### 4.11 GUI Flowchart
+![team44](https://github.gatech.edu/gt-omscs-se-2017fall/6300Fall17Team44/blob/master/GroupProject/Docs/Images//Gui_Flowchart.png "GUI Flowchart")
 
 ![This GUI mockup was generated using Balsamiq.](../GUI_Mockup.pdf)
