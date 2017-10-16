@@ -15,13 +15,20 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".LoginActivity"></activity>
-        <activity android:name=".PlayerCreationActivity"></activity>
-        <activity android:name=".GameActivity"></activity>
-        <activity android:name=".PlayerStatisticsActivity"></activity>
-        <activity android:name=".WordScrambleCreationActivity"></activity>
-        <activity android:name=".WordScrambleStatisticsActivity"></activity>
-        <activity android:name=".UnsolvedScrambleSelectActivity"></activity>
+        <activity android:name=".LoginActivity"
+            android:screenOrientation="portrait" />
+        <activity android:name=".PlayerCreationActivity"
+            android:screenOrientation="portrait" />
+        <activity android:name=".GameActivity"
+            android:screenOrientation="portrait" />
+        <activity android:name=".PlayerStatisticsActivity"
+            android:screenOrientation="portrait" />
+        <activity android:name=".WordScrambleCreationActivity"
+            android:screenOrientation="portrait" />
+        <activity android:name=".WordScrambleStatisticsActivity"
+            android:screenOrientation="portrait" />
+        <activity android:name=".UnsolvedScrambleSelectActivity"
+            android:screenOrientation="portrait" />
 
 
     </application>
