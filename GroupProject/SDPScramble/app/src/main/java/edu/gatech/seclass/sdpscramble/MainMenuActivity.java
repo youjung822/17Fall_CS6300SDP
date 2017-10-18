@@ -191,7 +191,6 @@ public class MainMenuActivity extends AppCompatActivity {
         while(iter.hasNext()){
             List<String> scramble = iter.next();
             //insert player in db - username,
-            System.out.println(scramble);
             insertWordScrambleData(scramble.get(0), scramble.get(1), scramble.get(3), scramble.get(2), scramble.get(4));
         }
 
