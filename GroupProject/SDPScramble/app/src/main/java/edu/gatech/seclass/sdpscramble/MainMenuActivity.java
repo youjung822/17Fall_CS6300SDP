@@ -259,6 +259,10 @@ public class MainMenuActivity extends AppCompatActivity {
     }
 
     private List<String> retrieveNumScrambleCreatedByUser(List<List<String>> scrambleList,String userName){
+
+        /**
+         * may need to be moved to PlayerStatisticsActivity
+         */
         Iterator<List<String>> iter = scrambleList.iterator();
         int i = 0;
         List<String> listScramble = new ArrayList<String>();
@@ -273,6 +277,10 @@ public class MainMenuActivity extends AppCompatActivity {
     }
 
     private int countNumberOfPlayerSolved(List<String> scrambleList, List<List<String>> playerList){
+
+        /**
+         * may need to be moved to PlayerStatisticsActivity
+         */
 
         Iterator<String> iterScramble = scrambleList.iterator();
         int count = 0;
