@@ -1,6 +1,5 @@
 package edu.gatech.seclass.sdpscramble;
 
-import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.database.Cursor;
@@ -14,10 +13,8 @@ import android.widget.TextView;
 
 import java.net.SocketTimeoutException;
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
-import java.util.Set;
 
 import edu.gatech.seclass.utilities.ExternalWebService;
 
@@ -78,9 +75,14 @@ public class MainMenuActivity extends AppCompatActivity {
         return createPlayer(ews, username, firstname, lastname, email);
     }
 
-    //return specified scramble
-    public List<String> getScramble(String wordScrambleUid) {
-        return getScramble(ews, wordScrambleUid);
+    //return list of all players from EWS
+    public List<List<String>> getAllPlayers(){
+        return getAllPlayersFromEWS(ews);
+    }
+
+    //return list of all scrambles from EWS
+    public List<List<String>> getAllScrambles(){
+        return getAllScramblesFromEWS(ews);
     }
 
     //create a word scramble
@@ -92,6 +94,12 @@ public class MainMenuActivity extends AppCompatActivity {
     public boolean reportSolve(String wordScrambleUid, String username) {
         return reportSolve(ews, wordScrambleUid, username);
     }
+
+    //return playerstats
+    public ArrayList<PlayerTable>  retrievePlayerStatistic() {
+        return retrievePlayerStatistic(ews);
+    }
+
 
     /**
      * PUBLIC METHODS - END
@@ -138,7 +146,7 @@ public class MainMenuActivity extends AppCompatActivity {
     private static boolean login(ExternalWebService ews, String username) {
         boolean validUsername = false;
         if (username != null && !username.isEmpty()) {
-            List<List<String>> playerList = ews.retrievePlayerListService();
+            List<List<String>> playerList = getAllPlayersFromEWS(ews);
 
             Iterator<List<String>> iter = playerList.iterator();
             while (iter.hasNext()) {
@@ -152,62 +160,44 @@ public class MainMenuActivity extends AppCompatActivity {
     }
 
     /**
-     * listUnsolvedScrambles()
-     * creates a ArrayList<String> of all unsolved scrambles not created by the user.
-     * each string in the ArrayList is of the format "wordScrambleUid: scrambledPhrase" to be used in a ListView
-     * @return ArrayList of unsolved scrambles
+     * getAllPlayers() - gets all players from EWS - then calls db insert func
      */
-    private static ArrayList<String> listUnsolvedScrambles(ExternalWebService ews, String username){
-        List<List<String>> scrambles = ews.retrieveScrambleService();
-        List<List<String>> players = ews.retrievePlayerListService();
+    private static List<List<String>> getAllPlayersFromEWS(ExternalWebService ews){
+        //call EWS
+        List<List<String>> playerList = ews.retrievePlayerListService();
 
-        //just usernames for quick indexing
-        List<String> usernames = new ArrayList<String>();
-        for (List<String> player : players) {
-            usernames.add(player.get(0));
-        }
-        //find index of current player's username in EWS
-        List<String> player = players.get(usernames.indexOf(username));
-
-        //grab list of wordScrambleUIDs of scrambles solved by the player.
-        List<String> solvedScrambles;
-        if (player.size() > 4) {
-            solvedScrambles = player.subList(4, player.size());
-        } else {
-            solvedScrambles = new ArrayList<String>();
+        //iterate through each and insert into local db (db function handles existing records)
+        Iterator<List<String>> iter = playerList.iterator();
+        while(iter.hasNext()){
+            List<String> player = iter.next();
+                //insert player in db - username,
+                insertPlayerData(player.get(0), player.get(1), player.get(2), player.get(3));
         }
 
-        //create list of unsolved scrambles to show users in a ListView by
-        //filtering out all scrambles solved
-        ArrayList<String> unsolvedScrambles = new ArrayList<>();
-        for (List<String> scramble : scrambles){
-            if (!(solvedScrambles.contains(scramble.get(0))) && !(scramble.get(4).equals(username))) {
-                unsolvedScrambles.add(scramble.get(0) + ": " + scramble.get(2));
-
-            }
-        }
-        return unsolvedScrambles;
-
+        return playerList;
     }
 
 
 
     /**
-     * getScramble()
-     * grabs the scramble with the matching wordScrambleUid
-     * @return scramble
+     * getAllScrambles() - gets all scrambles from EWS - then calls db insert func
      */
-    private static List<String> getScramble(ExternalWebService ews,  String wordScrambleUid){
-        List<List<String>> scrambles = ews.retrieveScrambleService();
-        List<String> uids = new ArrayList<String>();
 
-        for (List<String> scramble: scrambles) {
-            uids.add(scramble.get(0));
+    private static List<List<String>> getAllScramblesFromEWS(ExternalWebService ews) {
+        List<List<String>> scrambleList = ews.retrieveScrambleService();
+
+        //iterate through each and insert into local db (db function handles existing records)
+        Iterator<List<String>> iter = scrambleList.iterator();
+        while(iter.hasNext()){
+            List<String> scramble = iter.next();
+            //insert player in db - username,
+            System.out.println(scramble);
+            insertWordScrambleData(scramble.get(0), scramble.get(1), scramble.get(3), scramble.get(2), scramble.get(4));
         }
 
-        return scrambles.get(uids.indexOf(wordScrambleUid));
-
+        return scrambleList;
     }
+
 
     /**
      * reportSolve()
@@ -234,68 +224,15 @@ public class MainMenuActivity extends AppCompatActivity {
         return wordScrambleUid;
     }
 
-    /**
-     * PRIVATE METHODS AND EWS CALLS - END
-     */
-
-    /**
-     * Database CRUD - START
-     */
-
-
-    // delete all data from the table passed as a class
-    public static void clearAllData(Class Tbl) {
-        cupboard().withDatabase(db).delete(Tbl, null);
-    }
-
-    //get Table cursor with all data
-    public static Cursor getTableCursor(Class Tbl){
-        return cupboard().withDatabase(db).query(Tbl).getCursor();
-    }
-
-    // create player in local db
-    public static void insertPlayerData(String username, String firstname, String lastname, String email){
-        //create player in local database
-        PlayerTable newPlayer = new PlayerTable(username, firstname, lastname, email, 0, 0, 0.0);
-        long id = cupboard().withDatabase(db).put(newPlayer);
-
-        /**
-
-         sample code for iterating through a cursor - can remove at end
-         try {
-         //iterate cursor
-         String column_name = "username";
-         while(cursor.moveToNext()){
-         //DatabaseUtils.dumpCurrentRow(player);
-         System.out.println(cursor.getString(cursor.getColumnIndex(column_name)));
-         }
-
-         } finally {
-         cursor.close();
-         }
-         */
-
-    }
-
-    public static void insertWordScrambleData(String wordScrambleUid, String phrase, String clue, String scrambledPhrase, String creator) {
-        WordScrambleTable newWordScramble = new WordScrambleTable(wordScrambleUid, phrase, clue, scrambledPhrase, creator, 0);
-        long id = cupboard().withDatabase(db).put(newWordScramble);
-    }
-
-    /**
-     * Retrieve PlayerStat
-     * @return
-     */
-    public ArrayList<PlayerTable>  retrievePlayerStatistic() {
-        return retrievePlayerStatistic(ews);
-    }
-
     //Pull the playser statistic data.
     private ArrayList<PlayerTable>  retrievePlayerStatistic(ExternalWebService ews)
     {
-        List<List<String>> playerList = ews.retrievePlayerListService();
+        List<List<String>> playerList = getAllPlayersFromEWS(ews);
         ArrayList<PlayerTable> arrPlayer = new ArrayList<>();
 
+        /**
+         * FIX THIS - db insert shouldn't be here. it's handled in getAllPlayersFromEWS
+         */
         Iterator<List<String>> iter = playerList.iterator();
         while (iter.hasNext()) {
             List<String> curIter = iter.next();
@@ -307,8 +244,83 @@ public class MainMenuActivity extends AppCompatActivity {
 
 
     /**
+     * PRIVATE METHODS AND EWS CALLS - END
+     */
+
+
+    /**
+     * Database CRUD - START
+     */
+
+
+    // delete all data from the table passed as a class
+    private static void clearAllData(Class Tbl) {
+        //YOU SHOULD ALMOST NEVER CALL THIS
+        cupboard().withDatabase(db).delete(Tbl, null);
+    }
+
+    //get Table cursor with all data
+    public static Cursor getTableCursor(Class Tbl){
+        return cupboard().withDatabase(db).query(Tbl).getCursor();
+    }
+
+    // create player in local db
+    public static void insertPlayerData(String username, String firstname, String lastname, String email){
+        boolean isUnique = true;
+        //verify username doesn't already exist in local db
+        Cursor playerCursor = getTableCursor(PlayerTable.class);
+
+        try {
+            //iterate through cursor
+            while(playerCursor.moveToNext()){
+                String rowUser = playerCursor.getString(playerCursor.getColumnIndex("username"));
+                if(username.equals(rowUser)){
+                    //user already exists in database
+                    isUnique = false;
+                }
+            }
+        } finally {
+            playerCursor.close();
+        }
+
+        //username doesn't already exist in db, so insert
+        if(isUnique){
+            PlayerTable newPlayer = new PlayerTable(username, firstname, lastname, email, 0, 0, 0.0);
+            long id = cupboard().withDatabase(db).put(newPlayer);
+        }
+    }
+
+    //wordScrambleUid() - verify scramble uid doesn't already exist in db, then insert in db
+    public static void insertWordScrambleData(String wordScrambleUid, String phrase, String clue, String scrambledPhrase, String creator) {
+        boolean isUnique = true;
+
+        //verify wordScrambleUid doesn't already exist in db before inserting
+        Cursor scrambleCursor = getTableCursor(WordScrambleTable.class);
+
+        try {
+            //iterate through cursor
+            while(scrambleCursor.moveToNext()){
+                String rowUid = scrambleCursor.getString(scrambleCursor.getColumnIndex("uniqueIdentifier"));
+                if(wordScrambleUid.equals(rowUid)){
+                    //user already exists in database
+                    isUnique = false;
+                }
+            }
+        } finally {
+            scrambleCursor.close();
+        }
+
+        //username doesn't already exist in db, so insert
+        if(isUnique){
+            WordScrambleTable newWordScramble = new WordScrambleTable(wordScrambleUid, phrase, clue, scrambledPhrase, creator, 0);
+            long id = cupboard().withDatabase(db).put(newWordScramble);
+        }
+    }
+
+    /**
      * Database CRUD - END
      */
+
 
 
     /**
@@ -319,16 +331,10 @@ public class MainMenuActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        /**
-         * INITIALIZE DATABASE
-         */
 
+        //initialize db
         SDPDatabaseHelper dbHelper = new SDPDatabaseHelper(this);
         db = dbHelper.getWritableDatabase();
-
-        /**
-         * CODE FOR MOCK EWS - START
-         */
 
         //if a user has a local account but not one on EWS, make sure mock EWS doesn't crash it
         if(isLoggedIn()){
@@ -336,15 +342,6 @@ public class MainMenuActivity extends AppCompatActivity {
                 logout();
             }
         }
-
-
-        /**
-         * CODE FOR MOCK EWS - END
-         */
-
-        /**
-         * IF USER LOGGED IN
-         */
 
         //when a user is logged in
         if (isLoggedIn()) {
@@ -367,16 +364,8 @@ public class MainMenuActivity extends AppCompatActivity {
             final ImageButton solveScramble = (ImageButton) findViewById(R.id.solveWordScrambles);
             solveScramble.setOnClickListener(new View.OnClickListener() {
                 public void onClick(View v) {
-                    Context context = getApplicationContext();
-                    SharedPreferences settings = context.getSharedPreferences(getString(R.string.select_word_scramble), Context.MODE_PRIVATE);
-                    SharedPreferences.Editor editor = settings.edit();
-                    List<String> list = listUnsolvedScrambles(ews, getActiveUser());
-                    Set<String> set = new HashSet<String>(list);
-                    editor.clear();
-                    editor.putStringSet(getString(R.string.select_word_scramble), set);
-                    editor.commit();
-                    Intent selectScrambleActivity = new Intent(getApplicationContext(), UnsolvedScrambleSelectActivity.class);
-                    startActivity(selectScrambleActivity);
+                    Intent selectActivity = new Intent(getApplicationContext(), UnsolvedScrambleSelectActivity.class);
+                    startActivity(selectActivity);
                 }
             });
 
@@ -407,10 +396,8 @@ public class MainMenuActivity extends AppCompatActivity {
                 }
             });
 
-            /**
-             * USER NOT LOGGED IN
-             */
 
+        //user isn't logged in
         } else {
             //direct to LoginActivity
             Intent loginActivity = new Intent(getApplicationContext(), LoginActivity.class);
@@ -419,13 +406,5 @@ public class MainMenuActivity extends AppCompatActivity {
 
     }
 
-    /**
-     * Checks to make sure
-     */
-
-
-    /**
-     * Database CRUD - END
-     */
 }
 

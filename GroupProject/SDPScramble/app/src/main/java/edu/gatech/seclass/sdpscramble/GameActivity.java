@@ -1,9 +1,9 @@
 package edu.gatech.seclass.sdpscramble;
 
 import android.app.Activity;
-import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.database.Cursor;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
@@ -27,6 +27,7 @@ public class GameActivity extends AppCompatActivity {
     private TextView scrambleView;
     private TextView clueView;
     private List<String> currentScramble;
+    String selectedId, phrase, clue, scrambledPhrase = new String();
 
     //kill keyboard when non-text field touched
     @Override
@@ -41,35 +42,64 @@ public class GameActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.game);
 
-        Context context = this.getApplicationContext();
-        SharedPreferences settings = context.getSharedPreferences(getString(R.string.word_scramble), Context.MODE_PRIVATE);
-        final String uid = settings.getString(getString(R.string.word_scramble), "");
-
         final MainMenuActivity menu = new MainMenuActivity();
-        currentScramble = menu.getScramble(uid);
 
-        uidView = (TextView) findViewById(R.id.wordScrambleUID);
-        uidView.setText(currentScramble.get(0));
 
-        scrambleView = (TextView) findViewById(R.id.scrambleGame);
-        scrambleView.setText(currentScramble.get(2));
+        //get selected scramble passed from select screen
+        if (savedInstanceState == null) {
+            Bundle extras = getIntent().getExtras();
+            selectedId= extras.getString("CHOSEN_SCRAMBLE");
+        } else {
+            selectedId= (String) savedInstanceState.getSerializable("CHOSEN_SCRAMBLE");
+        }
 
-        clueView = (TextView) findViewById(R.id.clueGame);
-        clueView.setText(currentScramble.get(3));
+        //get cursor with all scramble data
+        Cursor scrambleCursor = menu.getTableCursor(WordScrambleTable.class);
 
-        guess = (EditText)findViewById(R.id.scrambleGuess);
-        guess.setHint(currentScramble.get(2).replaceAll("[A-Z]+?|[a-z]+?", "_"));
+        try {
+            //iterate through cursor
+            while(scrambleCursor.moveToNext()){
+                String rowUid = scrambleCursor.getString(scrambleCursor.getColumnIndex("uniqueIdentifier"));
+                clue = scrambleCursor.getString(scrambleCursor.getColumnIndex("clue"));
+                phrase = scrambleCursor.getString(scrambleCursor.getColumnIndex("phrase"));
+                scrambledPhrase = scrambleCursor.getString(scrambleCursor.getColumnIndex("scrambledPhrase"));
 
+
+                if(selectedId.equals(rowUid)){
+                    //found word in db, set fields in view
+
+                    //set uid
+                    uidView = (TextView) findViewById(R.id.wordScrambleUID);
+                    uidView.setText(selectedId);
+
+                    //set clue
+                    clueView = (TextView) findViewById(R.id.clueGame);
+                    clueView.setText(clue);
+
+                    //set phrase but replace all characters with a _
+                    guess = (EditText)findViewById(R.id.scrambleGuess);
+                    guess.setHint(phrase.replaceAll("[A-Z]+?|[a-z]+?", "_"));
+
+                    //set scrambled phrase
+                    scrambleView = (TextView) findViewById(R.id.scrambleGame);
+                    scrambleView.setText(scrambledPhrase);
+
+                }
+            }
+        } finally {
+            scrambleCursor.close();
+        }
+
+        //guess button action
         Button submitGuess = (Button) findViewById(R.id.submitGuess);
         submitGuess.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                if(guess.getText().toString().equals(currentScramble.get(1))){
+                if(guess.getText().toString().equals(phrase)){
                     SharedPreferences settings = getSharedPreferences("MyPrefsFile", 0);
                     String activeUser = settings.getString("user", null);
 
                     //report solve
-                    menu.reportSolve(uid, activeUser);
-
+                    menu.reportSolve(selectedId, activeUser);
                     setContentView(R.layout.scramble_guess_successful);
 
                     //run code when OK button is clicked
@@ -80,7 +110,6 @@ public class GameActivity extends AppCompatActivity {
                             startActivity(reportSolveActivity);
                         }
                     });
-
                 }
                 else{
                     guess.setError("Wrong Answer. Try Again!");
@@ -88,6 +117,7 @@ public class GameActivity extends AppCompatActivity {
 
             }
         });
+
 
         Button exitGame = (Button) findViewById(R.id.exitGame);
         exitGame.setOnClickListener(new View.OnClickListener() {

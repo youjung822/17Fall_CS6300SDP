@@ -19,13 +19,6 @@ import android.widget.TextView;
 public class PlayerCreationActivity extends AppCompatActivity {
 
     @Override
-    public boolean onTouchEvent(MotionEvent event) {
-        InputMethodManager inmm = (InputMethodManager)getSystemService(Activity.INPUT_METHOD_SERVICE);
-        inmm.hideSoftInputFromWindow(getCurrentFocus().getWindowToken(), 0);
-        return true;
-    }
-
-    @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.new_player_creation);
