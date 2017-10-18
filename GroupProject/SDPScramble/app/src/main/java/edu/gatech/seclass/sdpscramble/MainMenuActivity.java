@@ -293,17 +293,65 @@ public class MainMenuActivity extends AppCompatActivity {
     //Pull the playser statistic data.
     private ArrayList<PlayerTable>  retrievePlayerStatistic(ExternalWebService ews)
     {
+        List<List<String>> scrambleList = ews.retrieveScrambleService();
         List<List<String>> playerList = ews.retrievePlayerListService();
         ArrayList<PlayerTable> arrPlayer = new ArrayList<>();
 
         Iterator<List<String>> iter = playerList.iterator();
         while (iter.hasNext()) {
             List<String> curIter = iter.next();
+            List<String> scramblesCreatedByUser = retrieveNumScrambleCreatedByUser(scrambleList,curIter.get(0));
+            double avgSolve = 0.0;
+            if(scramblesCreatedByUser.size() > 0){
+                int countPlayer = countNumberOfPlayerSolved(scramblesCreatedByUser,playerList);
+                avgSolve = Math.round(countPlayer/scramblesCreatedByUser.size() *100d)/100d;
+            }
+            
+            PlayerTable pt = new PlayerTable(curIter.get(0), curIter.get(1), curIter.get(2), curIter.get(3)
+                    , curIter.size()-4 ,scramblesCreatedByUser.size(), avgSolve);
 
-            PlayerTable pt = new PlayerTable(curIter.get(0), curIter.get(1), curIter.get(2), curIter.get(3), curIter.size()-4 ,5,6.0);
             arrPlayer.add(pt);
         }
         return arrPlayer;
+    }
+
+    private List<String> retrieveNumScrambleCreatedByUser(List<List<String>> scrambleList,String userName){
+        Iterator<List<String>> iter = scrambleList.iterator();
+        int i = 0;
+        List<String> listScramble = new ArrayList<String>();
+        while (iter.hasNext()) {
+            List<String> curIter = iter.next();
+            if(curIter.get(4)== userName){
+                listScramble.add(curIter.get(0));
+            }
+        }
+        return listScramble;
+
+    }
+
+    private int countNumberOfPlayerSolved(List<String> scrambleList, List<List<String>> playerList){
+
+        Iterator<String> iterScramble = scrambleList.iterator();
+        int count = 0;
+        while(iterScramble.hasNext()){
+            String curScramble = iterScramble.next();
+            Iterator<List<String>> iterPlayer = playerList.iterator();
+           while(iterPlayer.hasNext()){
+               List<String> curIndi = iterPlayer.next();
+                    if(curIndi.size() > 4) {
+                       /* Iterator<String> iterIndi = curIndi.iterator();
+                        while (iterIndi.hasNext()) {
+                                String currentIndi = iterIndi.next();
+                                if (currentIndi == curScramble) count++;
+                            }*/
+                       for(int i =4; i<curIndi.size(); i++){
+                           if(curIndi.get(i) == curScramble) count ++;
+                       }
+                    }
+           }
+        }
+
+        return count;
     }
 
 
