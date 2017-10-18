@@ -233,8 +233,8 @@ public class MainMenuActivity extends AppCompatActivity {
     //Pull the playser statistic data.
     private ArrayList<PlayerTable>  retrievePlayerStatistic(ExternalWebService ews)
     {
-        List<List<String>> scrambleList = ews.retrieveScrambleService();
-        List<List<String>> playerList = ews.retrievePlayerListService();
+        List<List<String>> scrambleList = getAllScrambles();
+        List<List<String>> playerList = getAllPlayers();
         ArrayList<PlayerTable> arrPlayer = new ArrayList<>();
 
         Iterator<List<String>> iter = playerList.iterator();
