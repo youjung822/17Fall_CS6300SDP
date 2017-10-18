@@ -102,6 +102,12 @@ public class MainMenuActivity extends AppCompatActivity {
     }
 
 
+    //setInProgress() - set a scramble in progress if a user exits before solving
+    public void setInProgress(String username, String scrambleUID, String inProgressPhrase){
+        createProgressTracker(username, scrambleUID, "inprogress", inProgressPhrase);
+    }
+
+
     /**
      * PUBLIC METHODS - END
      */
@@ -198,12 +204,6 @@ public class MainMenuActivity extends AppCompatActivity {
         return scrambleList;
     }
 
-    /**
-     * setInProgress() - set a scramble in progress if a user exits before solving
-     */
-
-    
-
 
     /**
      * reportSolve()
@@ -218,6 +218,7 @@ public class MainMenuActivity extends AppCompatActivity {
         return ews.reportSolveService(wordScrambleUid, username);
     }
 
+    //create a word scramble
     private static String createWordScramble(ExternalWebService ews, String phrase, String scrambledPhrase, String clue, String creator) {
         String wordScrambleUid = "";
 
@@ -418,6 +419,32 @@ public class MainMenuActivity extends AppCompatActivity {
         } finally {
             cursor.close();
         }
+
+    }
+
+    //check for existing progress trackers and create a new one if it doesn't already exist
+    private static void createProgressTracker(String user, String wordScrambleUID, String wordState, String progressPhrase) {
+
+        //check if there's an existing ProgressTracker
+        Cursor progressCursor = getTableCursor(ProgressTrackerTable.class);
+
+        try {
+            while(progressCursor.moveToNext()) {
+                String cursorScrambleUid = progressCursor.getString(progressCursor.getColumnIndex("wordScrambleUID"));
+                String cursorPlayer = progressCursor.getString(progressCursor.getColumnIndex("player"));
+                if(user.equals(cursorPlayer) && wordScrambleUID.equals(cursorScrambleUid)){
+                    //there is an existing progress tracker and we'll just delete it
+                    cupboard().withDatabase(db).delete(progressCursor);
+                }
+            }
+        } finally {
+            progressCursor.close();
+        }
+
+        ProgressTrackerTable newProgressTracker = new ProgressTrackerTable(user, wordScrambleUID, wordState, progressPhrase);
+        long id = cupboard().withDatabase(db).put(newProgressTracker);
+
+
 
     }
 

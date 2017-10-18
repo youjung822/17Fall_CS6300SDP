@@ -26,7 +26,8 @@ public class GameActivity extends AppCompatActivity {
     private TextView uidView;
     private TextView scrambleView;
     private TextView clueView;
-    String selectedId, phrase, clue, scrambledPhrase, lastGuess = new String();
+    String activeUser, selectedId, phrase, clue, scrambledPhrase, lastGuess = new String();
+
 
     //kill keyboard when non-text field touched
     @Override
@@ -38,11 +39,15 @@ public class GameActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
+
+        SharedPreferences settings = getSharedPreferences("MyPrefsFile", 0);
+        activeUser = settings.getString("user", null);
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.game);
 
         final MainMenuActivity menu = new MainMenuActivity();
-
+        Cursor scrambleCursor = menu.getTableCursor(WordScrambleTable.class);       //get cursor with all scramble data
 
         //get selected scramble passed from select screen
         if (savedInstanceState == null) {
@@ -52,8 +57,6 @@ public class GameActivity extends AppCompatActivity {
             selectedId= (String) savedInstanceState.getSerializable("CHOSEN_SCRAMBLE");
         }
 
-        //get cursor with all scramble data
-        Cursor scrambleCursor = menu.getTableCursor(WordScrambleTable.class);
 
         try {
             boolean scrambleFound = false;
@@ -95,8 +98,7 @@ public class GameActivity extends AppCompatActivity {
             public void onClick(View v) {
                 lastGuess = guess.getText().toString();
                 if(lastGuess.toLowerCase().equals(phrase.toLowerCase())){
-                    SharedPreferences settings = getSharedPreferences("MyPrefsFile", 0);
-                    String activeUser = settings.getString("user", null);
+
 
                     //report solve
                     menu.reportSolve(selectedId, activeUser);
@@ -129,7 +131,8 @@ public class GameActivity extends AppCompatActivity {
                     lastGuess = scrambledPhrase;
                 }
 
-
+                //create a ProgressTrackerTable record
+                menu.setInProgress(activeUser, selectedId, lastGuess);
 
                 Intent exitGameActivity = new Intent(v.getContext(), MainMenuActivity.class);
                 startActivity(exitGameActivity);

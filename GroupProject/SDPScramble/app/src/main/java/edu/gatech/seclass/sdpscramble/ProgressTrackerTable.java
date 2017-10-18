@@ -6,14 +6,14 @@ package edu.gatech.seclass.sdpscramble;
 
 public class ProgressTrackerTable {
     public Long _id;
-    public PlayerTable player;
-    public WordScrambleTable word;
+    public String player;
+    public String wordScrambleUID;
     public String wordState;
     public String inProgressPhrase;
 
-    public ProgressTrackerTable (PlayerTable plyr, WordScrambleTable wrd, String wrdState, String prgsPhrs) {
+    public ProgressTrackerTable (String plyr, String wrd, String wrdState, String prgsPhrs) {
         this.player = plyr;
-        this.word = wrd;
+        this.wordScrambleUID = wrd;
         this.wordState = wrdState;
         this.inProgressPhrase = prgsPhrs;
     }
