@@ -198,6 +198,12 @@ public class MainMenuActivity extends AppCompatActivity {
         return scrambleList;
     }
 
+    /**
+     * setInProgress() - set a scramble in progress if a user exits before solving
+     */
+
+    
+
 
     /**
      * reportSolve()
@@ -222,7 +228,11 @@ public class MainMenuActivity extends AppCompatActivity {
         }
 
         if (!wordScrambleUid.isEmpty()) {
+            //insert scramble into local db
             insertWordScrambleData(wordScrambleUid, phrase, clue, scrambledPhrase, creator);
+
+            //increment PlayerTable.numOfScramblesCreated
+            incrementIntField(PlayerTable.class, "numOfScramblesCreated", creator);
         }
 
         return wordScrambleUid;
@@ -445,7 +455,7 @@ public class MainMenuActivity extends AppCompatActivity {
 
 
             //if a user clears scrambles
-            final Button logout = (Button) findViewById(R.id.clearScrambles);
+            final Button logout = (Button) findViewById(R.id.logout);
             logout.setOnClickListener(new View.OnClickListener() {
                 public void onClick(View v) {
                     logout();

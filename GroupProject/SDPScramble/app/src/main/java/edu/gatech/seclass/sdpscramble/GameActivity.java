@@ -26,8 +26,7 @@ public class GameActivity extends AppCompatActivity {
     private TextView uidView;
     private TextView scrambleView;
     private TextView clueView;
-    private List<String> currentScramble;
-    String selectedId, phrase, clue, scrambledPhrase = new String();
+    String selectedId, phrase, clue, scrambledPhrase, lastGuess = new String();
 
     //kill keyboard when non-text field touched
     @Override
@@ -94,7 +93,8 @@ public class GameActivity extends AppCompatActivity {
         Button submitGuess = (Button) findViewById(R.id.submitGuess);
         submitGuess.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                if(guess.getText().toString().toLowerCase().equals(phrase.toLowerCase())){
+                lastGuess = guess.getText().toString();
+                if(lastGuess.toLowerCase().equals(phrase.toLowerCase())){
                     SharedPreferences settings = getSharedPreferences("MyPrefsFile", 0);
                     String activeUser = settings.getString("user", null);
 
@@ -123,6 +123,14 @@ public class GameActivity extends AppCompatActivity {
         exitGame.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 //TODO save scrambleGuess to db
+
+                //if user hasn't guessed yet, set to
+                if(lastGuess.isEmpty() || lastGuess == null){
+                    lastGuess = scrambledPhrase;
+                }
+
+
+
                 Intent exitGameActivity = new Intent(v.getContext(), MainMenuActivity.class);
                 startActivity(exitGameActivity);
             }
