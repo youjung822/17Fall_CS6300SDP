@@ -57,17 +57,17 @@ public class GameActivity extends AppCompatActivity {
         Cursor scrambleCursor = menu.getTableCursor(WordScrambleTable.class);
 
         try {
+            boolean scrambleFound = false;
             //iterate through cursor
-            while(scrambleCursor.moveToNext()){
+            while(scrambleCursor.moveToNext() && !scrambleFound){
                 String rowUid = scrambleCursor.getString(scrambleCursor.getColumnIndex("uniqueIdentifier"));
-                clue = scrambleCursor.getString(scrambleCursor.getColumnIndex("clue"));
-                phrase = scrambleCursor.getString(scrambleCursor.getColumnIndex("phrase"));
-                scrambledPhrase = scrambleCursor.getString(scrambleCursor.getColumnIndex("scrambledPhrase"));
-
-
                 if(selectedId.equals(rowUid)){
-                    //found word in db, set fields in view
+                    scrambleFound = true;
+                    clue = scrambleCursor.getString(scrambleCursor.getColumnIndex("clue"));
+                    phrase = scrambleCursor.getString(scrambleCursor.getColumnIndex("phrase"));
+                    scrambledPhrase = scrambleCursor.getString(scrambleCursor.getColumnIndex("scrambledPhrase"));
 
+                    //found word in db, set fields in view
                     //set uid
                     uidView = (TextView) findViewById(R.id.wordScrambleUID);
                     uidView.setText(selectedId);
@@ -94,7 +94,7 @@ public class GameActivity extends AppCompatActivity {
         Button submitGuess = (Button) findViewById(R.id.submitGuess);
         submitGuess.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                if(guess.getText().toString().equals(phrase)){
+                if(guess.getText().toString().toLowerCase().equals(phrase.toLowerCase())){
                     SharedPreferences settings = getSharedPreferences("MyPrefsFile", 0);
                     String activeUser = settings.getString("user", null);
 

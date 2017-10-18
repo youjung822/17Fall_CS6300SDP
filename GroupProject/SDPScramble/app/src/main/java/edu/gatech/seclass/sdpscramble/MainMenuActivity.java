@@ -1,5 +1,6 @@
 package edu.gatech.seclass.sdpscramble;
 
+import android.content.ContentValues;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.database.Cursor;
@@ -204,7 +205,11 @@ public class MainMenuActivity extends AppCompatActivity {
      * @return boolean representing success
      */
     private static boolean reportSolve(ExternalWebService ews, String wordScrambleUid, String username){
-        return ews.reportSolveService(wordScrambleUid,username);
+        //increment db fields - PlayerTable.numOfScramblesSolved and WordScrambleTable.numOfTimesSolved
+        incrementIntField(PlayerTable.class, "numOfScramblesSolved", username);
+        incrementIntField(WordScrambleTable.class, "numOfTimesSolved", wordScrambleUid);
+
+        return ews.reportSolveService(wordScrambleUid, username);
     }
 
     private static String createWordScramble(ExternalWebService ews, String phrase, String scrambledPhrase, String clue, String creator) {
@@ -381,6 +386,31 @@ public class MainMenuActivity extends AppCompatActivity {
         }
     }
 
+    private static void incrementIntField(Class tbl, String field, String uid){
+        //get table cursor
+        Cursor cursor = getTableCursor(tbl);
+
+        //get record with our uid - username for PlayerTable and uniqueIdentifier for WordScrambleTable
+        try {
+            while(cursor.moveToNext()) {
+                String rowUid = cursor.getString(cursor.getColumnIndex(field));
+                if(uid.equals(rowUid)){
+                    //found our record
+                    Integer intField = cursor.getInt(cursor.getColumnIndex(field));
+                    intField++;
+                    //update field in db
+                    ContentValues values = new ContentValues(1);
+                    values.put(field, intField);
+                    cupboard().withDatabase(db).update(tbl, values, field + " = ?", uid);
+
+                }
+            }
+        } finally {
+            cursor.close();
+        }
+
+    }
+
     /**
      * Database CRUD - END
      */
@@ -414,13 +444,21 @@ public class MainMenuActivity extends AppCompatActivity {
             userInfo.setText(getActiveUser());
 
 
-            //if a user logs out
-            final Button logout = (Button) findViewById(R.id.logout);
+            //if a user clears scrambles
+            final Button logout = (Button) findViewById(R.id.clearScrambles);
             logout.setOnClickListener(new View.OnClickListener() {
                 public void onClick(View v) {
                     logout();
                     Intent login = new Intent(getApplicationContext(), LoginActivity.class);
                     startActivity(login);
+                }
+            });
+
+            //user clicks on clear scrambles
+            final Button clearScramble = (Button) findViewById(R.id.clearScrambles);
+            clearScramble.setOnClickListener(new View.OnClickListener() {
+                public void onClick(View v) {
+                    clearAllData(WordScrambleTable.class);
                 }
             });
 

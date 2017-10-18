@@ -26,8 +26,12 @@ public class UnsolvedScrambleSelectActivity extends AppCompatActivity {
         setContentView(R.layout.word_scramble_select);
 
         MainMenuActivity menu = new MainMenuActivity();
+
         SharedPreferences settings = getSharedPreferences("MyPrefsFile", 0);
         String username = settings.getString("user", null);
+
+        //get scrambles from EWS
+        menu.getAllScrambles();
 
         //get cursor of all data in word scramble class
         Cursor scrambleCursor = menu.getTableCursor(WordScrambleTable.class);
