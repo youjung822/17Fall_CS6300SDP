@@ -32,6 +32,7 @@
         android:layout_width="15dp"
         android:layout_height="30dp"
         android:layout_weight="10"
+        android:numeric="decimal"
         android:text="avgSolvedCreated"
         android:textSize="18sp" />
 </LinearLayout>
