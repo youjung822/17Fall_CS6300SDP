@@ -6,38 +6,25 @@
 
 ### 1.1 Overall strategy
 
-*This section should provide details about your unit-, integration-, system-, and regression-testing strategies. In particular, it should discuss which activities you will perform as part of your testing process, and who will perform such activities.*
-
-The goal for our testing strategy is to have as close to 100% coverage as possible. Every method, when possible, should have a corresponding unit test or tests. Methods or classes that deal extensively with integration with the Android system should instead be covered by integration/instrumentation tests. For every requirement of the application, there should be a corresponding system test (manual testing script) to validate it from the user's perspective. All developers on the team are responsible for writing tests, where applicable. If unsure how to test a method, it should at least be documented - in terms of its intended functionality - so that anyone would be able to write a suitable test. The Test Lead shall be responsible for the testing frameworks used, bug tracking, and ensuring the application meets our adequacy standards (see section 1.3 below).
+The goal for our testing strategy is to have as close to 100% coverage as possible for classes that deal extensively in business logid. In our case, that would be the logic concerning scramble creation. Every method, when possible, should have a corresponding unit test or tests. Methods or classes that deal extensively with integration with the Android system should instead be covered by integration/instrumentation tests. For every requirement of the application, there should be a corresponding system test (manual testing script) to validate it from the user's perspective. The Test Lead shall be responsible for the testing frameworks used, bug tracking, and ensuring the application meets our adequacy standards (see section 1.3 below).
 
 ### 1.2 Test Selection
-
-*Here you should discuss how you are going to select your test cases, that is, which black-box and/or white-box techniques you will use. If you plan to use different techniques at different testing levels (e.g., unit and system), you should clarify that.*
 
 As stated above, we should strive to maintain 100% code coverage in our white-box testing. Manual test scripts will be used for every requirement described for the application.
 
 ### 1.3 Adequacy Criterion
 
-*Define how you are going to assess the quality of your test cases. Typically, this involves some form of functional or structural coverage. If you plan to use different techniques at different testing levels (e.g., unit and system), you should clarify that.*
-
-Unit tests should achieve as close to 100% coverage as possible. For every functional requirement, there must be a manual testing script to confirm the requirement is met.
+Unit tests should achieve as close to 100% coverage as possible. For every functional requirement, there must be a manual testing script to confirm the requirement is met. Finally, automated functional testing shall be implemented with Espresso where possible.
 
 ### 1.4 Bug Tracking
 
-*Describe how bugs and enhancement requests will be tracked.*
-
-For the time being, Git's issue tracking should be used to track bugs/enhancements. Subject to change in the future.
+The team's slack channel is used for all communication related to the app, including bugs and enhancements.
 
 ### 1.5 Technology
 
-*Describe any testing technology you intend to use or build (e.g., JUnit, Selenium).*
-
-JUnit will be the default testing framework used for all testing (Android JUnit Runner for instrumentation tests). If mocking is required to effectively write unit tests for methods that integrate with other systems, Mockito will be used. Testing frameworks are subject to change, after development has begun.
+JUnit will be the default testing framework used for all testing (Android JUnit Runner for instrumentation tests). For automated functional testing, Espresso will be used where appropriate.
 
 ## 2 Test Cases
-
-*This section should be the core of this document. You should provide a table of test cases, one per row. For each test case, the table should provide its purpose, the steps necessary to perform the test, the expected result, the actual result (to be filled later), pass/fail information (to be filled later), and any additional information you think is relevant.*
-
 
 | Requirement/Purpose | Testing Steps | Expected Result | Actual Result | Pass/Fail | Other |
 |---------------------|---------------|-----------------|---------------|-----------|-------|
