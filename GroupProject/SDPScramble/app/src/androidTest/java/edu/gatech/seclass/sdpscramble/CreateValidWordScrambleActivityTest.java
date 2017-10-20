@@ -48,7 +48,7 @@ public class CreateValidWordScrambleActivityTest extends ActivityTest{
                 allOf(withId(R.id.submitWordScramble), withText("Submit"), isDisplayed()));
         appCompatButton6.perform(click());
 
-        // Asserts that scramble was created successfully, thus reaching the success page
+        // Asserts that the scramble was created successfully, thus reaching the success page
         ViewInteraction appCompatButton7 = onView(
                 allOf(withId(R.id.okWordScrambleCreation), withText("OK"), isDisplayed()));
         appCompatButton7.perform(click());

@@ -49,7 +49,7 @@ public class CreateInvalidWordScrambleActivityTest extends ActivityTest{
                 allOf(withId(R.id.submitWordScramble), withText("Submit"), isDisplayed()));
         appCompatButton6.perform(click());
 
-        // Asserts that scramble was not successfully, thus never reaching the success page
+        // Asserts that the scramble was not created successfully, thus never reaching the success page
         onView(allOf(withId(R.id.okWordScrambleCreation), withText("OK"), not(isDisplayed())));
     }
 
