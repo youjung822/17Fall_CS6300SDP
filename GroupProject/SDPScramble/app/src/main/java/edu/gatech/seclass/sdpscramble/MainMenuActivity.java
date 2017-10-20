@@ -107,6 +107,11 @@ public class MainMenuActivity extends AppCompatActivity {
         createProgressTracker(username, scrambleUID, "inprogress", inProgressPhrase);
     }
 
+    //retrieve in progress phrase
+    public String retrieveinProgressPhrase(String user, String wordScrambleUID) {
+        return retrieveProgressPhrase(user, wordScrambleUID);
+    }
+
 
     /**
      * PUBLIC METHODS - END
@@ -360,8 +365,29 @@ public class MainMenuActivity extends AppCompatActivity {
         ProgressTrackerTable newProgressTracker = new ProgressTrackerTable(user, wordScrambleUID, wordState, progressPhrase);
         long id = cupboard().withDatabase(db).put(newProgressTracker);
 
+    }
 
+    //retrieve progress phrase from db
+    private static String retrieveProgressPhrase(String user, String wordScrambleUID) {
+        String progressPhrase = "";
 
+        Cursor progressCursor = getTableCursor(ProgressTrackerTable.class);
+
+        //find progress tracker
+        try {
+            while(progressCursor.moveToNext()) {
+                String cursorScrambleUid = progressCursor.getString(progressCursor.getColumnIndex("wordScrambleUID"));
+                String cursorPlayer = progressCursor.getString(progressCursor.getColumnIndex("player"));
+                if(user.equals(cursorPlayer) && wordScrambleUID.equals(cursorScrambleUid)){
+                    //there is an existing progress tracker and we'll just delete it
+                   progressPhrase = progressCursor.getString(progressCursor.getColumnIndex("inProgressPhrase"));
+                }
+            }
+        } finally {
+            progressCursor.close();
+        }
+
+        return progressPhrase;
     }
 
     /**

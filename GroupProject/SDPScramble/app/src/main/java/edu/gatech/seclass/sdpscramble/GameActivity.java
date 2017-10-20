@@ -27,6 +27,7 @@ public class GameActivity extends AppCompatActivity {
     private TextView scrambleView;
     private TextView clueView;
     String activeUser, selectedId, phrase, clue, scrambledPhrase, lastGuess = new String();
+    boolean isInProgress;
 
 
     //kill keyboard when non-text field touched
@@ -53,8 +54,10 @@ public class GameActivity extends AppCompatActivity {
         if (savedInstanceState == null) {
             Bundle extras = getIntent().getExtras();
             selectedId= extras.getString("CHOSEN_SCRAMBLE");
+            isInProgress = extras.getBoolean("IN_PROGRESS");
         } else {
             selectedId= (String) savedInstanceState.getSerializable("CHOSEN_SCRAMBLE");
+            isInProgress= (Boolean) savedInstanceState.getSerializable("IN_PROGRESS");
         }
 
 
@@ -78,13 +81,19 @@ public class GameActivity extends AppCompatActivity {
                     clueView = (TextView) findViewById(R.id.clueGame);
                     clueView.setText(clue);
 
-                    //set phrase but replace all characters with a _
-                    guess = (EditText)findViewById(R.id.scrambleGuess);
-                    guess.setHint(phrase.replaceAll("[A-Z]+?|[a-z]+?", "_"));
-
                     //set scrambled phrase
                     scrambleView = (TextView) findViewById(R.id.scrambleGame);
                     scrambleView.setText(scrambledPhrase);
+
+                    //set in progress, if it was in progress
+                    guess = (EditText)findViewById(R.id.scrambleGuess);
+                    if(isInProgress){
+                        lastGuess = menu.retrieveinProgressPhrase(activeUser, selectedId);
+                        guess.setText(lastGuess);
+                    } else {
+                        //set phrase but replace all characters with a _
+                        guess.setHint(phrase.replaceAll("[A-Z]+?|[a-z]+?", "_"));
+                    }
 
                 }
             }
@@ -124,8 +133,6 @@ public class GameActivity extends AppCompatActivity {
         Button exitGame = (Button) findViewById(R.id.exitGame);
         exitGame.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                //TODO save scrambleGuess to db
-
                 //if user hasn't guessed yet, set to
                 if(lastGuess.isEmpty() || lastGuess == null){
                     lastGuess = scrambledPhrase;

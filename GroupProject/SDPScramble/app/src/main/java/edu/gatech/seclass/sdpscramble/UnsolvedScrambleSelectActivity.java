@@ -19,6 +19,7 @@ import java.util.List;
 
 public class UnsolvedScrambleSelectActivity extends AppCompatActivity {
     String selectedScrambleID = new String();
+    boolean isInProgress = false;
 
 
     @Override
@@ -77,7 +78,6 @@ public class UnsolvedScrambleSelectActivity extends AppCompatActivity {
                 String uid = scrambleCursor.getString(scrambleCursor.getColumnIndex("uniqueIdentifier"));
                 String scrambledPhrase = scrambleCursor.getString(scrambleCursor.getColumnIndex("scrambledPhrase"));
                 boolean isSolved = false;
-                boolean isInProgress = false;
 
                 //user is not the creator
                 if(!username.equals(creator)){
@@ -128,6 +128,7 @@ public class UnsolvedScrambleSelectActivity extends AppCompatActivity {
 
                 selectedScrambleID = ws.substring(ws.indexOf('[')+1, ws.indexOf(']'));
                 gameActivity.putExtra("CHOSEN_SCRAMBLE", selectedScrambleID);
+                gameActivity.putExtra("IN_PROGRESS", isInProgress);
                 startActivity(gameActivity);
             }
         });
