@@ -3,20 +3,17 @@ package edu.gatech.seclass.sdpscramble;
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+
 import static nl.qbusict.cupboard.CupboardFactory.cupboard;
 
 /**
- * Created by tamur on 10/12/17.
+ * @author tamur
  */
 
 public class SDPDatabaseHelper extends SQLiteOpenHelper {
 
         private static final String DATABASE_NAME = "SDP.db";
         private static final int DATABASE_VERSION = 2;
-
-        public SDPDatabaseHelper(Context context) {
-            super(context, DATABASE_NAME, null, DATABASE_VERSION);
-        }
 
         static {
             // register models
@@ -25,7 +22,9 @@ public class SDPDatabaseHelper extends SQLiteOpenHelper {
             cupboard().register(ProgressTrackerTable.class);
         }
 
-
+    public SDPDatabaseHelper(Context context) {
+        super(context, DATABASE_NAME, null, DATABASE_VERSION);
+    }
 
         @Override
         public void onCreate(SQLiteDatabase db) {

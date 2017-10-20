@@ -8,8 +8,6 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.ListView;
 
-import java.math.RoundingMode;
-import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
@@ -17,7 +15,7 @@ import java.util.Iterator;
 import java.util.List;
 
 /**
- * Created by John Youngblood on 10/10/17.
+ * @author youjungkim
  */
 
 public class PlayerStatisticsActivity extends AppCompatActivity {

@@ -12,14 +12,7 @@ import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.TextView;
 
-import java.math.RoundingMode;
 import java.net.SocketTimeoutException;
-import java.text.DecimalFormat;
-import java.text.NumberFormat;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.Comparator;
 import java.util.Iterator;
 import java.util.List;
 
@@ -27,13 +20,7 @@ import edu.gatech.seclass.utilities.ExternalWebService;
 
 import static nl.qbusict.cupboard.CupboardFactory.cupboard;
 
-/**
- * Created by John Youngblood on 10/10/17.
- */
-
 public class MainMenuActivity extends AppCompatActivity {
-
-    final ExternalWebService ews = ExternalWebService.getInstance(); //need to create instance once and pass same instance whenever EWS is called
 
     /**
      * ACTIVE USER PREFERENCES - START
@@ -42,81 +29,7 @@ public class MainMenuActivity extends AppCompatActivity {
 
     public static final String PREFS_NAME = "MyPrefsFile";
     static SQLiteDatabase db;
-
-    //returns active user or null if there is no logged in user
-    private String getActiveUser() {
-        SharedPreferences settings = getSharedPreferences(PREFS_NAME, 0);
-        return settings.getString("user", null);
-    }
-
-    //check if a user is logged in
-    private boolean isLoggedIn() {
-        SharedPreferences settings = getSharedPreferences(PREFS_NAME, 0);
-        return !(settings.getString("user", null) == null || settings.getString("user", null).isEmpty());
-    }
-
-    //log user out
-    private void logout() {
-        SharedPreferences settings = getSharedPreferences(PREFS_NAME, 0);
-        SharedPreferences.Editor editor = settings.edit();
-        editor.clear();
-        editor.commit();
-    }
-
-    /**
-     * ACTIVE USER PREFERENCES - END
-     */
-
-
-    /**
-     * PUBLIC METHODS - START
-     */
-
-    //return true if username is valid
-    public boolean login(String username) {
-        return login(ews, username);
-    }
-
-    //return unique username
-    public String createPlayer(String username, String firstname, String lastname, String email) {
-        return createPlayer(ews, username, firstname, lastname, email);
-    }
-
-    //return list of all players from EWS
-    public List<List<String>> getAllPlayers(){
-        return getAllPlayersFromEWS(ews);
-    }
-
-    //return list of all scrambles from EWS
-    public List<List<String>> getAllScrambles(){
-        return getAllScramblesFromEWS(ews);
-    }
-
-    //create a word scramble
-    public String createWordScramble(String phrase, String scrambledPhrase, String clue, String creator) {
-        return createWordScramble(ews, phrase, scrambledPhrase, clue, creator);
-    }
-
-    //report solved scramble by player
-    public boolean reportSolve(String wordScrambleUid, String username) {
-        return reportSolve(ews, wordScrambleUid, username);
-    }
-
-    //setInProgress() - set a scramble in progress if a user exits before solving
-    public void setInProgress(String username, String scrambleUID, String inProgressPhrase){
-        createProgressTracker(username, scrambleUID, "inprogress", inProgressPhrase);
-    }
-
-
-    /**
-     * PUBLIC METHODS - END
-     */
-
-
-    /**
-     * PRIVATE METHODS AND EWS CALLS - START
-     */
-
+    final ExternalWebService ews = ExternalWebService.getInstance(); //need to create instance once and pass same instance whenever EWS is called
 
     /**
      * createPlayer()
@@ -184,7 +97,9 @@ public class MainMenuActivity extends AppCompatActivity {
         return playerList;
     }
 
-
+    /**
+     * ACTIVE USER PREFERENCES - END
+     */
 
     /**
      * getAllScrambles() - gets all scrambles from EWS - then calls db insert func
@@ -203,7 +118,6 @@ public class MainMenuActivity extends AppCompatActivity {
 
         return scrambleList;
     }
-
 
     /**
      * reportSolve()
@@ -238,11 +152,6 @@ public class MainMenuActivity extends AppCompatActivity {
 
         return wordScrambleUid;
     }
-
-    /**
-     * PRIVATE METHODS AND EWS CALLS - END
-     */
-
 
     /**
      * Database CRUD - START
@@ -313,6 +222,16 @@ public class MainMenuActivity extends AppCompatActivity {
         }
     }
 
+
+    /**
+     * PUBLIC METHODS - END
+     */
+
+
+    /**
+     * PRIVATE METHODS AND EWS CALLS - START
+     */
+
     private static void incrementIntField(Class tbl, String field, String uid){
         //get table cursor
         Cursor cursor = getTableCursor(tbl);
@@ -364,11 +283,72 @@ public class MainMenuActivity extends AppCompatActivity {
 
     }
 
+    //returns active user or null if there is no logged in user
+    private String getActiveUser() {
+        SharedPreferences settings = getSharedPreferences(PREFS_NAME, 0);
+        return settings.getString("user", null);
+    }
+
+    //check if a user is logged in
+    private boolean isLoggedIn() {
+        SharedPreferences settings = getSharedPreferences(PREFS_NAME, 0);
+        return !(settings.getString("user", null) == null || settings.getString("user", null).isEmpty());
+    }
+
+    //log user out
+    private void logout() {
+        SharedPreferences settings = getSharedPreferences(PREFS_NAME, 0);
+        SharedPreferences.Editor editor = settings.edit();
+        editor.clear();
+        editor.commit();
+    }
+
+    /**
+     * PUBLIC METHODS - START
+     */
+
+    //return true if username is valid
+    public boolean login(String username) {
+        return login(ews, username);
+    }
+
+    /**
+     * PRIVATE METHODS AND EWS CALLS - END
+     */
+
+    //return unique username
+    public String createPlayer(String username, String firstname, String lastname, String email) {
+        return createPlayer(ews, username, firstname, lastname, email);
+    }
+
+    //return list of all players from EWS
+    public List<List<String>> getAllPlayers() {
+        return getAllPlayersFromEWS(ews);
+    }
+
+    //return list of all scrambles from EWS
+    public List<List<String>> getAllScrambles() {
+        return getAllScramblesFromEWS(ews);
+    }
+
+    //create a word scramble
+    public String createWordScramble(String phrase, String scrambledPhrase, String clue, String creator) {
+        return createWordScramble(ews, phrase, scrambledPhrase, clue, creator);
+    }
+
+    //report solved scramble by player
+    public boolean reportSolve(String wordScrambleUid, String username) {
+        return reportSolve(ews, wordScrambleUid, username);
+    }
+
+    //setInProgress() - set a scramble in progress if a user exits before solving
+    public void setInProgress(String username, String scrambleUID, String inProgressPhrase) {
+        createProgressTracker(username, scrambleUID, "inprogress", inProgressPhrase);
+    }
+
     /**
      * Database CRUD - END
      */
-
-
 
     /**
      * ONCREATE()

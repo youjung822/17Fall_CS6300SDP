@@ -1,21 +1,26 @@
 package edu.gatech.seclass.sdpscramble;
 
 import android.content.Intent;
-import android.database.Cursor;
 import android.content.SharedPreferences;
+import android.database.Cursor;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ListView;
-import android.widget.AdapterView.OnItemClickListener;
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
+
+/**
+ * @author John Youngblood
+ */
 
 public class UnsolvedScrambleSelectActivity extends AppCompatActivity {
     String selectedScrambleID = new String();
@@ -34,7 +39,7 @@ public class UnsolvedScrambleSelectActivity extends AppCompatActivity {
         menu.getAllScrambles();      //get scrambles from EWS
 
         //get cursor of all data in word scramble class
-        Cursor scrambleCursor = menu.getTableCursor(WordScrambleTable.class);
+        Cursor scrambleCursor = MainMenuActivity.getTableCursor(WordScrambleTable.class);
         List<String> solvedScrambles = new ArrayList<String>();           //our user's solved scrambles
         List<String> unSolvedScrambles = new ArrayList<String>();   //our user's solved scrambles
 
@@ -56,7 +61,7 @@ public class UnsolvedScrambleSelectActivity extends AppCompatActivity {
         }
 
         //get all of the player's in progress scrambles
-        Cursor progressCursor = menu.getTableCursor(ProgressTrackerTable.class);   //get cursor with all progress data
+        Cursor progressCursor = MainMenuActivity.getTableCursor(ProgressTrackerTable.class);   //get cursor with all progress data
         List<String> inProgressScrambles = new ArrayList<String>(); //user's in progress scrambles
         long progressId;
 

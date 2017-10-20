@@ -7,10 +7,13 @@ import java.util.Random;
 /**
  * @author Brian Greenwald
  */
+
 public class WordScramble implements Scramble {
 
     public static final int MAX_PHRASE_LENGTH = 127;
     public static final int MIN_PHRASE_LENGTH = 2;
+    private String clue;
+    private String phrase;
 
     public WordScramble(String phrase, String clue) {
         if (phrase == null || phrase.isEmpty() || phrase.length() > MAX_PHRASE_LENGTH) {
@@ -145,8 +148,5 @@ public class WordScramble implements Scramble {
         }
         return false;
     }
-
-    private String clue;
-    private String phrase;
 
 }
