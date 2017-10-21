@@ -65,11 +65,7 @@ public class PlayerStatisticsActivity extends AppCompatActivity {
     }
 
 
-    private List<String> retrieveScramblesCreatedByUser(List<List<String>> scrambleList,String userName){
-
-        /**
-         * may need to be moved to PlayerStatisticsActivity
-         */
+    public List<String> retrieveScramblesCreatedByUser(List<List<String>> scrambleList,String userName){
         Iterator<List<String>> iter = scrambleList.iterator();
         int i = 0;
         List<String> listScramble = new ArrayList<String>();
@@ -83,12 +79,7 @@ public class PlayerStatisticsActivity extends AppCompatActivity {
 
     }
 
-    private int countNumberOfPlayerSolved(List<String> scrambleList, List<List<String>> playerList){
-
-        /**
-         * may need to be moved to PlayerStatisticsActivity
-         */
-
+    public int countNumberOfPlayerSolved(List<String> scrambleList, List<List<String>> playerList){
         Iterator<String> iterScramble = scrambleList.iterator();
         int count = 0;
         while(iterScramble.hasNext()){
@@ -107,7 +98,7 @@ public class PlayerStatisticsActivity extends AppCompatActivity {
         return count;
     }
 
-    private  ArrayList<PlayerTable> orderDesc(ArrayList<PlayerTable> statics)
+    public  ArrayList<PlayerTable> orderDesc(ArrayList<PlayerTable> statics)
     {
         Collections.sort(statics, new Comparator<PlayerTable>(){
             public int compare(PlayerTable p1, PlayerTable p2){
