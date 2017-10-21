@@ -111,8 +111,8 @@ public class PlayerStatisticsActivity extends AppCompatActivity {
     {
         Collections.sort(statics, new Comparator<PlayerTable>(){
             public int compare(PlayerTable p1, PlayerTable p2){
-                if(p1.numOfScramblesSolved > p2.numOfScramblesSolved) return 1;
-                else if(p1.numOfScramblesSolved < p2.numOfScramblesSolved) return -1;
+                if(p1.numOfScramblesSolved > p2.numOfScramblesSolved) return -1;
+                else if(p1.numOfScramblesSolved < p2.numOfScramblesSolved) return 1;
                 else return 0;
             }
         });
