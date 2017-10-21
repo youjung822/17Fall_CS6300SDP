@@ -48,7 +48,7 @@
         android:layout_height="wrap_content"
         android:layout_marginEnd="16dp"
         android:layout_marginStart="16dp"
-        android:layout_marginTop="76dp"
+        android:layout_marginTop="8dp"
         android:text="@android:string/unknownName"
         android:textAlignment="center"
         android:textColor="?attr/colorAccent"
@@ -62,28 +62,10 @@
         tools:layout_constraintTop_creator="1" />
 
     <TextView
-        android:id="@+id/main_title"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="16dp"
-        android:layout_marginStart="16dp"
-        android:text="@string/word_scramble"
-        android:textAlignment="center"
-        android:textAppearance="@android:style/TextAppearance.DeviceDefault.Large"
-        android:textSize="24sp"
-        android:textStyle="bold"
-        app:layout_constraintBottom_toTopOf="@+id/wordScrambleUID"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        tools:layout_constraintLeft_creator="1"
-        tools:layout_constraintRight_creator="1" />
-
-    <TextView
         android:id="@+id/scramble_title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="87dp"
+        android:layout_marginTop="61dp"
         android:text="@string/scramble"
         android:textAlignment="center"
         android:textAppearance="@style/TextAppearance.AppCompat.Title"
@@ -95,27 +77,27 @@
 
     <TextView
         android:id="@+id/scrambleGame"
-        android:layout_width="0dp"
-        android:layout_height="55dp"
+        android:layout_width="353dp"
+        android:layout_height="93dp"
         android:layout_marginEnd="15dp"
         android:layout_marginStart="15dp"
-        android:layout_marginTop="111dp"
+        android:layout_marginTop="90dp"
         android:fontFamily="monospace"
         android:gravity="center_vertical|center"
         android:textAlignment="center"
         android:textColor="@android:color/black"
-        app:layout_constraintHorizontal_bias="0.516"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/wordScrambleUID"
         tools:layout_constraintLeft_creator="1"
         tools:layout_constraintRight_creator="1"
-        tools:layout_constraintTop_creator="1" />
+        tools:layout_constraintTop_creator="1"
+        app:layout_constraintHorizontal_bias="0.516" />
 
     <TextView
         android:id="@+id/clueGame"
-        android:layout_width="0dp"
-        android:layout_height="43dp"
+        android:layout_width="315dp"
+        android:layout_height="34dp"
         android:layout_marginEnd="34dp"
         android:layout_marginStart="34dp"
         android:fontFamily="cursive"
@@ -123,30 +105,32 @@
         android:textAlignment="center"
         android:textColor="@android:color/black"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.267"
         tools:layout_constraintBottom_creator="1"
         tools:layout_constraintLeft_creator="1"
         tools:layout_constraintRight_creator="1"
-        tools:layout_constraintTop_creator="1" />
+        tools:layout_constraintTop_creator="1"
+        android:layout_marginTop="8dp"
+        app:layout_constraintVertical_bias="0.054"
+        app:layout_constraintHorizontal_bias="0.507"
+        app:layout_constraintTop_toTopOf="@+id/clue_title" />
 
     <TextView
         android:id="@+id/clue_title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="125dp"
         android:text="@string/clue"
         android:textAlignment="center"
         android:textColor="@android:color/black"
         android:textSize="20sp"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
         tools:layout_constraintLeft_creator="1"
-        tools:layout_constraintRight_creator="1" />
+        tools:layout_constraintRight_creator="1"
+        app:layout_constraintTop_toTopOf="@+id/wordScrambleUID"
+        android:layout_marginTop="24dp"
+        app:layout_constraintHorizontal_bias="0.502" />
 
     <EditText
         android:id="@+id/scrambleGuess"
