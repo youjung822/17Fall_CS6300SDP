@@ -12,14 +12,8 @@ import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.TextView;
 
-import java.math.RoundingMode;
 import java.net.SocketTimeoutException;
-import java.text.DecimalFormat;
-import java.text.NumberFormat;
 import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.Comparator;
 import java.util.Iterator;
 import java.util.List;
 
@@ -75,6 +69,10 @@ public class MainMenuActivity extends AppCompatActivity {
     //return true if username is valid
     public boolean login(String username) {
         return login(ews, username);
+    }
+
+    public boolean isValidScramble(String uid) {
+        return isValidScramble(ews, uid);
     }
 
     //return unique username
@@ -169,6 +167,23 @@ public class MainMenuActivity extends AppCompatActivity {
             }
         }
         return validUsername;
+    }
+
+    //validate scramble exists in EWS
+    private static boolean isValidScramble(ExternalWebService ews, String uid) {
+        boolean validScramble = false;
+        if (uid != null && !uid.isEmpty()) {
+            List<List<String>> scrambleList = getAllScramblesFromEWS(ews);
+
+            Iterator<List<String>> iter = scrambleList.iterator();
+            while (iter.hasNext()) {
+                String ewsId = iter.next().get(0);
+                if (uid.equals(ewsId)) {
+                    validScramble = true;
+                }
+            }
+        }
+        return validScramble;
     }
 
     /**
@@ -390,6 +405,56 @@ public class MainMenuActivity extends AppCompatActivity {
         return progressPhrase;
     }
 
+    //delete data in the local db that is not not in EWS to prevent crash
+    private void deleteInvalidLocalData(){
+        Cursor localProgressCursor = getTableCursor(ProgressTrackerTable.class);
+        Cursor localPlayerCursor = getTableCursor(PlayerTable.class);
+        Cursor localScrambleCursor = getTableCursor(WordScrambleTable.class);
+
+
+        //iterate through local PlayerTable
+        try {
+            while(localPlayerCursor.moveToNext()) {
+                String localUsername = localPlayerCursor.getString(localPlayerCursor.getColumnIndex("username"));
+                if(!login(localUsername)){
+                    //player doesn't exist in EWS
+                    cupboard().withDatabase(db).delete(localPlayerCursor);
+                }
+            }
+        } finally {
+            localPlayerCursor.close();
+        }
+
+        //iterate through local word scramble table
+        try {
+            while(localScrambleCursor.moveToNext()) {
+                String localId = localPlayerCursor.getString(localPlayerCursor.getColumnIndex("uniqueIdentifier"));
+                if(!isValidScramble(localId)){
+                    //player doesn't exist in EWS
+                    cupboard().withDatabase(db).delete(localScrambleCursor);
+                }
+            }
+        } finally {
+            localScrambleCursor.close();
+        }
+
+        //iterate through local progress tracker
+        try {
+            while(localProgressCursor.moveToNext()) {
+                String localScrambleId = localProgressCursor.getString(localProgressCursor.getColumnIndex("wordScrambleUID"));
+                String localUsername = localProgressCursor.getString(localProgressCursor.getColumnIndex("player"));
+                if(!(isValidScramble(localScrambleId) && login(localUsername))){
+                    //player doesn't exist in EWS
+                    cupboard().withDatabase(db).delete(localProgressCursor);
+                }
+            }
+        } finally {
+            localProgressCursor.close();
+        }
+
+
+    }
+
     /**
      * Database CRUD - END
      */
@@ -415,6 +480,9 @@ public class MainMenuActivity extends AppCompatActivity {
                 logout();
             }
         }
+
+        //delete data in local db that doesn't exist in EWS
+        deleteInvalidLocalData();
 
         //when a user is logged in
         if (isLoggedIn()) {

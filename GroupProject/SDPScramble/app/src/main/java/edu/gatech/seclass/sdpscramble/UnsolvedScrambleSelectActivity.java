@@ -64,7 +64,6 @@ public class UnsolvedScrambleSelectActivity extends AppCompatActivity {
         //get all of the player's in progress scrambles
         Cursor progressCursor = MainMenuActivity.getTableCursor(ProgressTrackerTable.class);   //get cursor with all progress data
         List<String> inProgressScrambles = new ArrayList<String>(); //user's in progress scrambles
-        long progressId;
 
         while(progressCursor.moveToNext()){
             String progressUser = progressCursor.getString(progressCursor.getColumnIndex("player"));
