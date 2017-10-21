@@ -38,7 +38,7 @@ public class WordScrambleStatAdapter extends ArrayAdapter<WordScrambleTable> {
     @NonNull
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
-
+        //capture each field as a String
         String uid = getItem(position).uniqueIdentifier.toString();
         String numSolved = getItem(position).numOfTimesSolved.toString();
         String creator = getItem(position).createdBy.toString();
@@ -58,7 +58,7 @@ public class WordScrambleStatAdapter extends ArrayAdapter<WordScrambleTable> {
         TextView tvCreator = convertView.findViewById(R.id.creator);
         TextView tvSolved = convertView.findViewById(R.id.solved);
 
-        tvScrambleUID.setText(getItem(position).uniqueIdentifier.toString());
+        tvScrambleUID.setText(uid);
         tvNumTimesSolved.setText(numSolved);
         tvCreator.setText(creator);
         tvSolved.setText(solved);
