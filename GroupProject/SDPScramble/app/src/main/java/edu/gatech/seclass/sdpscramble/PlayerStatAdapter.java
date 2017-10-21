@@ -8,21 +8,16 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.TextView;
 
-import org.w3c.dom.Text;
-
 import java.util.ArrayList;
 
-import static edu.gatech.seclass.sdpscramble.R.id.avgSolvedCreated;
-import static edu.gatech.seclass.sdpscramble.R.id.playerName;
-
 /**
- * Created by youjungkim on 10/13/17.
+ * @author youjungkim
  */
 
 public class PlayerStatAdapter extends ArrayAdapter<PlayerTable>{
 
-    private Context mContext;
     int mResource;
+    private Context mContext;
 
     /**
      * Default constructor for the PlayerStatAdapter
@@ -50,10 +45,10 @@ public class PlayerStatAdapter extends ArrayAdapter<PlayerTable>{
         LayoutInflater inflater = LayoutInflater.from(mContext);
         convertView = inflater.inflate(mResource, parent, false);
 
-        TextView tvPlayerName = (TextView)convertView.findViewById(R.id.playerName);
-        TextView tvNumSolved = (TextView)convertView.findViewById(R.id.numSolved);
-        TextView tvNumCreated = (TextView)convertView.findViewById(R.id.numCreated);
-        TextView tvAvgSolved = (TextView)convertView.findViewById(R.id.avgSolvedCreated);
+        TextView tvPlayerName = convertView.findViewById(R.id.playerName);
+        TextView tvNumSolved = convertView.findViewById(R.id.numSolved);
+        TextView tvNumCreated = convertView.findViewById(R.id.numCreated);
+        TextView tvAvgSolved = convertView.findViewById(R.id.avgSolvedCreated);
 
         tvPlayerName.setText(player);
         tvNumSolved.setText(numSolved);

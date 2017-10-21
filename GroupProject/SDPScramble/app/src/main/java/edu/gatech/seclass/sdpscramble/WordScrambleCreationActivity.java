@@ -16,7 +16,10 @@ import android.widget.TextView;
 /**
  * @author Brian Greenwald
  */
+
 public class WordScrambleCreationActivity extends AppCompatActivity {
+
+    private WordScramble currentWordScramble;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -119,12 +122,10 @@ public class WordScrambleCreationActivity extends AppCompatActivity {
 
 
         setContentView(R.layout.word_scramble_creation_successful);
-        
+
         TextView wordScrambleUidText = (TextView) findViewById(R.id.newUid);
         wordScrambleUidText.setText(wordScrambleUid);
     }
-
-    private WordScramble currentWordScramble;
 
     @Override
     public boolean onTouchEvent(MotionEvent event) {

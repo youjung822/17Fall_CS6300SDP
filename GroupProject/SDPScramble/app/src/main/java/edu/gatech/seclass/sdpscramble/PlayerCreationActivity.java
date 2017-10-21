@@ -1,20 +1,13 @@
 package edu.gatech.seclass.sdpscramble;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
-import android.view.MotionEvent;
 import android.view.View;
-import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.TextView;
 
-
-/**
- * Created by John Youngblood on 10/10/17.
- */
 
 public class PlayerCreationActivity extends AppCompatActivity {
 
