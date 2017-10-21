@@ -368,9 +368,10 @@ public class MainMenuActivity extends AppCompatActivity {
             while(progressCursor.moveToNext()) {
                 String cursorScrambleUid = progressCursor.getString(progressCursor.getColumnIndex("wordScrambleUID"));
                 String cursorPlayer = progressCursor.getString(progressCursor.getColumnIndex("player"));
+                long localId = progressCursor.getLong(progressCursor.getColumnIndex("_id"));
                 if(user.equals(cursorPlayer) && wordScrambleUID.equals(cursorScrambleUid)){
                     //there is an existing progress tracker and we'll just delete it
-                    cupboard().withDatabase(db).delete(progressCursor);
+                    cupboard().withDatabase(db).delete(ProgressTrackerTable.class, localId);
                 }
             }
         } finally {
@@ -407,18 +408,16 @@ public class MainMenuActivity extends AppCompatActivity {
 
     //delete data in the local db that is not not in EWS to prevent crash
     private void deleteInvalidLocalData(){
-        Cursor localProgressCursor = getTableCursor(ProgressTrackerTable.class);
-        Cursor localPlayerCursor = getTableCursor(PlayerTable.class);
-        Cursor localScrambleCursor = getTableCursor(WordScrambleTable.class);
-
 
         //iterate through local PlayerTable
+        Cursor localPlayerCursor = getTableCursor(PlayerTable.class);
         try {
             while(localPlayerCursor.moveToNext()) {
                 String localUsername = localPlayerCursor.getString(localPlayerCursor.getColumnIndex("username"));
+                long localId = localPlayerCursor.getLong(localPlayerCursor.getColumnIndex("_id"));
                 if(!login(localUsername)){
                     //player doesn't exist in EWS
-                    cupboard().withDatabase(db).delete(localPlayerCursor);
+                    cupboard().withDatabase(db).delete(PlayerTable.class, localId);
                 }
             }
         } finally {
@@ -426,26 +425,31 @@ public class MainMenuActivity extends AppCompatActivity {
         }
 
         //iterate through local word scramble table
+        Cursor localScrambleCursor = getTableCursor(WordScrambleTable.class);
         try {
             while(localScrambleCursor.moveToNext()) {
-                String localId = localPlayerCursor.getString(localPlayerCursor.getColumnIndex("uniqueIdentifier"));
-                if(!isValidScramble(localId)){
+                String localScrambleId = localScrambleCursor.getString(localScrambleCursor.getColumnIndex("uniqueIdentifier"));
+                long localId = localScrambleCursor.getLong(localScrambleCursor.getColumnIndex("_id"));
+                if(!isValidScramble(localScrambleId)){
                     //player doesn't exist in EWS
-                    cupboard().withDatabase(db).delete(localScrambleCursor);
+                    cupboard().withDatabase(db).delete(WordScrambleTable.class, localId);
                 }
             }
         } finally {
             localScrambleCursor.close();
         }
 
+
         //iterate through local progress tracker
+        Cursor localProgressCursor = getTableCursor(ProgressTrackerTable.class);
         try {
             while(localProgressCursor.moveToNext()) {
                 String localScrambleId = localProgressCursor.getString(localProgressCursor.getColumnIndex("wordScrambleUID"));
                 String localUsername = localProgressCursor.getString(localProgressCursor.getColumnIndex("player"));
+                long localId = localProgressCursor.getLong(localProgressCursor.getColumnIndex("_id"));
                 if(!(isValidScramble(localScrambleId) && login(localUsername))){
                     //player doesn't exist in EWS
-                    cupboard().withDatabase(db).delete(localProgressCursor);
+                    cupboard().withDatabase(db).delete(ProgressTrackerTable.class, localId);
                 }
             }
         } finally {
@@ -474,6 +478,9 @@ public class MainMenuActivity extends AppCompatActivity {
         SDPDatabaseHelper dbHelper = new SDPDatabaseHelper(this);
         db = dbHelper.getWritableDatabase();
 
+        //delete data in local db that doesn't exist in EWS
+        deleteInvalidLocalData();
+
         //if a user has a local account but not one on EWS, make sure mock EWS doesn't crash it
         if(isLoggedIn()){
             if(!login(getActiveUser())){
@@ -481,8 +488,6 @@ public class MainMenuActivity extends AppCompatActivity {
             }
         }
 
-        //delete data in local db that doesn't exist in EWS
-        deleteInvalidLocalData();
 
         //when a user is logged in
         if (isLoggedIn()) {
