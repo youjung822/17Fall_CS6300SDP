@@ -180,9 +180,12 @@ public class MainMenuActivity extends AppCompatActivity {
                 String ewsId = iter.next().get(0);
                 if (uid.equals(ewsId)) {
                     validScramble = true;
+                } else {
                 }
+
             }
         }
+
         return validScramble;
     }
 

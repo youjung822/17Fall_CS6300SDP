@@ -24,8 +24,6 @@ import java.util.List;
 
 public class UnsolvedScrambleSelectActivity extends AppCompatActivity {
     String selectedScrambleID = new String();
-    boolean isInProgress = false;
-
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -64,16 +62,18 @@ public class UnsolvedScrambleSelectActivity extends AppCompatActivity {
         //get all of the player's in progress scrambles
         Cursor progressCursor = MainMenuActivity.getTableCursor(ProgressTrackerTable.class);   //get cursor with all progress data
         List<String> inProgressScrambles = new ArrayList<String>(); //user's in progress scrambles
-
-        while(progressCursor.moveToNext()){
-            String progressUser = progressCursor.getString(progressCursor.getColumnIndex("player"));
-
-            if(progressUser.equals(username)){
-                //found a progress tracker for current player - add it to list of in progress scrambles
-                inProgressScrambles.add(progressCursor.getString(progressCursor.getColumnIndex("wordScrambleUID")));
+        try {
+            while(progressCursor.moveToNext()){
+                String progressUser = progressCursor.getString(progressCursor.getColumnIndex("player"));
+                if(progressUser.equals(username)){
+                    //found a progress tracker for current player - add it to list of in progress scrambles
+                    inProgressScrambles.add(progressCursor.getString(progressCursor.getColumnIndex("wordScrambleUID")));
+                }
             }
-
+        } finally{
+            progressCursor.close();
         }
+
 
         //iterate WordScrambleTable cursor and get scrambles user hasn't solved or created
         try {
@@ -82,6 +82,7 @@ public class UnsolvedScrambleSelectActivity extends AppCompatActivity {
                 String uid = scrambleCursor.getString(scrambleCursor.getColumnIndex("uniqueIdentifier"));
                 String scrambledPhrase = scrambleCursor.getString(scrambleCursor.getColumnIndex("scrambledPhrase"));
                 boolean isSolved = false;
+                boolean isInProgress = false;
 
                 //user is not the creator
                 if(!username.equals(creator)){
@@ -103,7 +104,6 @@ public class UnsolvedScrambleSelectActivity extends AppCompatActivity {
                                     isInProgress = true;
                                 }
                                 else{
-                                    isInProgress = false;
                                 }
                             }
                         }
@@ -135,7 +135,15 @@ public class UnsolvedScrambleSelectActivity extends AppCompatActivity {
 
                 selectedScrambleID = ws.substring(ws.indexOf('[')+1, ws.indexOf(']'));
                 gameActivity.putExtra("CHOSEN_SCRAMBLE", selectedScrambleID);
-                gameActivity.putExtra("IN_PROGRESS", isInProgress);
+
+                //send in progress extra to GameActivity
+                if (ws.substring(0, 11).equals("IN PROGRESS")){
+                    gameActivity.putExtra("IN_PROGRESS", true);
+                } else {
+                    gameActivity.putExtra("IN_PROGRESS", false);
+                }
+
+
                 startActivity(gameActivity);
             }
         });
