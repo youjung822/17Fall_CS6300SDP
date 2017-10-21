@@ -506,6 +506,7 @@ public class MainMenuActivity extends AppCompatActivity {
                 }
             });
 
+            /**
             //user clicks on clear scrambles
             final Button clearScramble = (Button) findViewById(R.id.clearScrambles);
             clearScramble.setOnClickListener(new View.OnClickListener() {
@@ -513,6 +514,7 @@ public class MainMenuActivity extends AppCompatActivity {
                     clearAllData(WordScrambleTable.class);
                 }
             });
+            */
 
             //user clicks on Solve a Word Scramble
             final ImageButton solveScramble = (ImageButton) findViewById(R.id.solveWordScrambles);
