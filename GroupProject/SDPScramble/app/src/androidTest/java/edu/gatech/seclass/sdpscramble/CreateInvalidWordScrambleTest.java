@@ -20,7 +20,7 @@ import static org.hamcrest.Matchers.allOf;
 import static org.hamcrest.Matchers.not;
 
 @RunWith(AndroidJUnit4.class)
-public class CreateInvalidWordScrambleActivityTest extends ActivityTest{
+public class CreateInvalidWordScrambleTest extends ActivityTest{
 
     @Rule
     public ActivityTestRule<MainMenuActivity> mActivityTestRule = new ActivityTestRule<>(MainMenuActivity.class);
