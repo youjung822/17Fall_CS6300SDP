@@ -102,6 +102,9 @@ public class UnsolvedScrambleSelectActivity extends AppCompatActivity {
                                     //this scramble is in progress
                                     isInProgress = true;
                                 }
+                                else{
+                                    isInProgress = false;
+                                }
                             }
                         }
 
