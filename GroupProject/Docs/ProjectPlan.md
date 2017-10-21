@@ -28,11 +28,11 @@ Word Scramble is a life long enjoyable game application which offers creating an
 
 ### 2.5 Deploy the product
 * Description: The final software product will be delivered and the end product will be installed and used by the customers. Training, customer service, and providing help-line assistance may be required. All the documents from analysis to deployment  will be finalized.
-* Entrance criteria :Beta release product; Product verification result
+* Entrance criteria :Beta release product; Product verification result(TestPlan.md)
 * Exit criteria: End product; User mannual
 
 ### 2.6 Project Schedule(Gantt Chart)
- This chart illustrates the start and finish dates summary elements of a project.
+ This chart illustrates summary elements of a project and its start and finish dates.
  ![team44](https://github.gatech.edu/gt-omscs-se-2017fall/6300Fall17Team44/blob/master/GroupProject/Docs/Images/GanttChart.png "GanttChart")
 
 ## 3 Team
