@@ -1,0 +1,23 @@
+<resources>
+    <string name="app_name">Team 44\'s Word Scramble Game</string>
+    <string name="submit">Submit</string>
+    <string name="first_name">First Name</string>
+    <string name="last_name">Last Name</string>
+    <string name="email">Email</string>
+    <string name="desired_username">Desired Username*</string>
+    <string name="player_creation_successful_dialog">Your Account Has Been Successfully Created. Your Unique Username Is:</string>
+    <string name="create_word_scramble">Create a Word Scramble</string>
+    <string name="view_player_statistics">View Player Statistics</string>
+    <string name="solve_word_scrambles">Solve a Word Scramble</string>
+    <string name="view_word_scramble_statistics">View Word Scramble Statistics</string>
+    <string name="desired_username_footnote">*We will append a number to the end of your username to make it unique</string>
+    <string name="phrase">Phrase</string>
+    <string name="clue">Clue</string>
+    <string name="scramble">Scramble</string>
+    <string name="login">Login</string>
+    <string name="sign_up">Sign Up</string>
+    <string name="word_scramble_successful_dialog">Your Word Scrambles Has Been Succesffully Created. Its ID number is:</string>
+    <string name="word_scramble">Word Scramble:</string>
+    <string name="select_word_scramble">Select a Word Scramble to Solve</string>
+    <string name="back">Back to Main Menu</string>
+</resources>

@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="edu.gatech.seclass.sdpscramble">
+
+    <application
+        android:allowBackup="true"
+        android:icon="@mipmap/team_logo"
+        android:label="@string/app_name"
+        android:roundIcon="@mipmap/team_logo"
+        android:supportsRtl="true"
+        android:theme="@style/AppTheme">
+        <activity android:name=".MainMenuActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity android:name=".LoginActivity"
+            android:screenOrientation="portrait" />
+        <activity android:name=".PlayerCreationActivity"
+            android:screenOrientation="portrait" />
+        <activity android:name=".GameActivity"
+            android:screenOrientation="portrait" />
+        <activity android:name=".PlayerStatisticsActivity"
+            android:screenOrientation="portrait" />
+        <activity android:name=".WordScrambleCreationActivity"
+            android:screenOrientation="portrait" />
+        <activity android:name=".WordScrambleStatisticsActivity"
+            android:screenOrientation="portrait" />
+        <activity android:name=".UnsolvedScrambleSelectActivity"
+            android:screenOrientation="portrait" />
+
+
+    </application>
+
+</manifest>
